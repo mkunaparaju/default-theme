@@ -13,6 +13,7 @@ module.exports = function(grunt) {
             'http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js',
             'http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-route.min.js',
             'http://www.multiplayer-gaming.com/api/loader.min.js?app=v201',
+            'ts/app-l10n.js',
             'css/app.min.css',
             'imgs/animatedEllipse.gif',
             // For material design

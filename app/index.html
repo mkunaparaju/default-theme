@@ -411,10 +411,13 @@
 <!-- see what's the latest version here: https://cdnjs.com/libraries/angular-material/ --> 
 <script crossorigin="anonymous" src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc4/angular-material.min.js"></script>
   
+<script src="ts/app-l10n.js"></script>
 <script crossorigin="anonymous" src="http://www.multiplayer-gaming.com/api/loader.min.js?app=v201"></script>
 
 <script>
 function gamingPlatformInitFinished() {
+  gamingPlatform.main.l10n().setTranslations(window.platformTranslations);
+  
   angular.module('whateverNameApp', ["gamingPlatformModule", 'ngMaterial'])
       .config(['$mdThemingProvider', '$mdIconProvider', 
         function ($mdThemingProvider, $mdIconProvider) {
