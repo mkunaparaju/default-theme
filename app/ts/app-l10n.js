@@ -832,6 +832,6 @@
             "es": "Desconocido"
         },
     };
-    gamingPlatform.main.l10n().setTranslations(platformTranslations);
+    window.platformTranslations = platformTranslations;
 })();
 //# sourceMappingURL=app-l10n.js.map
