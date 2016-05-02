@@ -416,7 +416,7 @@
 
 <script>
 function gamingPlatformInitFinished() {
-  gamingPlatform.main.l10n().setTranslations(window.platformTranslations);
+  if (window.platformTranslations) gamingPlatform.main.l10n().setTranslations(window.platformTranslations);
   
   angular.module('whateverNameApp', ["gamingPlatformModule", 'ngMaterial'])
       .config(['$mdThemingProvider', '$mdIconProvider', 
