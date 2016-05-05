@@ -10,12 +10,22 @@ interface App {
   l10n(): L10n;
   fb(): FB;
   model(): Model; // All fields used in ng-model
-  returnTrue(ignored: any): boolean; // To avoid warnings from my $parse proxy that warns if an expression results in undefined.
-
+  
+  // Used for preventing clicks on the game iframe when clicking on platform UI (menus, etc).
+  // Every void-returning api method (except log) is automatically flashing the 
+  // GameIframeProtector, so call this method only for special cases
+  // (e.g., if you have a button that closes a floating menu, and clicking on close might pass the click to the game iframe)
+  flashGameIframeProtector(): void;
+  
+  // Adds a log entry to the platform logs (you get these logs in case of feedbacks, bug reports or JS exceptions).   
+  log(... args: any[]): void;
+  
   // Will be set to true after the game and player
   // were loaded (from local-storage or the server).
   // (Then you can call game() and me())
   isFinishedLoading(): boolean;
+  // Whether it's the first time the user opened the app.
+  isFirstTimeUser(): boolean;
 
   // Returns either the input url, or a "data:image/..." (in base64), e.g.,
   // "data:image/jpg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDA…NTLwMDgDgAUUU5SlJ+87iSS2P//Z"
@@ -75,14 +85,15 @@ interface App {
   sendChat(chatMessage: string, player: Player, match: Match): void;
 
   // MyInfoModal
-  // Shows MyInfoModal, and sets newDisplayName and newUserName (in main.model)
-  // to be the existing displayName and userName of me().
+  // Shows MyInfoModal, and sets newDisplayName (in main.model)
+  // to be the existing displayName of me().
   showMyInfoModal(): void;
-  // Updates displayName and userName based on newDisplayName and newUserName (in main.model)
-  // If newUserName was already chosen by someone else,
-  // then newUserNameWasTaken will return true and newUserName is added some random digits at the end.
+  // Updates displayName to be newDisplayName (in main.model)
+  // It sets userName to be displayName.toLowerCase().replace(/[ ]/g, '.')
+  // If that userName was already chosen by someone else,
+  // then the server adds some random digits at the end to make it unique.
   saveMyInfo(): void;
-  // True if the desired newUserName was taken by someone else already.
+  // Deprecated: always return false.
   newUserNameWasTaken(): boolean;
 
   // Game over dialog
@@ -96,7 +107,10 @@ interface App {
   // Returns translate('MATCH_START_REMATCH', {OPPONENTS_NAME: opponentNames.join(", ")});
   // where opponentNames is an array of the opponent names in the current match.
   translateRematch(): string;
-
+  
+  // Pass in Match.updatedTime() or createdTime() to get back a localized string of how long ago was that time,
+  // e.g., "33 seconds ago" or "yesterday". 
+  timeAgo(time: number): string;
   toggleBlocking(player: Player): void;
   isBlocking(player: Player): boolean;
 }
@@ -208,6 +222,7 @@ interface Player {
 
   // Returns true if this player is the player using the app.
   isMe(): boolean;
+  getUserName(): string; // Username is only available for my player (for all other players it's null).
   // Returns true if the player is unknown, i.e., an empty slot in a multPlayer auto-match.
   isUnknown(): boolean;
   // Returns true in single-player matches (practice or pass-and-play) for non-computer players.
@@ -285,11 +300,15 @@ interface Match {
   // If limit is positive, then the number of returned players is always less
   // than the limit (players around the current turn are more likely to be returned).
   getPlayers(params?: {limit?:number, excludeMe?: boolean, excludeSinglePlayer?: boolean}): Player[];
-
+  
+  // Returns a comma-separated string with all opponents' displayName, i.e., it returns:
+  // getPlayers({excludeMe: true}).map((player) => player.displayName).join(", ");
+  getOpponentNames(): string;
+  
   findPlayerById(playerId: string): Player; // Returns null if playerId is not in players.
 
   // Returns true if you can do a multPlayer rematch, i.e.,
-  // if the match is multPlayer and there are no unknown players.
+  // if the match is multiPlayer and there are no unknown players.
   canRematch(): boolean;
 
   // Returns isSinglePlayer() || canRematch()

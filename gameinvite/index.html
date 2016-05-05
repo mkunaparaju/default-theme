@@ -68,10 +68,14 @@
 
 <script crossorigin="anonymous" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
 
+
+<script src="ts/gameinvite-l10n.js"></script>
 <script crossorigin="anonymous" src="http://www.multiplayer-gaming.com/api/loader.min.js?gameinvite=v201"></script>
 
 <script>
 function gamingPlatformInitFinished() {
+  if (window.platformTranslations) gamingPlatform.gameinvite.main.l10n().setTranslations(window.platformTranslations);
+  
   angular.module('whateverNameApp', ["gamingPlatformModule"]);
   angular.bootstrap(document, ["whateverNameApp"]);
 }

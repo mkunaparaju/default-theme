@@ -82,7 +82,7 @@ module.exports = function(grunt) {
         },
         processors: [
           require('autoprefixer')(), // add vendor prefixes
-          require('cssnano')() // minify the result
+          require('cssnano')({safe: true}) // minify the result, skipping unsafe optimizations
         ]
       },
       app: {
@@ -125,13 +125,15 @@ module.exports = function(grunt) {
   grunt.registerTask('default', [
       'ts',
       'postcss',
+      'manifest:forProduction']);
+  grunt.registerTask('testProtractor', [
+      'ts',
+      'postcss',
       'manifest:forTesting',
       'http-server', 'protractor:iPhone4',
       'manifest:forProduction']);
-  grunt.registerTask('skipProtractor', ['ts',
-      'postcss',
-      'manifest:forProduction']);
-  grunt.registerTask('createPrintscreens', ['ts',
+  grunt.registerTask('createPrintscreens', [
+      'ts',
       'postcss',
       'manifest:forTesting',
       'http-server'].concat(allProtractorTasks).concat([

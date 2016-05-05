@@ -1,6 +1,156 @@
 (function () {
     ;
     var platformTranslations = {
+        "TIME_AGO_SOME_SECONDS": {
+            "en": "{{UNITS}} seconds ago",
+            "iw": "לפני {{UNITS}} שניות",
+            "pt": "{{UNITS}} segundos atrás",
+            "zh": "{{UNITS}}秒前",
+            "el": "Πριν από {{UNITS}} δευτερόλεπτα",
+            "fr": "il y a {{UNITS}} secondes",
+            "hi": "{{UNITS}} सेकंड पहले",
+            "es": "hace {{UNITS}} segundos"
+        },
+        "TIME_AGO_ONE_MINUTE": {
+            "en": "1 minute ago",
+            "iw": "לפני דקה",
+            "pt": "1 minuto atrás",
+            "zh": "1分钟前",
+            "el": "Πριν από 1 λεπτό",
+            "fr": "il y a 1 minute",
+            "hi": "1 मिनट पहले",
+            "es": "Hace 1 minuto"
+        },
+        "TIME_AGO_SOME_MINUTES": {
+            "en": "{{UNITS}} minutes ago",
+            "iw": "לפני {{UNITS}} דקות",
+            "pt": "{{UNITS}} minutos atrás",
+            "zh": "{{UNITS}}分钟前",
+            "el": "{{UNITS}} λεπτά πριν",
+            "fr": "Il y a {{UNITS}} minutes",
+            "hi": "{{UNITS}} मिनट पहले",
+            "es": "Hace {{UNITS}} minutos"
+        },
+        "TIME_AGO_ONE_HOUR": {
+            "en": "1 hour ago",
+            "iw": "לפני שעה",
+            "pt": "1 hora atrás",
+            "zh": "1小时前",
+            "el": "Πριν από 1 ώρα",
+            "fr": "Il ya 1 heure",
+            "hi": "1 घंटे पहले",
+            "es": "Hace 1 día"
+        },
+        "TIME_AGO_SOME_HOURS": {
+            "en": "{{UNITS}} hours ago",
+            "iw": "לפני {{UNITS}} שעות",
+            "pt": "{{UNITS}} horas atrás",
+            "zh": "{{UNITS}}小时前",
+            "el": "Πριν από {{UNITS}} ώρες",
+            "fr": "Il y a {{UNITS}} heures",
+            "hi": "{{UNITS}} घंटे पहले",
+            "es": "Hace {{UNITS}} horas"
+        },
+        "TIME_AGO_YESTERDAY": {
+            "en": "yesterday",
+            "iw": "אתמול",
+            "pt": "ontem",
+            "zh": "昨天",
+            "el": "εχθές",
+            "fr": "hier",
+            "hi": "बिता कल",
+            "es": "ayer"
+        },
+        "TIME_AGO_SOME_DAYS": {
+            "en": "{{UNITS}} days ago",
+            "iw": "לפני {{UNITS}} ימים",
+            "pt": "{{UNITS}} dias atrás",
+            "zh": "{{UNITS}}天前",
+            "el": "{{UNITS}} ημέρες πριν",
+            "fr": "Il y a {{UNITS}} jours",
+            "hi": "{{UNITS}} दिन पहले",
+            "es": "Hace {{UNITS}} días"
+        },
+        "TIME_AGO_LAST_WEEK": {
+            "en": "last week",
+            "iw": "בשבוע שעבר",
+            "pt": "semana passada",
+            "zh": "上个星期",
+            "el": "Την προηγούμενη εβδομάδα",
+            "fr": "la semaine dernière",
+            "hi": "पिछले सप्ताह",
+            "es": "la semana pasada"
+        },
+        "TIME_AGO_SOME_WEEKS": {
+            "en": "{{UNITS}} weeks ago",
+            "iw": "לפני {{UNITS}} שבועות",
+            "pt": "{{UNITS}} semanas atrás",
+            "zh": "{{UNITS}}周前",
+            "el": "Πριν από {{UNITS}} εβδομάδες",
+            "fr": "Il y a {{UNITS}} semaines",
+            "hi": "{{UNITS}} सप्ताह पहले",
+            "es": "hace {{UNITS}} semanas"
+        },
+        "TIME_AGO_LAST_MONTH": {
+            "en": "last month",
+            "iw": "בחודש שעבר",
+            "pt": "mês passado",
+            "zh": "上个月",
+            "el": "τον προηγούμενο μήνα",
+            "fr": "le mois dernier",
+            "hi": "पिछले महीने",
+            "es": "el mes pasado"
+        },
+        "TIME_AGO_SOME_MONTHS": {
+            "en": "{{UNITS}} months ago",
+            "iw": "לפני {{UNITS}} חודשים",
+            "pt": "{{UNITS}} meses atrás",
+            "zh": "{{UNITS}}个月前",
+            "el": "{{UNITS}} μήνες πριν",
+            "fr": "Il y a {{UNITS}} mois",
+            "hi": "{{UNITS}} महीने पहले",
+            "es": "Hace {{UNITS}} meses"
+        },
+        "TIME_AGO_LAST_YEAR": {
+            "en": "last year",
+            "iw": "בשנה שעברה",
+            "pt": "ano passado",
+            "zh": "去年",
+            "el": "πέρυσι",
+            "fr": "l'année dernière",
+            "hi": "पिछले साल",
+            "es": "el año pasado"
+        },
+        "TIME_AGO_SOME_YEARS": {
+            "en": "{{UNITS}} years ago",
+            "iw": "לפני {{UNITS}} שנים",
+            "pt": "{{UNITS}} anos atrás",
+            "zh": "{{UNITS}}年前",
+            "el": "{{UNITS}} χρόνια πριν",
+            "fr": "Il y a {{UNITS}} ans",
+            "hi": "{{UNITS}} साल पहले",
+            "es": "Hace {{UNITS}} años"
+        },
+        "LANGUAGE": {
+            "en": "Language",
+            "iw": "שפה",
+            "pt": "Língua",
+            "zh": "语言",
+            "el": "Γλώσσα",
+            "fr": "La langue",
+            "hi": "भाषा",
+            "es": "Idioma"
+        },
+        "CHAT_MESSAGE_LABEL": {
+            "en": "Type in a chat message",
+            "iw": "הקלד הודעת צט",
+            "pt": "Digite uma mensagem de chat",
+            "zh": "输入一个聊天信息",
+            "el": "Πληκτρολογήσετε ένα μήνυμα συνομιλίας",
+            "fr": "Tapez un message de chat dans",
+            "hi": "में टाइप एक चैट संदेश",
+            "es": "Escribir en un mensaje de chat"
+        },
         "CHAT_SENT": {
             "en": "Chat sent",
             "iw": "צט נשלח",
@@ -17,7 +167,7 @@
             "pt": "Convidar",
             "zh": "邀请",
             "el": "Πρόσκληση",
-            "fr": "invitez",
+            "fr": "Invitez",
             "hi": "आमंत्रण",
             "es": "Invitar"
         },
@@ -331,9 +481,19 @@
             "hi": "नया खेल",
             "es": "Nueva partida"
         },
+        "SURE_YOU_WANT_TO_RESIGN": {
+            "en": "Are you sure you want to resign and delete your game with {{OPPONENTS_NAME}}?",
+            "iw": "האם אתה בטוח שאתה רוצה למחוק את המשחק עם {{OPPONENTS_NAME}}?",
+            "pt": "Tem certeza de que quer renunciar e apagar seu jogo com {{OPPONENTS_NAME}}?",
+            "zh": "你确定要辞职，并与{{OPPONENTS_NAME}}删除你的游戏？",
+            "el": "Είστε σίγουροι ότι θέλετε να παραιτηθεί και να διαγράψετε το παιχνίδι σας με {{OPPONENTS_NAME}};",
+            "fr": "Etes-vous sûr de vouloir démissionner et supprimer votre jeu avec {{OPPONENTS_NAME}}?",
+            "hi": "आप इस्तीफा देने और {{OPPONENTS_NAME}} के साथ अपने खेल को हटाना चाहते हैं आप सुनिश्चित हैं?",
+            "es": "¿Está seguro de que desea renunciar y eliminar su juego con {{OPPONENTS_NAME}}?"
+        },
         "MATCH_RESIGN_AND_DELETE": {
-            "en": "Resign and delete game",
-            "iw": "צא והפסד את המשחק",
+            "en": "Resign",
+            "iw": "בטל משחק",
             "pt": "Demitir-se e excluir jogo",
             "zh": "重新分配并删除游戏",
             "el": "Παραιτηθεί και να διαγράψετε το παιχνίδι",
@@ -351,8 +511,18 @@
             "hi": "प्रिंटस्क्रीन बाँटे",
             "es": "Compartir pantalla"
         },
+        "REMATCH": {
+            "en": "Rematch",
+            "iw": "משחק חוזר",
+            "pt": "revanche",
+            "zh": "复赛",
+            "el": "ρεβάνς",
+            "fr": "rematch",
+            "hi": "दोबारा मैच",
+            "es": "Revancha"
+        },
         "MATCH_START_REMATCH": {
-            "en": "Rematch: start a new game with {{OPPONENTS_NAME}}",
+            "en": "Rematch with {{OPPONENTS_NAME}}",
             "iw": "התחל משחק חדש עם {{OPPONENTS_NAME}}",
             "pt": "Revanche: começar um novo jogo com {{OPPONENTS_NAME}}",
             "zh": "新比赛：与{{OPPONENTS_NAME}}开始新游戏",
@@ -482,7 +652,7 @@
             "es": "Ganaste!"
         },
         "MODAL_BUTTON_BLOCK": {
-            "en": "Block player from sending chats or invites",
+            "en": "Block player",
             "iw": "חסום את השחקן",
             "pt": "Bloco jogador de chats ou convites de envio",
             "zh": "阻止用户发送消息或邀请",
@@ -490,6 +660,16 @@
             "fr": "empêcher le joueur de vous envoyer des messages et des invitations",
             "hi": "प्रतियोगी को चैट और आमंत्रण भेजनी से रोकें ",
             "es": "Bloquear jugador de mandar invitaciones o chats"
+        },
+        "MODAL_BUTTON_UNBLOCK": {
+            "en": "Unblock player",
+            "iw": "בטל חסימה",
+            "pt": "Desbloquear jogador: permitir chats ou convidam",
+            "zh": "解除阻止：允许发送消息或邀请",
+            "el": "Ξεμπλοκάρετε παίκτη: επιτρέπουν συνομιλίες ή προσκλήσεις",
+            "fr": "débloquer le joueur: permettre les messages et les invitations",
+            "hi": "प्रतियोगी को अनब्लॉक करें : चैट सन्देश और आमंत्रण भेजने दें। ",
+            "es": "Desbloquear jugador: permitir chats e invitaciones"
         },
         "MODAL_BUTTON_CLOSE": {
             "en": "Close",
@@ -540,16 +720,6 @@
             "fr": "envoyer vos retours",
             "hi": "सुझाव भेजें ",
             "es": "Mandar feedback"
-        },
-        "MODAL_BUTTON_UNBLOCK": {
-            "en": "Unblock player: allow chats or invites",
-            "iw": "בטל חסימה",
-            "pt": "Desbloquear jogador: permitir chats ou convidam",
-            "zh": "解除阻止：允许发送消息或邀请",
-            "el": "Ξεμπλοκάρετε παίκτη: επιτρέπουν συνομιλίες ή προσκλήσεις",
-            "fr": "débloquer le joueur: permettre les messages et les invitations",
-            "hi": "प्रतियोगी को अनब्लॉक करें : चैट सन्देश और आमंत्रण भेजने दें। ",
-            "es": "Desbloquear jugador: permitir chats e invitaciones"
         },
         "MODAL_FEEDBACK_AND_BUGS_PLACEHOLDER_TEXT": {
             "en": "Enter your feedback here, and add your email if you want a reply :)",
@@ -791,6 +961,16 @@
             "hi": "मैं {{GAME_NAME}} का एक खेल जीता हूँ !",
             "es": "Gane un partido de {{GAME_NAME}}!"
         },
+        "SHARE": {
+            "en": "Share",
+            "iw": "שתף",
+            "pt": "Compartilhar",
+            "zh": "分享",
+            "el": "Μερίδιο",
+            "fr": "Partager",
+            "hi": "शेयर",
+            "es": "Compartir"
+        },
         "SHARE_INTENT_WON_GAME_TAKE_SCREENSHOT": {
             "en": "Share a screenshot of your victory",
             "iw": "שתף צילום מסך של הנצחון שלך",
@@ -830,8 +1010,10 @@
             "fr": "inconnu",
             "hi": "अज्ञात",
             "es": "Desconocido"
-        },
+        }
     };
-    window.platformTranslations = platformTranslations;
+    var w = window;
+    if (!w.platformTranslations)
+        w.platformTranslations = platformTranslations;
 })();
 //# sourceMappingURL=app-l10n.js.map

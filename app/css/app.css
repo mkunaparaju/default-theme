@@ -43,35 +43,14 @@ html, body {
   padding: 0;
   margin: 0;
   height: 100%;
-}
-body {
-  font-family: 'Arial', 'Gotham','Varela Round', sans-serif;
-  -moz-font-smoothing: antialiased; /* still no non-prefixed version... */
-  -webkit-font-smoothing: antialiased; /* still no non-prefixed version... */
-}
-.backgroundColor {
-  background-color: #e9e9e9;
+  width: 100%;
 }
 
-.max_height {
+.full_screen {
   padding: 0;
   margin: 0;
   height: 100%;
-}
-.box {
-  display:table;
   width: 100%;
-  height: 100%;
-  -webkit-overflow-scrolling: touch;
-  overflow-y: scroll;
-}
-.box_header {
-  display:table-row;
-  height:0px;
-}
-.box_content {
-  display:table-cell;
-  height: 100%;
 }
 .overflow-y-scroll {
   -webkit-overflow-scrolling: touch;
@@ -88,6 +67,7 @@ body {
   -moz-touch-callout: none;
   -ms-touch-callout: none;
   touch-callout: none;
+  outline: 0; /* To prevent blue-box outline after click: http://stackoverflow.com/questions/21719306/getting-rid-of-a-blue-box-around-button-when-pressed */
 }
 textarea, input {
   -webkit-user-select: text !important;
@@ -96,122 +76,8 @@ textarea, input {
   user-select: text !important;
 }
 
-/* Copied from Bootstrap, because including it messes up our css and it's also 25KB */
-label {
-  display: inline-block;
-  max-width: 100%;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-.form-control {
-  display: block;
-  width: 100%;
-  height: 34px;
-  padding: 6px 12px;
-  font-size: 14px;
-  line-height: 1.42857143;
-  color: #555;
-  background-image: none;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-  -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
-  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-}
-.auto_width {
-  width: auto !important;
-}
-.form-group {
-  margin-bottom: 15px;
-}
-.btn-primary {
-  color: #fff;
-  background-color: #337ab7 !important;
-  border-color: #2e6da4;
-}
-.btn {
-  display: inline-block;
-  padding: 6px 12px;
-  margin-bottom: 0;
-  font-size: 14px;
-  font-weight: normal;
-  line-height: 1.42857143;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  -ms-touch-action: manipulation;
-  touch-action: manipulation;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  background-image: none;
-  background-color: #e9e9e9;
-  border: 1px solid #777;
-  border-radius: 4px;
-}
-
-/* Short dates are strings like "11/11/15 12:16 AM". I want them all to have the same width so the match boxes will be nicely layed out. */
-.short-date-fixed-width {
-  width:110px;
-  display:inline-block;
-}
-
-img.hero {
-  width: 100%;
-  filter: blur(2px);
-}
-
-.back-button {
-  margin: 0px !important;
-  background-color: #fff;
-  font-size: 45px;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-}
-.back-button-icon {
-  padding-left: 5px;
-  transform: rotate(180deg);
-  display: inline-block;
-  font-size: 35px;
-}
-
-.back-button-icon::after {
-  content: "\27A9"
-}
-.header {
-  z-index: 1;
-  font-size: 17px;
-  text-align: left;
-  padding: 0.5em 0.3em;
-  font-weight: 100;
-  display:flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  align-items: center;
-  background: #444;
-}
-
-.game-name {
-  color: #fff;
-  flex-grow: 1;
-  font-weight: bold;
-  font-size: 35px;
-  padding-left: 25px;
-}
-
-.main-avatar-container {
-  flex-grow: 1;
-  text-align: right;
-  padding-right: 35px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+.menu-divider {
+  margin: 10px 0 10px 0;
 }
 
 .notifications-container {
@@ -255,173 +121,58 @@ img.hero {
   margin: 5px;
 }
 .notification-dismiss {
-  color: black;
-  margin-left: 10px;
-  font-size: 40px;
+  font-size: 48px;
+  height: 48px;
+  width: 48px;
 }
 
 .facebook-login {
   display: inline-block;
   background-color: #3a5795;
-  padding: 8px;
+  padding: 6px;
   border-radius: 5px;
   margin-right: 10px;
   margin-top: 8px;
-  margin-left: 8px;
+  margin-left: 52px;
   color: white;
   font-weight: bold;
-  font-size: 16px;
-}
-
-.card-group-title {
-  padding-top: 20px;
-  padding-left: 30px;
-  font-size: 23px;
-  font-weight: bold;
-  color: #727272;
-}
-
-.card-group {
-  padding-left: 30px;
-  margin-top: 10px;
-  display: flex;
-  flex-wrap:wrap;
-  flex-direction: row;
-  justify-content: flex-start;
-}
-
-.menu-item {
-  width: 250px; /* like .modal-dialog width */
-  border: 1px solid #777;
-  border-radius: 4px;
-  background-color: #e9e9e9;
-}
-.menu-item .text {
-  padding: 16px;
-  font-size: 12px;
-  color: #212121;
-}
-.smallertext {
-  font-size: 10px !important;
-  color: #212121 !important;
-}
-
-
-.bottom-bar {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-.bottom-bar .button {
-  margin-bottom: 10px;
-}
-.button {
-  padding: 10px;
-  margin-right: 20px;
-  border: 1px solid #777;
-  color: #777;
-  border-radius: 4px;
   font-size: 15px;
-  background-color: #e9e9e9;
-}
-.new-match-button {
-  background-color: #F44336;
-  color: white;
-  margin: 20px;
-  text-align: center;
 }
 
-.match {
-  display: flex;
-  justify-content: center;
-  box-shadow: 0px 2px 4px #999;
-  margin-bottom: 10px;
-  background-color: #fff;
-  margin-right: 20px;
-}
-
-.match .top {
-  height: 40px;
-  padding: 10px;
-}
-
-.match .title {
-  color: #222;
-  font-size: 20px;
-}
-
-.match .subtitle {
-  color: #888;
-  font-size: 12px;
-}
-
-.match .img-container {
-  height: 70px;
-  width: 80px;
-  overflow: hidden;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-  background-color: #555;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-}
-
-.match .img {
-  width: 50px;
-  height: 50px;
-  border-radius: 25px;
-  border: 1px solid #888;
-}
+/* similar to md-avatar: 40x40 img, 
+  though recommended hit area should actually be 48x48.
+  Hit-area is only affected by padding (margins don't count in hit area),
+  and if I increase padding then the border is far from the avatar.
+ */
 .avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 25px;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
   border: 1px solid #fff;
-  background-color: #999;
 }
 .avatar-has-turn {
-  border: 1px solid green !important;
-}
-.next-player img {
-  margin: 0 2px;
-}
-.next-player {
-  background-color: #fff;
-  border-radius: 5px;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  flex-grow: 1;
+  border: 2px solid green !important;
 }
 
-
-.match .actions {
-  padding: 15px;
+/* playPage toolbar is 56px high */
+.toolbar-height {
+  /* for md-icon-button to fill the toolbar height, 
+    so when it's minimized it can still be clicked. */
+  min-height: 56px !important; 
 }
-
-.match .action {
-  font-size: 14px;
-  text-transform: uppercase;
-  font-weight: bold;
-  margin-right: 20px;
-}
-
-.game_header {
-  height: 82px;
-}
-.closed_game_header {
-  top: 20px;
+.game_iframe_with_opened_game_header {
+  top: 56px;
 }
 .opened_game_header {
-  top: 102px; /* MUST be: game_header.height + closed_game_header.top */
+  top: 0px;
 }
-
-.game_header_inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* When playPage toolbar is swiped up, we give it top:-28px,
+  so what's remaining is: 56-36 = 30px */
+.game_iframe_with_closed_game_header {
+  top: 30px;
+}
+.closed_game_header {
+  top: -26px;
 }
 
 .game_container {
@@ -438,44 +189,11 @@ img.hero {
   overflow: hidden;
 }
 
-.modal-dialog {
-  z-index: 1001;
-  margin: 0 auto;
-  border: 1px solid black;
-  width: 250px;
-  background: #e9e9e9;
-  border-radius: 5px;
-  padding: 10px;
-  margin-top: 10px;
-  overflow: scroll;
-  max-width: 100%;
-  max-height: 100%;
-}
-.overlayModal {
-  background: rgba(0,0,0,0.5);
-  z-index: 1000;
-  position: fixed;
-  left: 0px;
-  top: 0px;
-  width:100%;
-  height:100%;
-}
 /* This animation to slowly hide&show modal dialogs
-  is critical to prevent a bug due to ngMaterial,
-  see https://github.com/angular/material/issues/7978 
-  I don't set this animation for all enter/leave, because that makes page transitions very akward.
-  So I set it for modal dialogs, notifications.
+  was critical to prevent a bug due to ngMaterial,
+  see https://github.com/angular/material/issues/7978,
+  but then I added game_iframe_protector.
   */
-.overlayModal.ng-enter, .overlayModal.ng-leave {
-  transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.3s;
-}
-.overlayModal.ng-enter, .overlayModal.ng-leave.ng-leave-active {
-  opacity:0;
-}
-.overlayModal.ng-leave, .overlayModal.ng-enter.ng-enter-active {
-  opacity:1;
-}
-
 .notification.ng-enter, .notification.ng-leave {
   transition:all cubic-bezier(0.55, 0, 0.55, 0.2) 0.3s;
 }
@@ -488,151 +206,10 @@ img.hero {
   transform: translate3d(0, 0, 0);
 }
 
-.game_header {
-  background-color: #444;
-}
-
-.topbar_toggler {
-  height: 20px;
-  background-color: #444;
-  color: #fff;
-  font-size: 10px;
-  text-align: center;
-  font-weight: bold;
-}
-
-.topbar_toggler_span {
-  display: inline-block;
-  transform: rotate(90deg);
-  font-size: 34px;
-  line-height: 20px;
-}
-
-
-.closed_header .topbar_toggler_span {
-  transform: rotate(270deg);
-}
-
-/*
-.close {
-  float:right;
-  width: 35px;
-  height: 35px;
-}
-.close::after {
-  content: "X"
-}*/
-
-.friends-invite .header {
-	background: #444;
-	color: #fff;
-	text-align: center;
-	font-size: 37px;
-	height: 100px;
-	display: flex;
-	padding: 0 12px;
-}
-
-.friends-invite .header-inner {
-	display: flex;
-	flex-grow: 1;
-	flex-flow: row;
-	align-items: center;
-}
-
-.friends-invite .title {
-	font-weight: bold;
-	flex-grow: 1;
-}
-
-.friends-invite .search-button {
-	display: inline-block;
-	background-image: url("data:image/svg+xml;charset=US-ASCII,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22iso-8859-1%22%3F%3E%3C!DOCTYPE%20svg%20PUBLIC%20%22-%2F%2FW3C%2F%2FDTD%20SVG%201.1%2F%2FEN%22%20%22http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2F1.1%2FDTD%2Fsvg11.dtd%22%3E%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%20%20width%3D%2214px%22%20height%3D%2214px%22%20viewBox%3D%220%200%2014%2014%22%20style%3D%22enable-background%3Anew%200%200%2014%2014%3B%22%20xml%3Aspace%3D%22preserve%22%3E%3Cpath%20style%3D%22fill%3A%23FFFFFF%3B%22%20d%3D%22M10.171%2C8.766c0.617-0.888%2C0.979-1.964%2C0.979-3.126c0-3.037-2.463-5.5-5.5-5.5s-5.5%2C2.463-5.5%2C5.5%20s2.463%2C5.5%2C5.5%2C5.5c1.152%2C0%2C2.223-0.355%2C3.104-0.962l3.684%2C3.683l1.414-1.414L10.171%2C8.766z%20M5.649%2C9.14c-1.933%2C0-3.5-1.567-3.5-3.5%20c0-1.933%2C1.567-3.5%2C3.5-3.5c1.933%2C0%2C3.5%2C1.567%2C3.5%2C3.5C9.149%2C7.572%2C7.582%2C9.14%2C5.649%2C9.14z%22%2F%3E%3C%2Fsvg%3E");
-	width: 28px;
-	height: 28px;
-	background-size: 28px 28px;
-	margin-right: 10px;
-}
-
-.friends-invite .back-button {
-	background-color: #444;
-	color: #fff;
-	border: 0;
-	font-size: 38px;
-}
-
-.friends-invite .filter-input {
-	flex-grow: 1;
-	background-color: transparent;
-	border: 0;
-	border-bottom: 1px solid #fff;
-	font-weight: lighter;
-	color: #fff;
-	font-size: 30px;
-}
-.friends-invite .filter-input:focus {
-	outline: none;
-}
-
-.friends-invite .cancel-button {
-	color: #fff;
-	font-size: 20px;
-	margin: 0 10px;
-	font-weight: normal;
-}
-
-.friends-invite .friends-list {
-	list-style-type: none;
-	padding: 0;
-	margin: 0;
-}
-
-.friends-invite .friend {
-	height: 56px;
-	padding: 12px;
-	display: flex;
-	flex-flow: row;
-	align-items: center;
-	border-bottom: 1px solid #bbc4d3;
-}
-
-.friends-invite .friend .name {
-	flex-grow: 1;
-}
-
-.friends-invite .friend img {
-	display: inline-block;
-	margin-right: 10px;
-	width: 40px;
-	border-radius: 3px;
-}
-
-.friends-invite .friend .invite-button {
-	color: #444;
-	border-radius: 5px;
-	border: 1px solid #444;
-	padding: 3px 7px;
-}
-
-.fb-share-invite {
-	display: inline-block;
-  color: #fff;
-  background-color: #337ab7;
-  border-color: #2e6da4;
-	margin: 20px auto;
-	border: 1px solid #444;
-	padding: 10px;
-	width: 90%;
-	border-radius: 5px;
-	text-align: center;
-}
 .no-friends-msg {
 	margin: 20px auto;
-	border: 1px solid #444;
-	background-color: white;
 	padding: 10px;
 	width: 70%;
-	border-radius: 5px;
 	text-align: center;
 }
 

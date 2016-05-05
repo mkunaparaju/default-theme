@@ -12,13 +12,6 @@
         "noLib": false,
         "newLine": "CRLF"
     },
-    "filesGlob": [
-        "./typings/**/*.ts",
-        "./app/**/*.ts",
-        "./tests/**/*.ts",
-        "./gameinvite/**/*.ts",
-        "./gamedeveloper/**/*.ts"
-    ],
     "formatCodeOptions": {
         "indentSize": 2,
         "tabSize": 2,
@@ -34,11 +27,14 @@
         "placeOpenBraceOnNewLineForControlBlocks": false
     },
     "files": [
+        "typings/angularjs/angular.d.ts",
+        "typings/angularjs/angular-route.d.ts",
         "typings/angular-protractor/angular-protractor.d.ts",
         "typings/jasmine/jasmine.d.ts",
         "typings/selenium-webdriver/selenium-webdriver.d.ts",
         "tests/e2e_tests.ts",
         "app/ts/app-l10n.ts",
+        "app/ts/angular-material.ts",
         "app/typings/appApi.d.ts",
         "gameinvite/ts/gameinvite-l10n.ts",
         "gameinvite/typings/gameinviteApi.d.ts"

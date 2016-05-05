@@ -52,6 +52,8 @@
             "es": "{{PLAYER_NAME}} quiere jugar {{GAME_NAME}} contigo!"
         },
     };
-    gamingPlatform.gameinvite.main.l10n().setTranslations(platformTranslations);
+    var w = window;
+    if (!w.platformTranslations)
+        w.platformTranslations = platformTranslations;
 })();
 //# sourceMappingURL=gameinvite-l10n.js.map
