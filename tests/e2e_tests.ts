@@ -702,22 +702,28 @@ function allElementsByNgIf(ifExpression: string) {
   return allElements(byNgIf(ifExpression));
 }
 
+function printArgumentsToError() {
+  log("printArgumentsToError args=" + JSON.stringify(arguments));
+  return false;
+}
+function safePromise<T>(p: webdriver.promise.Promise<T>): webdriver.promise.Promise<T> {
+  if (!p) error("safePromise p = " + p);
+  return p.then((x:any)=>x, ()=>false);
+}
+function waitUntil(fn: ()=>any) {
+  currBrowser.driver.wait(
+    fn, 10000).thenCatch(error);
+}
 function waitForElement(elem: protractor.ElementFinder) {
   let elemName = getElementName(elem);
   willDoLog("waitForElement " + elemName);
   // Wait until it becomes displayed. It might not be displayed right now
   // because it takes some time to pass messages via postMessage between game and platform.
-  currBrowser.driver.wait(
-    ()=>elem.isPresent().then(
+  waitUntil(
+    ()=>safePromise(elem.isPresent()).then(
       (isPresent)=>isPresent &&
-        elem.isDisplayed().then((isDisplayed)=>
-          isDisplayed && elem.isEnabled())), 10000).then(
-    ()=>{
-      // success
-    }, function () {
-      // failure
-      error("Failed waitForElement: " + elemName + " args=" + JSON.stringify(arguments));
-    });
+        safePromise(elem.isDisplayed()).then((isDisplayed)=>
+          isDisplayed && safePromise(elem.isEnabled()))));
   expectToBe(elem.isDisplayed(), true);
 }
 
@@ -726,33 +732,15 @@ function waitForElementToDisappear(elem: protractor.ElementFinder) {
   willDoLog("waitForElementToDisappear " + elemName);
   // Wait until it becomes displayed. It might not be displayed right now
   // because it takes some time to pass messages via postMessage between game and platform.
-  currBrowser.driver.wait(()=>elem.isPresent().then(
+  waitUntil(()=>safePromise(elem.isPresent()).then(
       (isPresent)=>isPresent ? 
-        elem.isDisplayed().then((isDisplayed)=>!isDisplayed,
-        // isDisplayed() can result in NoSuchElementError, and then I return false so wait will call this method again.
-        // (It's a weird race condition when I do animation to hide modals/menus: 
-        //  the element isPresent, but by the time that protractor checks if it's Displayed, then it's already not present.) 
-        (error: any)=>false) : !isPresent), 10000).then(
-    ()=>{
-      // success
-    }, function () {
-      // failure
-      error("Failed waitForElementToDisappear: " + elemName + " args=" + JSON.stringify(arguments));
-    });
+        safePromise(elem.isDisplayed()).then((isDisplayed)=>!isDisplayed) : !isPresent));
   // Element is either not present or not displayed.
 }
 
 function waitForNumberOfElements(elements: protractor.ElementArrayFinder, waitForNumber: number) {
   willDoLog("waitForNumberOfElements to be " + waitForNumber);
-  currBrowser.driver.wait(()=>elements.count().then((actualNumber)=>actualNumber == waitForNumber)
-    , 10000).then(
-    ()=>{
-      // success
-    }, function () {
-      // failure
-      error("Failed waitForNumberOfElements: " + elements + " args=" + JSON.stringify(arguments));
-    });
-  
+  waitUntil(()=>elements.count().then((actualNumber)=>actualNumber == waitForNumber));
 }
 
 function getElementName(elem: protractor.ElementFinder) {
@@ -765,7 +753,7 @@ function log(msg: string) {
   console.log("After " + (now - startedExecutionTime) + " milliseconds: " + msg);
 }
 function error(msg: string) {
-  log(msg);
+  log(Array.prototype.slice.call(arguments).join(", "));
   currBrowser.pause();
 }
 function willDoLog(msg: string) {
@@ -1505,6 +1493,7 @@ describe('App ', function() {
   function expectModel(ngModel:string, toBe: string) {
     let elem = element(by.model(ngModel));
     waitForElement(elem);
+    waitUntil(()=>elem.getAttribute('value').then((v)=>v === toBe));
     expect(elem.getAttribute('value')).toBe(toBe);
   }
   

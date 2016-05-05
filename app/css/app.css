@@ -120,10 +120,12 @@ textarea, input {
 .notification-body {
   margin: 5px;
 }
-.notification-dismiss {
+.big-material-icon {
   font-size: 48px;
   height: 48px;
   width: 48px;
+  min-width: 48px;
+  min-height: 48px;
 }
 
 .facebook-login {
@@ -143,10 +145,13 @@ textarea, input {
   though recommended hit area should actually be 48x48.
   Hit-area is only affected by padding (margins don't count in hit area),
   and if I increase padding then the border is far from the avatar.
+  min-height and min-width are needed on ios to prevent "shrinking" of the avatar (in dismissSwipedMatchDialog)
  */
 .avatar {
   width: 40px;
   height: 40px;
+  min-width: 40px;
+  min-height: 40px;
   border-radius: 20px;
   border: 1px solid #fff;
 }

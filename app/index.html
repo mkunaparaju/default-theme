@@ -339,7 +339,7 @@
 <script type="text/ng-template" id="html-templates/dismissSwipedMatchDialog.html">
 <md-dialog aria-label="Are you sure you want to resign?">
   <md-dialog-content>
-    <div layout="row" layout-align="left center" style="margin:20px">
+    <div layout="row" layout-align="left center" layout-margin style="margin:20px">
       {{swipedMatchDialogTitle()}}
       <img 
           ng-repeat="player in getSwipedMatch().getPlayers({limit:1, excludeMe: true})"
@@ -365,13 +365,11 @@
 <md-dialog aria-label="Game over dialog">
   <!-- I wanted to put the close button inside md-dialog-actions BUT
     there is no space for 3 buttons there. -->
-  <md-button id="test_close_game_over_modal" 
-      class="md-icon-button"
-      style="position:absolute;top:0px;right:0px;"
+  <md-icon id="test_close_game_over_modal"
+      class="material-icons big-material-icon"
+      style="position:absolute;top:5px;right:5px;"
       aria-label="{{ 'MODAL_BUTTON_CLOSE' | translate }}"
-      ng-click="main.closeGameOverModal()">
-    <md-icon class="material-icons">close</md-icon>
-  </md-button>
+      ng-click="main.closeGameOverModal()">close</md-icon>
   <md-dialog-content style="margin:20px; text-align: center;">
     <h3 id="test_game_over_match_title">{{ 'MODAL_TITLE_MATCH_OVER' | translate }}</h3>
     <div id="test_game_over_match_status">
@@ -466,7 +464,7 @@
         </div>
       </div>
       <md-icon
-          class="material-icons notification-dismiss"
+          class="material-icons big-material-icon"
           ng-click="notification.onClose()">close</md-icon>
     </div>
   </div>

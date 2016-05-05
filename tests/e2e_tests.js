@@ -767,20 +767,27 @@ var e2eTests;
     function allElementsByNgIf(ifExpression) {
         return allElements(byNgIf(ifExpression));
     }
+    function printArgumentsToError() {
+        log("printArgumentsToError args=" + JSON.stringify(arguments));
+        return false;
+    }
+    function safePromise(p) {
+        if (!p)
+            error("safePromise p = " + p);
+        return p.then(function (x) { return x; }, function () { return false; });
+    }
+    function waitUntil(fn) {
+        currBrowser.driver.wait(fn, 10000).thenCatch(error);
+    }
     function waitForElement(elem) {
         var elemName = getElementName(elem);
         willDoLog("waitForElement " + elemName);
         // Wait until it becomes displayed. It might not be displayed right now
         // because it takes some time to pass messages via postMessage between game and platform.
-        currBrowser.driver.wait(function () { return elem.isPresent().then(function (isPresent) { return isPresent &&
-            elem.isDisplayed().then(function (isDisplayed) {
-                return isDisplayed && elem.isEnabled();
-            }); }); }, 10000).then(function () {
-            // success
-        }, function () {
-            // failure
-            error("Failed waitForElement: " + elemName + " args=" + JSON.stringify(arguments));
-        });
+        waitUntil(function () { return safePromise(elem.isPresent()).then(function (isPresent) { return isPresent &&
+            safePromise(elem.isDisplayed()).then(function (isDisplayed) {
+                return isDisplayed && safePromise(elem.isEnabled());
+            }); }); });
         expectToBe(elem.isDisplayed(), true);
     }
     function waitForElementToDisappear(elem) {
@@ -788,27 +795,13 @@ var e2eTests;
         willDoLog("waitForElementToDisappear " + elemName);
         // Wait until it becomes displayed. It might not be displayed right now
         // because it takes some time to pass messages via postMessage between game and platform.
-        currBrowser.driver.wait(function () { return elem.isPresent().then(function (isPresent) { return isPresent ?
-            elem.isDisplayed().then(function (isDisplayed) { return !isDisplayed; }, 
-            // isDisplayed() can result in NoSuchElementError, and then I return false so wait will call this method again.
-            // (It's a weird race condition when I do animation to hide modals/menus: 
-            //  the element isPresent, but by the time that protractor checks if it's Displayed, then it's already not present.) 
-            function (error) { return false; }) : !isPresent; }); }, 10000).then(function () {
-            // success
-        }, function () {
-            // failure
-            error("Failed waitForElementToDisappear: " + elemName + " args=" + JSON.stringify(arguments));
-        });
+        waitUntil(function () { return safePromise(elem.isPresent()).then(function (isPresent) { return isPresent ?
+            safePromise(elem.isDisplayed()).then(function (isDisplayed) { return !isDisplayed; }) : !isPresent; }); });
         // Element is either not present or not displayed.
     }
     function waitForNumberOfElements(elements, waitForNumber) {
         willDoLog("waitForNumberOfElements to be " + waitForNumber);
-        currBrowser.driver.wait(function () { return elements.count().then(function (actualNumber) { return actualNumber == waitForNumber; }); }, 10000).then(function () {
-            // success
-        }, function () {
-            // failure
-            error("Failed waitForNumberOfElements: " + elements + " args=" + JSON.stringify(arguments));
-        });
+        waitUntil(function () { return elements.count().then(function (actualNumber) { return actualNumber == waitForNumber; }); });
     }
     function getElementName(elem) {
         return getBrowserName(currBrowser) + "." + elem.locator();
@@ -819,7 +812,7 @@ var e2eTests;
         console.log("After " + (now - startedExecutionTime) + " milliseconds: " + msg);
     }
     function error(msg) {
-        log(msg);
+        log(Array.prototype.slice.call(arguments).join(", "));
         currBrowser.pause();
     }
     function willDoLog(msg) {
@@ -1486,6 +1479,7 @@ var e2eTests;
         function expectModel(ngModel, toBe) {
             var elem = element(by.model(ngModel));
             waitForElement(elem);
+            waitUntil(function () { return elem.getAttribute('value').then(function (v) { return v === toBe; }); });
             expect(elem.getAttribute('value')).toBe(toBe);
         }
         it('gameDeveloper login', function () {
