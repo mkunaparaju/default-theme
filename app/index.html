@@ -365,11 +365,14 @@
 <md-dialog aria-label="Game over dialog">
   <!-- I wanted to put the close button inside md-dialog-actions BUT
     there is no space for 3 buttons there. -->
-  <md-icon id="test_close_game_over_modal"
-      class="material-icons big-material-icon"
-      style="position:absolute;top:5px;right:5px;"
+  <md-button
+      id="test_close_game_over_modal"
+      class="md-icon-button big-material-icon"
+      style="position:absolute;top:5px;right:5px;padding:0;"
       aria-label="{{ 'MODAL_BUTTON_CLOSE' | translate }}"
-      ng-click="main.closeGameOverModal()">close</md-icon>
+      ng-click="main.closeGameOverModal()">
+    <md-icon class="material-icons big-material-icon">close</md-icon>
+  </md-button>
   <md-dialog-content style="margin:20px; text-align: center;">
     <h3 id="test_game_over_match_title">{{ 'MODAL_TITLE_MATCH_OVER' | translate }}</h3>
     <div id="test_game_over_match_status">

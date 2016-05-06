@@ -121,11 +121,11 @@ textarea, input {
   margin: 5px;
 }
 .big-material-icon {
-  font-size: 48px;
-  height: 48px;
-  width: 48px;
-  min-width: 48px;
-  min-height: 48px;
+  font-size: 48px !important;
+  height: 48px !important;
+  width: 48px !important;
+  min-width: 48px !important;
+  min-height: 48px !important;
 }
 
 .facebook-login {
