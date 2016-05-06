@@ -12,17 +12,24 @@ module.exports = function(grunt) {
           cache: [
             'http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js',
             'http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-route.min.js',
+            // For material design
+            'http://yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular-material.min.js',
+            'http://yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular-material.min.css',
+            // Material design icon font
+            'http://fonts.gstatic.com/s/materialicons/v15/2fcrYFNaTjcS6g4U3t-Y5StnKWgpfO2iSkLzTz-AABg.ttf',
+            // Material design Roboto fonts
+            'http://fonts.gstatic.com/s/roboto/v15/zN7GBFwfMP4uA6AR0HCoLQ.ttf',
+            'http://fonts.gstatic.com/s/roboto/v15/RxZJdnzeo3R5zSexge8UUaCWcynf_cDxXwCLxiixG1c.ttf',
+            'http://fonts.gstatic.com/s/roboto/v15/d-6IYplOFocCacKzxwXSOKCWcynf_cDxXwCLxiixG1c.ttf',
+            'http://fonts.gstatic.com/s/roboto/v15/W4wDsBUluyw0tK3tykhXEfesZW2xOQ-xsNqO47m55DA.ttf',
+            'http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js',
+            'http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js',
+            
+            // For GamingPlatform
             'http://www.multiplayer-gaming.com/api/loader.min.js?app=v201',
             'ts/app-l10n.js',
             'css/app.min.css',
             'imgs/animatedEllipse.gif',
-            // For material design
-            'http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic',
-            'http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc4/angular-material.min.css',
-            'http://fonts.gstatic.com/s/materialicons/v15/2fcrYFNaTjcS6g4U3t-Y5StnKWgpfO2iSkLzTz-AABg.ttf',
-            'http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js',
-            'http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js',
-            'http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc4/angular-material.min.js',
           ],
           network: !isForTesting ? ['*'] : 
             ['http://www.multiplayer-gaming.com/api/app.' + apiVersion + '.min.js',
