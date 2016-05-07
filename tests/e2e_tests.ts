@@ -166,36 +166,37 @@ Logging.addLogging("extraMatchOptionsModal", extraMatchOptionsModal);
 
 module gameOverModal {
   export function expectVisible() {
-    expectDisplayed(getClose());
+    expectDisplayed(getMatchOverTitleElem());
   }
   
+  export function getMatchOverTitleElem() {
+    return id('game_over_match_title');
+  }
   export function getMatchOverTitle() {
-    return id('game_over_match_title').getText();
+    return getMatchOverTitleElem().getText();
   }
   
   export function getMatchOverStatus() {
     return id('game_over_match_status').getText();
   }
   
-  export function getShareInviteLinkAfterVictory() {
-    return id('share_invite_link_after_victory');
+  export function getShareInviteLink() {
+    return id('share_invite_link');
   }
-  export function shareInviteLinkAfterVictory() {
-    click(getShareInviteLinkAfterVictory());
-  }
-  
-  export function getDismissAndRematch() {
-    return id('game_over_dismiss_and_rematch');
-  }
-  export function dismissAndRematch() {
-    clickAndWaitToDisappear(getDismissAndRematch());
+  export function shareInviteLink() {
+    click(getShareInviteLink());
   }
   
-  export function getClose() {
-    return id('close_game_over_modal');
+  export function getRematch() {
+    return id('game_over_rematch');
   }
+  export function rematch() {
+    clickAndWaitToDisappear(getRematch());
+  }
+  
   export function close() {
-    clickAndWaitToDisappear(getClose());
+    currBrowser.executeScript("gamingPlatform.main.closeGameOverModal()");
+    waitForElementToDisappear(getMatchOverTitleElem());
   }
 }
 Logging.addLogging("gameOverModal", gameOverModal);
@@ -412,7 +413,8 @@ module leftNav {
     expectDisplayed(getMyAvatarImg());
   }
   export function waitTillClosed() {
-    waitForElementToDisappear(getMyAvatarImg());
+    // The avatar disappears pretty quickly, and then the newDisplayName input disappears last.
+    waitForElementToDisappear(getNewDisplayNameModel());
   }
   
   export function getMyAvatarImg() {

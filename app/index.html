@@ -103,7 +103,7 @@
         </md-button>
       </md-menu-item>
       
-      <md-menu-item>
+      <md-menu-item ng-if="!$mdMedia('gt-xs')">
         <md-button id="test_close_left_nav" ng-click="$mdSidenav('left').close()">
           <md-icon class="material-icons">close</md-icon>
           {{ 'MODAL_BUTTON_CLOSE' | translate }}
@@ -241,13 +241,12 @@
 
 <script type="text/ng-template" id="html-templates/playPage.html">
 <div ng-if="main.currentMatch()">
-  <md-toolbar md-swipe-down="main.toggleTopBar()" md-swipe-up="main.toggleTopBar()"
-    ng-class="main.shouldShowTopBar() ? 'opened_game_header' : 'closed_game_header'">
+  <md-toolbar>
     <div class="md-toolbar-tools">
       <md-button
           id="test_play_page_goto_main"
           ng-click="main.changePage('/main')" 
-          class="toolbar-height md-icon-button"
+          class="md-icon-button"
           aria-label="{{ 'TO_MAIN_MENU' | translate }}">
         <md-icon class="material-icons">arrow_back</md-icon>
       </md-button>
@@ -263,7 +262,7 @@
           ng-click="showPlayerBottomSheet(player, main.currentMatch())">
           
       <md-menu>
-        <md-button class="toolbar-height md-icon-button" ng-click="$mdOpenMenu($event)" id="test_open_play_page_menu" aria-label="Play menu">
+        <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)" id="test_open_play_page_menu" aria-label="Play menu">
           <md-icon class="material-icons">more_vert</md-icon>
         </md-button>
         <md-menu-content>
@@ -362,16 +361,6 @@
 
 <script type="text/ng-template" id="html-templates/gameOverDialog.html">
 <md-dialog aria-label="Game over dialog">
-  <!-- I wanted to put the close button inside md-dialog-actions BUT
-    there is no space for 3 buttons there. -->
-  <md-button
-      id="test_close_game_over_modal"
-      class="md-icon-button big-material-icon"
-      style="position:absolute;top:5px;right:5px;padding:0;"
-      aria-label="{{ 'MODAL_BUTTON_CLOSE' | translate }}"
-      ng-click="main.closeGameOverModal()">
-    <md-icon class="material-icons big-material-icon">close</md-icon>
-  </md-button>
   <md-dialog-content style="margin:20px; text-align: center;">
     <h3 id="test_game_over_match_title">{{ 'MODAL_TITLE_MATCH_OVER' | translate }}</h3>
     <div id="test_game_over_match_status">
@@ -379,14 +368,14 @@
     </div>
   </md-dialog-content>
   <md-dialog-actions>
+    
     <md-button id="test_game_over_rematch" ng-click="main.closeGameOverModal(); main.currentMatch().startNewMatch()"
-        ng-if="main.currentMatch().canRematch()">
+        ng-if="main.currentMatch().canStartNewMatch()">
       <md-icon class="material-icons">replay</md-icon>
-      {{ 'REMATCH' | translate }}
+      {{ main.currentMatch().isSinglePlayer() ? 'MAIN_NEW_MATCH_GROUP_TITLE' : 'REMATCH' | translate }}
     </md-button>
-    <md-button id="test_share_invite_link_after_victory" class="md-primary"
-        ng-if="main.didWinMultiplayerMatch()"
-        ng-click="main.closeGameOverModal(); main.shareInviteLink({takePrintscreen: true, translationIdPrefix: 'SHARE_INTENT_WON_GAME'})">
+    <md-button id="test_share_invite_link" class="md-primary"
+        ng-click="main.closeGameOverModal(); main.shareInviteLink({takePrintscreen: true, translationIdPrefix: main.didWinMultiplayerMatch() ? 'SHARE_INTENT_WON_GAME' : 'SHARE_INTENT_GAME_INVITE'})">
       <md-icon class="material-icons">share</md-icon>
       {{ 'SHARE' | translate }}
     </md-button>

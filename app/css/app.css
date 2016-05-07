@@ -117,7 +117,12 @@ textarea, input {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 100;
+  z-index: 50; /* md-sidenav has z-index: 60;,  (bottom sheet at z-index: 70; and .md-dialog-container at 80) 
+  and I want the notifications to be seen beneath the left-nav
+  because of the gameinvite flow for new users:
+  new users see the left-nav opened on first load because I want them to login to FB,
+  then after they logged in, they will click on the gameinvite to start the game.
+  */
   flex-direction: column;
   max-width: 500px;
   left: 0;
@@ -189,25 +194,22 @@ textarea, input {
   border: 2px solid green !important;
 }
 
-/* playPage toolbar is 56px high */
-.toolbar-height {
-  /* for md-icon-button to fill the toolbar height, 
-    so when it's minimized it can still be clicked. */
-  min-height: 56px !important; 
-}
+/* playPage toolbar has height:56px (portrait), 48px (landscape), or 64px (wide screens: width > 959px) 
+I copied the css media queries from: http://yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular-material.css
+*/
 .game_iframe_with_opened_game_header {
-  top: 56px;
+  top: 64px;
 }
-.opened_game_header {
-  top: 0px;
-}
-/* When playPage toolbar is swiped up, we give it top:-28px,
-  so what's remaining is: 56-36 = 30px */
+@media (min-width: 0) and (max-width: 959px) and (orientation: portrait) {
+  .game_iframe_with_opened_game_header {
+    top: 56px; } }
+
+@media (min-width: 0) and (max-width: 959px) and (orientation: landscape) {
+  .game_iframe_with_opened_game_header {
+    top: 48px; } }
+
 .game_iframe_with_closed_game_header {
-  top: 30px;
-}
-.closed_game_header {
-  top: -26px;
+  top: 0px;
 }
 
 .game_container {

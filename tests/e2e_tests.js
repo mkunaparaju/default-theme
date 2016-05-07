@@ -186,39 +186,40 @@ var e2eTests;
     var gameOverModal;
     (function (gameOverModal) {
         function expectVisible() {
-            expectDisplayed(getClose());
+            expectDisplayed(getMatchOverTitleElem());
         }
         gameOverModal.expectVisible = expectVisible;
+        function getMatchOverTitleElem() {
+            return id('game_over_match_title');
+        }
+        gameOverModal.getMatchOverTitleElem = getMatchOverTitleElem;
         function getMatchOverTitle() {
-            return id('game_over_match_title').getText();
+            return getMatchOverTitleElem().getText();
         }
         gameOverModal.getMatchOverTitle = getMatchOverTitle;
         function getMatchOverStatus() {
             return id('game_over_match_status').getText();
         }
         gameOverModal.getMatchOverStatus = getMatchOverStatus;
-        function getShareInviteLinkAfterVictory() {
-            return id('share_invite_link_after_victory');
+        function getShareInviteLink() {
+            return id('share_invite_link');
         }
-        gameOverModal.getShareInviteLinkAfterVictory = getShareInviteLinkAfterVictory;
-        function shareInviteLinkAfterVictory() {
-            click(getShareInviteLinkAfterVictory());
+        gameOverModal.getShareInviteLink = getShareInviteLink;
+        function shareInviteLink() {
+            click(getShareInviteLink());
         }
-        gameOverModal.shareInviteLinkAfterVictory = shareInviteLinkAfterVictory;
-        function getDismissAndRematch() {
-            return id('game_over_dismiss_and_rematch');
+        gameOverModal.shareInviteLink = shareInviteLink;
+        function getRematch() {
+            return id('game_over_rematch');
         }
-        gameOverModal.getDismissAndRematch = getDismissAndRematch;
-        function dismissAndRematch() {
-            clickAndWaitToDisappear(getDismissAndRematch());
+        gameOverModal.getRematch = getRematch;
+        function rematch() {
+            clickAndWaitToDisappear(getRematch());
         }
-        gameOverModal.dismissAndRematch = dismissAndRematch;
-        function getClose() {
-            return id('close_game_over_modal');
-        }
-        gameOverModal.getClose = getClose;
+        gameOverModal.rematch = rematch;
         function close() {
-            clickAndWaitToDisappear(getClose());
+            currBrowser.executeScript("gamingPlatform.main.closeGameOverModal()");
+            waitForElementToDisappear(getMatchOverTitleElem());
         }
         gameOverModal.close = close;
     })(gameOverModal || (gameOverModal = {}));
@@ -464,7 +465,8 @@ var e2eTests;
         }
         leftNav.expectVisible = expectVisible;
         function waitTillClosed() {
-            waitForElementToDisappear(getMyAvatarImg());
+            // The avatar disappears pretty quickly, and then the newDisplayName input disappears last.
+            waitForElementToDisappear(getNewDisplayNameModel());
         }
         leftNav.waitTillClosed = waitTillClosed;
         function getMyAvatarImg() {
