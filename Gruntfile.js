@@ -10,8 +10,8 @@ module.exports = function(grunt) {
         options: {
           basePath: '.',
           cache: [
-            'http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js',
-            'http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-route.min.js',
+            'http://yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular.min.js',
+            'http://yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular-route.min.js',
             // For material design
             'http://yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular-material.min.js',
             'http://yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular-material.min.css',
@@ -22,8 +22,8 @@ module.exports = function(grunt) {
             'http://fonts.gstatic.com/s/roboto/v15/RxZJdnzeo3R5zSexge8UUaCWcynf_cDxXwCLxiixG1c.ttf',
             'http://fonts.gstatic.com/s/roboto/v15/d-6IYplOFocCacKzxwXSOKCWcynf_cDxXwCLxiixG1c.ttf',
             'http://fonts.gstatic.com/s/roboto/v15/W4wDsBUluyw0tK3tykhXEfesZW2xOQ-xsNqO47m55DA.ttf',
-            'http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js',
-            'http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js',
+            'http://yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular-animate.min.js',
+            'http://yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular-aria.min.js',
             
             // For GamingPlatform
             'http://www.multiplayer-gaming.com/api/loader.min.js?app=v201',
