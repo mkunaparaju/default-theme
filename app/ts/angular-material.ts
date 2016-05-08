@@ -1,5 +1,7 @@
-function gamingPlatformInitFinished() {
-  let w: any = window;
+(()=> {
+let w: any = window;
+if (w.gamingPlatformInitFinished) return; // gamingPlatformInitFinished already exists in default-theme, so we can't override it. 
+w.gamingPlatformInitFinished = function () {
   let main = gamingPlatform.main;
   let translate = main.l10n().translate;
   if (w.platformTranslations) main.l10n().setTranslations(w.platformTranslations);
@@ -112,4 +114,5 @@ function gamingPlatformInitFinished() {
     } 
   ]);
   angular.bootstrap(document, ["whateverNameApp"]);
-}
+};
+})();
