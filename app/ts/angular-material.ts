@@ -1,10 +1,16 @@
 (()=> {
 let w: any = window;
-if (w.gamingPlatformInitFinished) return; // gamingPlatformInitFinished already exists in default-theme, so we can't override it. 
+if (w.gamingPlatformInitFinished) {
+  console.error("function gamingPlatformInitFinished is already defined! Overriding it...");
+} 
 w.gamingPlatformInitFinished = function () {
   let main = gamingPlatform.main;
   let translate = main.l10n().translate;
-  if (w.platformTranslations) main.l10n().setTranslations(w.platformTranslations);
+  if (w.platformTranslations) {
+    main.l10n().setTranslations(w.platformTranslations);
+  } else {
+    console.error("platformTranslations wasn't defined!");
+  }
   
   angular.module('whateverNameApp', ["gamingPlatformModule", 'ngMaterial'])
   .config(['$mdThemingProvider', '$mdIconProvider', 
