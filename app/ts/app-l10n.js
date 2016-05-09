@@ -1013,7 +1013,9 @@
         }
     };
     var w = window;
-    if (!w.platformTranslations)
-        w.platformTranslations = platformTranslations;
+    if (w.platformTranslations) {
+        console.error("platformTranslations is already defined!");
+    }
+    w.platformTranslations = platformTranslations;
 })();
 //# sourceMappingURL=app-l10n.js.map

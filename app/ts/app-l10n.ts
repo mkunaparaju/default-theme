@@ -1021,5 +1021,8 @@
 };
   
   let w: any = window;
-  if (!w.platformTranslations) w.platformTranslations = platformTranslations;
+  if (w.platformTranslations) {
+    console.error("platformTranslations is already defined!");
+  } 
+  w.platformTranslations = platformTranslations;
 })();
