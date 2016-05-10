@@ -8,6 +8,26 @@
   }
   let platformTranslations: Translations = 
   {
+  "MAXIMIZE_GAME": {
+    "en": "Maximize game",
+    "iw": "הגדל משחק",
+    "pt": "Maximize jogo",
+    "zh": "最大化的游戏",
+    "el": "Μεγιστοποιήστε το παιχνίδι",
+    "fr": "Maximiser jeu",
+    "hi": "खेल अधिकतम",
+    "es": "maximizar juego"
+  },
+  "SHOW_PLAYERS": {
+    "en": "Show players",
+    "iw": "הראה שחקנים",
+    "pt": "Mostrar jogadores",
+    "zh": "显示玩家",
+    "el": "Εμφάνιση παίκτες",
+    "fr": "Afficher les joueurs",
+    "hi": "शो खिलाड़ियों",
+    "es": "Mostrar jugadores"
+  },
   "TIME_AGO_SOME_SECONDS": {
     "en": "{{UNITS}} seconds ago",
     "iw": "לפני {{UNITS}} שניות",

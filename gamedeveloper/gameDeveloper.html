@@ -333,6 +333,7 @@ otherwise({redirectTo: '/main'});
           placeholder="{{developerGame.placeholderThemeCustomizationJson}}">
       </textarea><br>
     </label>
+    <br>
     Example customization:<br>
     <textarea readonly rows="2" cols="100" ng-model="developerGame.placeholderThemeCustomizationJson">
     </textarea>
@@ -350,6 +351,7 @@ otherwise({redirectTo: '/main'});
     <label>
       Enter your theme URL here (either github.io, e.g., <code>http://yoav-zibin.github.io/default-theme/</code>,
       or if you have your own domain, e.g., <code>http://gameinvite.us/</code>).
+      If you enter a URL, then any JS exceptions that happen will be emailed to you as bug reports.
       The URL must match <code>http://SOMETHING/</code>:<br>
       <input size="80" type="url" class="form-control" ng-model="developerGame.game.themeBaseUrl" pattern="^http[:][/][/].+[/]$" placeholder="http://yoav-zibin.github.io/default-theme/">
       <br>

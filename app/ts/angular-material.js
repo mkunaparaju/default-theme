@@ -8,7 +8,7 @@
         var translate = main.l10n().translate;
         var customize = main.game().customize;
         if (!customize)
-            customize = function (id, value) { return value; }; // For old API without customize.
+            customize = function (id, value) { return value; }; // For old API without customize. TODO: remove in July 2016.
         if (w.platformTranslations) {
             main.l10n().setTranslations(w.platformTranslations);
         }

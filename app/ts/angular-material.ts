@@ -7,7 +7,7 @@ w.gamingPlatformInitFinished = function () {
   let main = gamingPlatform.main;
   let translate = main.l10n().translate;
   let customize = main.game().customize;
-  if (!customize) customize = (id: string, value: string) => value; // For old API without customize.
+  if (!customize) customize = (id: string, value: string) => value; // For old API without customize. TODO: remove in July 2016.
   
   if (w.platformTranslations) {
     main.l10n().setTranslations(w.platformTranslations);

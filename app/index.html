@@ -252,11 +252,12 @@
           aria-label="{{ 'TO_MAIN_MENU' | translate }}">
         <md-icon class="material-icons">{{main.l10n().isRtl() ? 'arrow_forward' : 'arrow_back'}}</md-icon>
       </md-button>
-      <h2 id="test_match_status_text" style="margin: 0 10px 0 0;">
+      <h2 ng-if="main.shouldShowTopBar()" id="test_match_status_text" style="margin: 0 10px 0 0;">
         {{main.currentMatch().getMatchStatusText({showDisplayName:false})}}
       </h2>
       <span flex></span>
-      <img alt="Player avatar"
+      <img ng-if="main.shouldShowTopBar()" 
+          alt="Player avatar"
           style="margin: 0 5px 0 0;" 
           ng-class="{avatar: true, 'avatar-has-turn': main.currentMatch().isTurnOf(player)}"
           ng-repeat="player in main.currentMatch().getPlayers({limit:3, excludeSinglePlayer: true})"
@@ -288,6 +289,15 @@
               {{ 'MATCH_LOAD_NEXT' | translate }}
             </md-button>
           </md-menu-item>
+          <md-menu-item>
+            <md-button id="test_toggle_top_bar"
+                ng-click="main.toggleTopBar()">
+              <md-icon class="material-icons">{{ main.shouldShowTopBar() ? 'zoom_in' : 'zoom_out' }}</md-icon>
+              {{ main.shouldShowTopBar() ? 'MAXIMIZE_GAME' : 'SHOW_PLAYERS' | translate }}
+            </md-button>
+          </md-menu-item>
+          
+          <md-divider ng-if="!main.currentMatch().isSinglePlayer()" class="menu-divider"></md-divider>
           <md-menu-item ng-if="!main.currentMatch().isSinglePlayer()">
             <md-button class="md-warn" id="test_dismiss_match"
                 ng-click="main.currentMatch().dismissAndLoadNextMatchOrMainPage();">

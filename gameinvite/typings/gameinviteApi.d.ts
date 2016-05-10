@@ -6,6 +6,8 @@ var main: api.Gameinvite;
 
 namespace api {
 interface Gameinvite {
+  game(): Game;
+  
   // Returns true if this page is viewed on a mobile device that is supported by the game (android or ios).
   isMobile(): boolean;
   // Returns true if the game has an iOS app (we always assume there is an android app).
@@ -41,6 +43,9 @@ interface LangCodeAndName {
   code: string;
   name: string;
 }
+interface AnyDictionary {
+  [index: string]: any;
+}
 interface StringDictionary {
   [index: string]: string;
 }
@@ -58,6 +63,14 @@ interface L10n {
   // {{PLAYER_NAME}} wants to play {{GAME_NAME}} with you!
   // Note that PLAYER_NAME might be missing if the inviter's changed his username.
   translate(translationId: string, interpolateParams?: StringDictionary, languageCode?: string): string;
+}
+
+interface Game {
+  name(): string;
+  themeCustomization(): AnyDictionary;
+  // Returns:
+  // themeCustomization()[key] ? themeCustomization()[key] : defaultValue  
+  customize(key: string, defaultValue: any): any; 
 }
 
 } // namespace api

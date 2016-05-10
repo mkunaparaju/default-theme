@@ -32,14 +32,14 @@
             "es": "Google Play (para dispositivos Android)"
         },
         "GAME_INVITE_OPEN_OR_INSTALL_GAME_NAME": {
-            "en": "Open or install {{GAME_NAME}}",
-            "iw": "פתח או התקן {{GAME_NAME}}",
-            "pt": "Abrir ou installar {{GAME_NAME}}",
+            "en": "Open {{GAME_NAME}}",
+            "iw": "פתח {{GAME_NAME}}",
+            "pt": "Abrir {{GAME_NAME}}",
             "zh": "打开或者安装{{GAME_NAME}}",
-            "el": "Ανοίξτε ή να εγκαταστήσετε {{GAME_NAME}}",
-            "fr": "ouvrir ou installer {{GAME_NAME}}",
+            "el": "ανοικτή {{GAME_NAME}}",
+            "fr": "ouvrir {{GAME_NAME}}",
             "hi": "{{GAME_NAME}} को खोलें या इंस्टॉल करें  ",
-            "es": "Abrir o instalar {{GAME_NAME}}"
+            "es": "Abrir {{GAME_NAME}}"
         },
         "GAME_INVITE_PLAYER_NAME_WANTS_TO_PLAY_GAME_NAME_WITH_YOU": {
             "en": "{{PLAYER_NAME}} wants to play {{GAME_NAME}} with you!",
