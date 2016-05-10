@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="http://yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular-material.min.css">
 
 <script type="text/ng-template" id="html-templates/mainPage.html">
-<div layout="row" class="full_screen overflow-y-scroll">
+<div layout="row" class="full_screen">
   <md-sidenav class="md-whiteframe-z3"
       ng-class="main.l10n().isRtl() ? 'md-sidenav-right' : 'md-sidenav-left'"
       md-component-id="left" md-is-locked-open="$mdMedia('gt-xs')">
@@ -130,7 +130,7 @@
         <h2 id="test_game_name">{{main.game().name()}}</h2>
       </div>
     </md-toolbar>
-    <md-content flex>
+    <md-content flex class="overflow-y-scroll">
       <section ng-if="main.yourTurnMatches().length">
         <md-subheader class="md-primary">{{ 'MAIN_MATCH_GROUP_YOUR_TURN_MATCHES' | translate }}</md-subheader>
         <md-list>
@@ -314,7 +314,7 @@
 
 
 <script type="text/ng-template" id="html-templates/inviteFriendsPage.html">
-<div flex layout="column" tabIndex="-1" class="full_screen overflow-y-scroll">
+<div flex layout="column" tabIndex="-1" class="full_screen">
   <md-toolbar md-scroll-shrink>
     <div class="md-toolbar-tools">
       <md-button
@@ -326,7 +326,7 @@
       <h2>{{ 'FB_FRIENDS_TITLE' | translate }}</h2>
     </div>
   </md-toolbar>
-  <md-content flex>
+  <md-content flex class="overflow-y-scroll">
     <md-list ng-if="main.fb().friends().length > 0">
       <md-list-item 
           ng-click="main.fb().startMatchWith([friend])" 
