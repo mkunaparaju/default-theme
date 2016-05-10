@@ -28,16 +28,6 @@
     "hi": "शो खिलाड़ियों",
     "es": "Mostrar jugadores"
   },
-  "TIME_AGO_SOME_SECONDS": {
-    "en": "{{UNITS}} seconds ago",
-    "iw": "לפני {{UNITS}} שניות",
-    "pt": "{{UNITS}} segundos atrás",
-    "zh": "{{UNITS}}秒前",
-    "el": "Πριν από {{UNITS}} δευτερόλεπτα",
-    "fr": "il y a {{UNITS}} secondes",
-    "hi": "{{UNITS}} सेकंड पहले",
-    "es": "hace {{UNITS}} segundos"
-  },
   "TIME_AGO_ONE_MINUTE": {
     "en": "1 minute ago",
     "iw": "לפני דקה",
@@ -178,26 +168,6 @@
     "hi": "में टाइप एक चैट संदेश",
     "es": "Escribir en un mensaje de chat"
   },
-  "CHAT_SENT": {
-    "en": "Chat sent",
-    "iw": "צט נשלח",
-    "pt": "Bate-papo enviadas",
-    "zh": "对话发送",
-    "el": "Κουβέντα αποστέλλονται",
-    "fr": "Message envoyé",
-    "hi": "चैट संदेश भेजा",
-    "es": "Mensaje enviado"
-  },
-  "FB_FRIENDS_ACTION_INVITE": {
-    "en": "Invite",
-    "iw": "הזמן",
-    "pt": "Convidar",
-    "zh": "邀请",
-    "el": "Πρόσκληση",
-    "fr": "Invitez",
-    "hi": "आमंत्रण",
-    "es": "Invitar"
-  },
   "FB_FRIENDS_DID_NOT_INSTALL_APP": {
     "en": "We're sorry, but it looks like none of your friends has this app installed.",
     "iw": "החברים שלך לא התקינו את האפליקציה",
@@ -207,26 +177,6 @@
     "fr": "Désolé, il semblerait qu'aucun de vos amis n'ait installé cette application",
     "hi": "माफ़ कीजिये, लेकिन ऐसा लगता है की आपके दोस्तों के पास यह एप्लिकेशन नहीं है ।",
     "es": "Ninguno de tus amigos tiene el app instalado"
-  },
-  "FB_FRIENDS_FILTER_CANCEL": {
-    "en": "Cancel",
-    "iw": "בטל",
-    "pt": "Cancelar",
-    "zh": "取消",
-    "el": "Ακύρωση",
-    "fr": "Annuler",
-    "hi": "रद्द",
-    "es": "Cancelar"
-  },
-  "FB_FRIENDS_SHARE": {
-    "en": "Share",
-    "iw": "שתף",
-    "pt": "Compartilhar",
-    "zh": "分享",
-    "el": "Μερίδιο",
-    "fr": "Partager",
-    "hi": "बाँटो ",
-    "es": "Compartir"
   },
   "FB_FRIENDS_TITLE": {
     "en": "Facebook",
@@ -257,16 +207,6 @@
     "fr": "Invitation à une partie",
     "hi": "खेल आमंत्रण",
     "es": "Invitar a jugar"
-  },
-  "IN_APP_NOTIFICATION_GOT_FB_ERROR": {
-    "en": "We received an error from Facebook, please try again later.",
-    "iw": "היתה שגיאה בפייסבוק. נסה שוב אחר כך",
-    "pt": "Nós recebemos um erro do Facebook. Por favor tente novamente mais tarde.",
-    "zh": "错误，请重试",
-    "el": "Προκλήθηκε σφάλμα από την μεριά του Facebook, παρακαλώ προσπαθήστε αργότερα.",
-    "fr": "Nous avons reçu une erreur de Facebook, veuillez réessayer",
-    "hi": "हमे फेसबुक से गलती का संदेश आया है, कृपया बाद में कोशिश करें। ",
-    "es": "Recibimos un error de Facebook, intenta otra vez mas tarde"
   },
   "IN_APP_NOTIFICATION_MOVE_SENT_CREATE_NEW_MATCH": {
     "en": "Move sent, and no more moves to make in any game. Click to create new game.",
@@ -338,16 +278,6 @@
     "hi": "फ़ेसबुक लॉगिन करें",
     "es": "Iniciar sesion con Facebook"
   },
-  "MAIN_LOG_OUT_FROM_FACEBOOK": {
-    "en": "Log out from Facebook",
-    "iw": "צא מפייסבוק",
-    "pt": "Sair do Facebook",
-    "zh": "退出脸书",
-    "el": "Αποσυνδεθείτε από το Facebook.",
-    "fr": "Se déconnecter de facebook",
-    "hi": "फेसबुक से लॉग आउट करें",
-    "es": "Cerrar sesion de Facebook"
-  },
   "MAIN_MATCH_GROUP_ENDED_MATCHES": {
     "en": "Ended Games",
     "iw": "משחקים שנגמרו",
@@ -378,36 +308,6 @@
     "hi": "आपकी बरी ",
     "es": "Tu turno"
   },
-  "MAIN_MATCH_LAST_MOVE_ON": {
-    "en": "Last move:",
-    "iw": "מסע אחרון:",
-    "pt": "Última jogada",
-    "zh": "最后一步",
-    "el": "Τελευταία κίνηση:",
-    "fr": "Dernière action",
-    "hi": "पिछला कदम:",
-    "es": "Ultima jugada:"
-  },
-  "MAIN_MATCH_STARTED_ON": {
-    "en": "Started:",
-    "iw": "המשחק התחיל:",
-    "pt": "Começo",
-    "zh": "开始",
-    "el": "Ξεκίνησε:",
-    "fr": "Commencé",
-    "hi": "आरंभ:",
-    "es": "Empezo:"
-  },
-  "MAIN_NEW_AUTO_MATCH_EXPLANATION": {
-    "en": "Let us find an opponent for you automatically.",
-    "iw": "שחק נגד יריב אקראי",
-    "pt": "Jogar contra um oponente escolhido ao acaso",
-    "zh": "随机选择对手",
-    "el": "Παίξτε εναντίον τυχαίων αντιπάλων.",
-    "fr": "Nous allons vous trouver un adversaire automatiquement",
-    "hi": "आपके लिए हमे ऑटोमेटिकली विरोधी ढूंढने दें। ",
-    "es": "Encontrar un oponente automaticamente"
-  },
   "MAIN_NEW_AUTO_MATCH_TITLE": {
     "en": "Random opponent",
     "iw": "יריב אקראי",
@@ -418,26 +318,6 @@
     "hi": "यादृच्छ (रैंडम) विरोधी ",
     "es": "Oponente aleatorio"
   },
-  "MAIN_NEW_MATCH_GROUP_TITLE": {
-    "en": "New game",
-    "iw": "משחק חדש",
-    "pt": "Novo jogo",
-    "zh": "新一局",
-    "el": "Νέο παιχνίδι",
-    "fr": "nouvelle partie",
-    "hi": "नया खेल",
-    "es": "Nuevo juego"
-  },
-  "MAIN_PASS_AND_PLAY_EXPLANATION": {
-    "en": "Players will use the same phone/tablet.",
-    "iw": "כמה שחקנים ישחקו עם אותו טלפון",
-    "pt": "Todos os jogadores vão jogar no mesmo telefone/tablet.",
-    "zh": "在一台机器上玩",
-    "el": "Πολλαπλοί παίχτες στην ίδια συσκευή.",
-    "fr": "Les joueurs utiliseront le même téléphone/tablette",
-    "hi": "सरे खिलाड़ी एक ही फोन / टेबलेट पर खेलेंगे। ",
-    "es": "Los jugadores usaran el mismo telefono/tablet"
-  },
   "MAIN_PASS_AND_PLAY_TITLE": {
     "en": "Play together on one device",
     "iw": "שחקו ביחד על מכשיר אחד",
@@ -447,16 +327,6 @@
     "fr": "Jouer ensemble sur le même appareil",
     "hi": "एक ही फोन / टेबलेट पर खेलें । ",
     "es": "Jugar contos en un dispositivo"
-  },
-  "MAIN_PRACTICE_EXPLANATION": {
-    "en": "Play against the computer.",
-    "iw": "שחק נגד המחשב",
-    "pt": "Jogar contra o computador",
-    "zh": "和电脑玩",
-    "el": "Παίξτε εναντίον του υπολογιστή.",
-    "fr": "Joueur contre l'ordinateur",
-    "hi": "कंप्यूटर के खिलाफ खेलें। ",
-    "es": "Jugar contra la computadora"
   },
   "MAIN_PRACTICE_TITLE": {
     "en": "Practice",
@@ -718,16 +588,6 @@
     "hi": "नया खेल",
     "es": "Juego nuevo"
   },
-  "MODAL_BUTTON_SAVE": {
-    "en": "Save",
-    "iw": "שמור",
-    "pt": "Salvar",
-    "zh": "保存",
-    "el": "Αποθήκευση",
-    "fr": "sauvegarder",
-    "hi": "सेव करें ",
-    "es": "Salvar"
-  },
   "MODAL_BUTTON_SEND_CHAT": {
     "en": "Send",
     "iw": "שלח",
@@ -747,16 +607,6 @@
     "fr": "envoyer vos retours",
     "hi": "सुझाव भेजें ",
     "es": "Mandar feedback"
-  },
-  "MODAL_FEEDBACK_AND_BUGS_PLACEHOLDER_TEXT": {
-    "en": "Enter your feedback here, and add your email if you want a reply :)",
-    "iw": "משוב",
-    "pt": "Entre aqui o seu comentário e o seu email se você quiser que nós lhe respondemos",
-    "zh": "在这里输入你的反馈，如果你想要收到回复那么请填写你的电子邮件",
-    "el": "Εισάγεται την άποψη σας εδώ και άμα περιμένετε κάποιου είδους απάντηση εισάγεται την ηλεκτρονική σαςδιεύθυνση",
-    "fr": "écrivez vos retours ici, et ajoutez votre adresse email si vous voulez une réponse :)",
-    "hi": "यहाँ अपने सुझाव भरें, यदी आप जवाब चाहते हैं, तो आपना ईमेल दर्ज  करें :)",
-    "es": "Escribe tu feedback aqui, incluye tu e-mail si quieres una respuesta :)"
   },
   "MODAL_TITLE_FEEDBACK_AND_BUGS": {
     "en": "Feedback",
@@ -778,16 +628,6 @@
     "hi": "खेल खत्म",
     "es": "Juego terminado"
   },
-  "MODAL_TITLE_USER_INFO": {
-    "en": "Your user info",
-    "iw": "פרטי משתמש",
-    "pt": "Suas Informações",
-    "zh": "你的用户信息",
-    "el": "Πληροφορίες χρήστη",
-    "fr": "vos infos",
-    "hi": "आपकी जानकारी ",
-    "es": "Tu informacion de perfil"
-  },
   "MODAL_USER_INFO_NAME": {
     "en": "Name",
     "iw": "שם",
@@ -797,26 +637,6 @@
     "fr": "nom",
     "hi": "नाम",
     "es": "Nombre"
-  },
-  "MODAL_USER_INFO_USERNAME": {
-    "en": "User name",
-    "iw": "שם משתמש",
-    "pt": "Nome de usuário",
-    "zh": "用户名称",
-    "el": "Όνομα χρήστη",
-    "fr": "pseudonyme",
-    "hi": "उपयोगकर्ता नाम",
-    "es": "Nombre de usuario"
-  },
-  "MODAL_USER_INFO_USERNAME_WAS_TAKEN": {
-    "en": "This user name was already selected by someone else. Please choose another user name.",
-    "iw": "שם משתמש הזה כבר נבחר על ידי מישהו אחר. בחר שם משתמש אחר בבקשה",
-    "pt": "Esse nome de usuário já foi escolhido por uma outra pessoa. Por favor, escolha um novo nome de usuário.",
-    "zh": "这个用户已经被其他用户选择了。请选择另一个用户",
-    "el": "Αυτό το όνομα χρήστη έχει ήδη επιλεγεί από κάποιον άλλο. Παρακαλώ επιλέξτε ένα άλλο όνομα χρήστη.",
-    "fr": "ce pseudonyme est déjà utilisé par quelqu'un d'autre. Veuillez sélectionner un autre pseudonyme",
-    "hi": "यह उपयोगकर्ता नाम पहले से ही किसी और के द्वारा चुना गया है । एक अन्य उपयोगकर्ता के नाम का चयन करें।",
-    "es": "Este nombre de usuario no esta disponible. Por favor escoge otro nombre."
   },
   "PUSH_NOTIFICATION_CHAT_MESSAGE_NOTIFICATION_TITLE": {
     "en": "Message from {{OPPONENT_NAME}}:",
@@ -997,26 +817,6 @@
     "fr": "Partager",
     "hi": "शेयर",
     "es": "Compartir"
-  },
-  "SHARE_INTENT_WON_GAME_TAKE_SCREENSHOT": {
-    "en": "Share a screenshot of your victory",
-    "iw": "שתף צילום מסך של הנצחון שלך",
-    "pt": "Compartilhe a imagem da sua vitória",
-    "zh": "分享你的胜利画面",
-    "el": "Μοιραστείτε ένα screenshot της νίκης σας",
-    "fr": "partager une capture d'écran de votre victoire",
-    "hi": "अपने जीत का स्क्रीनशॉट निकालके बांटे ",
-    "es": "Comparte la pantalla de tu victoria"
-  },
-  "SHARE_INTENT_WON_GAME_TAKE_SCREENSHOT_MAY_TAKE_TIME": {
-    "en": "Taking a screenshot may take a couple of seconds",
-    "iw": "צילום מסך יכול לקחת כמה שניות",
-    "pt": "Tirar a foto da sua tela pode demorar alguns segundos",
-    "zh": "屏幕截图也许需要几秒钟",
-    "el": "Λαμβάνοντας ένα στιγμιότυπο μπορεί να πάρει μια-δυο δευτερόλεπτα",
-    "fr": "prendre une capture d'écran peut prendre plusieurs secondes",
-    "hi": "एक स्क्रीनशॉट लेने में कुछ सेकंड लग सकते हैं",
-    "es": "Tomar la captura de pantalla puede tomar unos momentos."
   },
   "TO_MAIN_MENU": {
     "en": "Go to main menu",

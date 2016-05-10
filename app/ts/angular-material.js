@@ -25,8 +25,8 @@
             }])
             .run(['$rootScope', '$timeout',
             '$mdSidenav', '$mdMedia', '$mdComponentRegistry',
-            '$mdBottomSheet', '$mdDialog',
-            function ($rootScope, $timeout, $mdSidenav, $mdMedia, $mdComponentRegistry, $mdBottomSheet, $mdDialog) {
+            '$mdBottomSheet', '$mdDialog', '$mdMenu',
+            function ($rootScope, $timeout, $mdSidenav, $mdMedia, $mdComponentRegistry, $mdBottomSheet, $mdDialog, $mdMenu) {
                 function showPlayerBottomSheet(player, match) {
                     if (player.isMe() || player.isUnknown())
                         return false;
@@ -94,13 +94,14 @@
                 $rootScope['$mdMedia'] = $mdMedia;
                 $rootScope['$mdBottomSheet'] = $mdBottomSheet;
                 $rootScope['$mdDialog'] = $mdDialog;
+                $rootScope['$mdMenu'] = $mdMenu;
                 $rootScope['showPlayerBottomSheet'] = showPlayerBottomSheet;
                 $rootScope['swipedMatch'] = swipedMatch;
                 $rootScope['openFeedbackDialog'] = openFeedbackDialog;
                 $rootScope.$watch("main.isModalShowing('gameOverModal')", gameOverModalShowingChanged);
                 $rootScope.sideNavIsOpen = function () { return false; }; // overridden later.
                 $mdComponentRegistry.when('left').then(function (sideNav) {
-                    $rootScope.sideNavIsOpen = function () { return sideNav.isOpen() &&
+                    $rootScope.sideNavIsOpen = function () { return $mdSidenav('left').isOpen() &&
                         // When gt-xs, then the sideNav is always open (and sideNav.isOpen may return true/false regardless).
                         !$mdMedia('gt-xs'); };
                     if (main.isFirstTimeUser()) {

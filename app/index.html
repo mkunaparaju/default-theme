@@ -47,7 +47,6 @@
       <md-menu-item>
         <div layout="row">
           <md-icon class="material-icons" style="margin: 5px 16px auto 0;">language</md-icon>
-          <!--<label>{{'LANGUAGE' | translate }}</label>-->
           <md-select
               style="margin: 0"
               aria-label="{{'LANGUAGE' | translate }}" 
@@ -135,9 +134,7 @@
         <md-subheader class="md-primary">{{ 'MAIN_MATCH_GROUP_YOUR_TURN_MATCHES' | translate }}</md-subheader>
         <md-list>
           <md-list-item class="md-2-line" 
-              ng-repeat="match in main.yourTurnMatches() track by match.getMatchId()"
-              md-swipe-left="swipedMatch(match)"
-              md-swipe-right="swipedMatch(match)">
+              ng-repeat="match in main.yourTurnMatches() track by match.getMatchId()">
             <img 
                   ng-repeat="player in match.getPlayers({limit:1, excludeMe: true})"
                   ng-src="{{player.getAvatarImage()}}"
@@ -151,6 +148,9 @@
                 {{main.timeAgo(match.updatedTime())}}
               </p>
             </div>
+            <md-icon class="material-icons md-secondary md-hue-3" 
+                aria-label="{{'MATCH_RESIGN_AND_DELETE' | translate }}"
+                ng-click="swipedMatch(match)">delete</md-icon>
           </md-list-item>
         </md-list>
         <md-divider inset></md-divider>
@@ -159,9 +159,7 @@
         <md-subheader class="md-primary">{{ 'MAIN_MATCH_GROUP_OPPONENT_TURN_MATCHES' | translate }}</md-subheader>
         <md-list>
           <md-list-item class="md-2-line" 
-                ng-repeat="match in main.opponentTurnMatches() track by match.getMatchId()"
-                md-swipe-left="swipedMatch(match)"
-                md-swipe-right="swipedMatch(match)">
+                ng-repeat="match in main.opponentTurnMatches() track by match.getMatchId()">
               <img 
                   ng-repeat="player in match.getPlayers({limit:1, excludeMe: true})"
                   ng-src="{{player.getAvatarImage()}}"
@@ -175,6 +173,9 @@
                 {{main.timeAgo(match.updatedTime())}}
               </p>
             </div>
+            <md-icon class="material-icons md-secondary md-hue-3" 
+                aria-label="{{'MATCH_RESIGN_AND_DELETE' | translate }}"
+                ng-click="swipedMatch(match)">delete</md-icon>
           </md-list-item>
         </md-list>
         <md-divider inset></md-divider>
@@ -182,10 +183,9 @@
       <section ng-if="main.endedMatches().length">
         <md-subheader class="md-primary">{{ 'MAIN_MATCH_GROUP_ENDED_MATCHES' | translate }}</md-subheader>
         <md-list>
-          <md-list-item class="md-3-line" 
-              ng-repeat="match in main.endedMatches() track by match.getMatchId()"
-              md-swipe-left="swipedMatch(match)"
-              md-swipe-right="swipedMatch(match)">
+          <md-list-item class="secondary-button-padding md-3-line" 
+              ng-repeat="match in main.endedMatches() track by match.getMatchId()">
+              
             <img 
                   ng-repeat="player in match.getPlayers({limit:1, excludeMe: true})"
                   ng-src="{{player.getAvatarImage()}}"
@@ -200,10 +200,16 @@
                 {{main.timeAgo(match.updatedTime())}}
               </p>
             </div>
+            <md-icon class="material-icons md-secondary md-hue-3"
+                aria-label="{{'MATCH_DELETE' | translate }}"
+                ng-click="match.dismiss()">delete</md-icon>
           </md-list-item>
         </md-list>
         <md-divider inset></md-divider>
       </section>
+      <!-- The delete icon of the last match may be hidden behind the FAB, so I'm adding some empty space. 
+          There is also a scrolling bug if the list is slightly larger than screen height, which hides the last element. -->
+      <div style="height: 75px; min-height: 75px;"></div>
     </md-content>
     <div class="new-match-fab">
       <md-menu>
@@ -243,14 +249,15 @@
 
 <script type="text/ng-template" id="html-templates/playPage.html">
 <div ng-if="main.currentMatch()">
-  <md-toolbar>
+  <md-toolbar ng-class="main.shouldShowTopBar() ? '' : 'closed_game_header'">
     <div class="md-toolbar-tools">
       <md-button
           id="test_play_page_goto_main"
           ng-click="main.changePage('/main')" 
           class="md-icon-button"
           aria-label="{{ 'TO_MAIN_MENU' | translate }}">
-        <md-icon class="material-icons">{{main.l10n().isRtl() ? 'arrow_forward' : 'arrow_back'}}</md-icon>
+        <md-icon 
+            class="material-icons">{{main.l10n().isRtl() ? 'arrow_forward' : 'arrow_back'}}</md-icon>
       </md-button>
       <h2 ng-if="main.shouldShowTopBar()" id="test_match_status_text" style="margin: 0 10px 0 0;">
         {{main.currentMatch().getMatchStatusText({showDisplayName:false})}}
@@ -266,7 +273,8 @@
           
       <md-menu>
         <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)" id="test_open_play_page_menu" aria-label="Play menu">
-          <md-icon class="material-icons">more_vert</md-icon>
+          <md-icon
+              class="material-icons">more_vert</md-icon>
         </md-button>
         <md-menu-content>
           <md-menu-item>
@@ -279,7 +287,7 @@
           <md-menu-item ng-if="main.currentMatch().canStartNewMatch()">
             <md-button id="test_start_rematch" ng-click="main.currentMatch().startNewMatch()">
               <md-icon class="material-icons">replay</md-icon>
-              {{ main.currentMatch().isSinglePlayer() ? 'MAIN_NEW_MATCH_GROUP_TITLE' : 'REMATCH' | translate }}
+              {{ main.currentMatch().isSinglePlayer() ? 'MATCH_NEW_GAME' : 'REMATCH' | translate }}
             </md-button>
           </md-menu-item>
           <md-menu-item ng-if="main.currentMatch().getNextMatch()">
@@ -373,18 +381,17 @@
 
 <script type="text/ng-template" id="html-templates/gameOverDialog.html">
 <md-dialog aria-label="Game over dialog">
-  <md-dialog-content style="margin:20px; text-align: center;">
+  <md-dialog-content style="margin:20px;">
     <h3 id="test_game_over_match_title">{{ 'MODAL_TITLE_MATCH_OVER' | translate }}</h3>
     <div id="test_game_over_match_status">
       {{main.currentMatch().getMatchStatusText({showDisplayName:true})}}
     </div>
   </md-dialog-content>
   <md-dialog-actions>
-    
     <md-button id="test_game_over_rematch" ng-click="main.closeGameOverModal(); main.currentMatch().startNewMatch()"
         ng-if="main.currentMatch().canStartNewMatch()">
       <md-icon class="material-icons">replay</md-icon>
-      {{ main.currentMatch().isSinglePlayer() ? 'MAIN_NEW_MATCH_GROUP_TITLE' : 'REMATCH' | translate }}
+      {{ main.currentMatch().isSinglePlayer() ? 'MATCH_NEW_GAME' : 'REMATCH' | translate }}
     </md-button>
     <md-button id="test_share_invite_link" class="md-primary"
         ng-click="main.closeGameOverModal(); main.shareInviteLink({takePrintscreen: true, translationIdPrefix: main.didWinMultiplayerMatch() ? 'SHARE_INTENT_WON_GAME' : 'SHARE_INTENT_GAME_INVITE'})">

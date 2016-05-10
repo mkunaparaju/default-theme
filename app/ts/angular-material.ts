@@ -25,10 +25,10 @@ w.gamingPlatformInitFinished = function () {
     }])
   .run(['$rootScope', '$timeout', 
       '$mdSidenav', '$mdMedia', '$mdComponentRegistry',
-      '$mdBottomSheet', '$mdDialog',
+      '$mdBottomSheet', '$mdDialog', '$mdMenu',
     function ($rootScope: any, $timeout: any, 
         $mdSidenav: any, $mdMedia: any, $mdComponentRegistry: any, 
-        $mdBottomSheet: any, $mdDialog: any) {
+        $mdBottomSheet: any, $mdDialog: any, $mdMenu: any) {
           
       function showPlayerBottomSheet(
           player: gamingPlatform.api.Player, match: gamingPlatform.api.Match) {
@@ -107,6 +107,7 @@ w.gamingPlatformInitFinished = function () {
       $rootScope['$mdMedia'] = $mdMedia;
       $rootScope['$mdBottomSheet'] = $mdBottomSheet;
       $rootScope['$mdDialog'] = $mdDialog;
+      $rootScope['$mdMenu'] = $mdMenu;
       
       $rootScope['showPlayerBottomSheet'] = showPlayerBottomSheet;
       $rootScope['swipedMatch'] = swipedMatch;
@@ -115,7 +116,7 @@ w.gamingPlatformInitFinished = function () {
       
       $rootScope.sideNavIsOpen = () => false; // overridden later.
       $mdComponentRegistry.when('left').then(function(sideNav: any) {
-        $rootScope.sideNavIsOpen = () => sideNav.isOpen() &&
+        $rootScope.sideNavIsOpen = () => $mdSidenav('left').isOpen() &&
             // When gt-xs, then the sideNav is always open (and sideNav.isOpen may return true/false regardless).
             !$mdMedia('gt-xs');
         if (main.isFirstTimeUser()) {

@@ -97,7 +97,7 @@ interface App {
   newUserNameWasTaken(): boolean;
 
   // Game over dialog
-  // Dismisses gameOverModal, and starts a new match if current match is single-player.
+  // Dismisses gameOverModal --- exactly the same as hideModal('gameOverModal')
   closeGameOverModal(): void;
   didWinMultiplayerMatch(): boolean;
 

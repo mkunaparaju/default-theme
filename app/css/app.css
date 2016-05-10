@@ -221,6 +221,19 @@ I copied the css media queries from: http://yoav-zibin.github.io/angular-materia
 I would have loved to use on the game_container: flex height:100% (https://material.angularjs.org/latest/layout/tips),
 but the game header in the play page is inside an ng-view, which has to be height:100% due to a md-list height issue.
 */
+md-toolbar.closed_game_header {
+  background-color: transparent;
+  z-index: auto !important;
+}
+.closed_game_header md-icon {
+  color: black !important;
+  position: relative;
+  z-index: 89; /* game iframe have z-index 88 */
+}
+.game_iframe_with_closed_game_header {
+  top: 0px;
+  z-index: 88; /* .notifications-container have z-index 90 */
+}
 .game_iframe_with_opened_game_header {
   top: 64px;
 }
@@ -232,9 +245,6 @@ but the game header in the play page is inside an ng-view, which has to be heigh
   .game_iframe_with_opened_game_header {
     top: 48px; } }
 
-.game_iframe_with_closed_game_header {
-  top: 0px;
-}
 
 .game_container {
   width: 100%;
@@ -265,6 +275,14 @@ but the game header in the play page is inside an ng-view, which has to be heigh
 .notification.ng-leave, .notification.ng-enter.ng-enter-active {
   opacity:1;
   transform: translate3d(0, 0, 0);
+}
+
+/* I'm showing the game_iframe_protector to ensure clicks on the playPage menu
+ (which creates an md-backdrop as first child of body) won't pass to the game. */
+md-backdrop + * #game_iframe_protector {
+  display: block ! important;
+  background: rgba(0, 0, 0, 0.5) ! important;
+  visibility: visible ! important;
 }
 
 .no-friends-msg {
