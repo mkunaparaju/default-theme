@@ -6,6 +6,9 @@
     w.gamingPlatformInitFinished = function () {
         var main = gamingPlatform.main;
         var translate = main.l10n().translate;
+        var customize = main.game().customize;
+        if (!customize)
+            customize = function (id, value) { return value; }; // For old API without customize.
         if (w.platformTranslations) {
             main.l10n().setTranslations(w.platformTranslations);
         }
@@ -17,8 +20,8 @@
             function ($mdThemingProvider, $mdIconProvider) {
                 $mdThemingProvider
                     .theme('default')
-                    .primaryPalette('blue')
-                    .accentPalette('red');
+                    .primaryPalette(customize('primaryPalette', 'blue'))
+                    .accentPalette(customize('accentPalette', 'red'));
             }])
             .run(['$rootScope', '$timeout',
             '$mdSidenav', '$mdMedia', '$mdComponentRegistry',

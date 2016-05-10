@@ -664,7 +664,7 @@ var e2eTests;
     var l10n;
     (function (l10n) {
         function expectTranslate(actual, translationId, interpolationParams, languageCode) {
-            var script = 'return gamingPlatform.$rootScope.main.l10n().translate(' + JSON.stringify(translationId) +
+            var script = 'return (gamingPlatform.main ? gamingPlatform.main : gamingPlatform.gameinvite.main).l10n().translate(' + JSON.stringify(translationId) +
                 (interpolationParams ? "," + JSON.stringify(interpolationParams) : "") +
                 (languageCode ? "," + JSON.stringify(languageCode) : "") + ")";
             log("Executing script in " + getBrowserName(currBrowser) + ":\n" + script);

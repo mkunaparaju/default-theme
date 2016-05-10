@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-strict-di manifest="index.appcache">
+<html ng-strict-di dir='{{main.l10n().isRtl() ? "rtl" : "ltr"}}' manifest="index.appcache">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -17,7 +17,8 @@
 
 <script type="text/ng-template" id="html-templates/mainPage.html">
 <div layout="row" class="full_screen">
-  <md-sidenav class="md-sidenav-left md-whiteframe-z2"
+  <md-sidenav class="md-whiteframe-z3"
+      ng-class="main.l10n().isRtl() ? 'md-sidenav-right' : 'md-sidenav-left'"
       md-component-id="left" md-is-locked-open="$mdMedia('gt-xs')">
     <md-toolbar>
       <div class="md-toolbar-tools">
@@ -27,6 +28,7 @@
         <h3 ng-if="main.fb().isLoggedIn()">{{main.me().getDisplayName()}}</h3>
         <md-input-container ng-if="!main.fb().isLoggedIn()">
           <input style="margin-top: 20px;"
+              md-select-on-focus
               aria-label="{{'MODAL_USER_INFO_NAME' | translate }}" 
               ng-model="main.model().newDisplayName"
               ng-model-options="{updateOn: 'default blur', debounce: { 'default': 10000, 'blur': 0 } }"
@@ -103,7 +105,7 @@
         </md-button>
       </md-menu-item>
       
-      <md-menu-item ng-if="!$mdMedia('gt-xs')">
+      <md-menu-item hide-gt-xs>
         <md-button id="test_close_left_nav" ng-click="$mdSidenav('left').close()">
           <md-icon class="material-icons">close</md-icon>
           {{ 'MODAL_BUTTON_CLOSE' | translate }}
@@ -111,7 +113,7 @@
       </md-menu-item>
     </md-content>
   </md-sidenav>
-  <div flex layout="column" tabIndex="-1" role="main" class="md-whiteframe-z2">
+  <div flex layout="column" tabIndex="-1" role="main">
     <!-- md-scroll-shrink is sometimes broken: https://github.com/angular/material/issues/8258 
       From material docs:
       * _**Note (1):** for scrollShrink to work, the toolbar must be a sibling of a
@@ -121,7 +123,7 @@
       <div class="md-toolbar-tools">
         <md-button
             id="test_menu_button"
-            ng-if="!$mdMedia('gt-xs')" 
+            hide-gt-xs 
             ng-click="$mdSidenav('left').toggle()" class="md-icon-button" aria-label="Menu">
           <md-icon class="material-icons">menu</md-icon>
         </md-button>
@@ -248,7 +250,7 @@
           ng-click="main.changePage('/main')" 
           class="md-icon-button"
           aria-label="{{ 'TO_MAIN_MENU' | translate }}">
-        <md-icon class="material-icons">arrow_back</md-icon>
+        <md-icon class="material-icons">{{main.l10n().isRtl() ? 'arrow_forward' : 'arrow_back'}}</md-icon>
       </md-button>
       <h2 id="test_match_status_text" style="margin: 0 10px 0 0;">
         {{main.currentMatch().getMatchStatusText({showDisplayName:false})}}
@@ -282,7 +284,7 @@
           <md-menu-item ng-if="main.currentMatch().getNextMatch()">
             <md-button id="test_load_next"
                 ng-click="main.currentMatch().getNextMatch().load()">
-              <md-icon class="material-icons">navigate_next</md-icon>
+              <md-icon class="material-icons">{{ main.l10n().isRtl() ? 'navigate_before' : 'navigate_next' }}</md-icon>
               {{ 'MATCH_LOAD_NEXT' | translate }}
             </md-button>
           </md-menu-item>
@@ -302,14 +304,14 @@
 
 
 <script type="text/ng-template" id="html-templates/inviteFriendsPage.html">
-<div flex layout="column" tabIndex="-1" class="full_screen md-whiteframe-z2">
+<div flex layout="column" tabIndex="-1" class="full_screen">
   <md-toolbar md-scroll-shrink>
     <div class="md-toolbar-tools">
       <md-button
           id="test_invite_friends_goto_main"
           ng-click="main.changePage('/main')" class="md-icon-button"
           aria-label="{{ 'TO_MAIN_MENU' | translate }}">
-        <md-icon class="material-icons">arrow_back</md-icon>
+        <md-icon class="material-icons">{{main.l10n().isRtl() ? 'arrow_forward' : 'arrow_back'}}</md-icon>
       </md-button>
       <h2>{{ 'FB_FRIENDS_TITLE' | translate }}</h2>
     </div>
@@ -410,6 +412,7 @@
           ng-keyup="$event.keyCode == 13 && sendChatAndCloseBottomSheet()"
           maxlength="140">
       <md-icon class="material-icons"
+          ng-class="main.l10n().isRtl() ? 'flip_rtl' : ''"
           aria-label="{{ 'MODAL_BUTTON_SEND_CHAT' | translate }}"
           id="test_player_info_send_chat"
           ng-click="sendChatAndCloseBottomSheet()">
@@ -443,7 +446,7 @@
     ng-bind-html="main.game().getIframeHtml()"></div>
 
   <div class="notifications-container">
-    <div class="notification" ng-repeat="notification in main.notifications()">
+    <div class="notification md-whiteframe-z4" ng-repeat="notification in main.notifications()">
       <div class="notification-content">
         <img alt="Player avatar" class="avatar notification-avatar"
             ng-if="notification.player()" width="40" height="40"

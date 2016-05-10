@@ -197,6 +197,9 @@ interface LangCodeAndName {
   code: string;
   name: string;
 }
+interface AnyDictionary {
+  [index: string]: any;
+}
 interface StringDictionary {
   [index: string]: string;
 }
@@ -206,6 +209,7 @@ interface StringToStringDictionary {
 interface L10n {
   setTranslations(idToLanguageToL10n: StringToStringDictionary): void;
   changeLanguage(languageCode: string): void;
+  isRtl(): boolean; // is RTL language (Hebrew/Arabic)
   getSupportedLanguages(): LangCodeAndName[]; // sorted by name asc.
   translate(translationId: string, interpolateParams?: StringDictionary, languageCode?: string): string;
 }
@@ -214,6 +218,10 @@ interface Game {
   isHidePracticeOption(): boolean;
   isHidePassAndPlayOption(): boolean;
   getIframeHtml(): string;
+  themeCustomization(): AnyDictionary;
+  // Returns:
+  // themeCustomization()[key] ? themeCustomization()[key] : defaultValue  
+  customize(key: string, defaultValue: any): any; 
 }
 
 interface Player {
@@ -302,7 +310,7 @@ interface Match {
   getPlayers(params?: {limit?:number, excludeMe?: boolean, excludeSinglePlayer?: boolean}): Player[];
   
   // Returns a comma-separated string with all opponents' displayName, i.e., it returns:
-  // getPlayers({excludeMe: true}).map((player) => player.displayName).join(", ");
+  // getPlayers({excludeMe: true}).map((player) => player.getDisplayName()).join(", ");
   getOpponentNames(): string;
   
   findPlayerById(playerId: string): Player; // Returns null if playerId is not in players.

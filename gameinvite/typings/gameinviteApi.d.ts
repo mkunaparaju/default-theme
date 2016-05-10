@@ -50,6 +50,7 @@ interface StringToStringDictionary {
 interface L10n {
   setTranslations(idToLanguageToL10n: StringToStringDictionary): void;
   changeLanguage(languageCode: string): void;
+  isRtl(): boolean; // is RTL language (Hebrew/Arabic)
   getSupportedLanguages(): LangCodeAndName[]; // sorted by name asc.
   // If you don't pass interpolateParams, then a default object with
   // GAME_NAME and PLAYER_NAME fields is used.

@@ -323,7 +323,23 @@ otherwise({redirectTo: '/main'});
   
   <h4>[Optional] Theme</h4>
   <div class="form-group">
-    It's possible to modify the HTML and CSS of the gaming platform by
+    <label>
+      Theme customization, e.g., <a href="https://github.com/yoav-zibin/default-theme" target="_blank">
+        the default theme
+      </a> allows customizing primaryPalette and accentPalette:<br>
+      <textarea rows="5" cols="80" 
+          json-text ng-model="developerGame.game.themeCustomization"
+          ng-model-options="{updateOn: 'blur'}"
+          placeholder="{{developerGame.placeholderThemeCustomizationJson}}">
+      </textarea><br>
+    </label>
+    Example customization:<br>
+    <textarea readonly rows="2" cols="100" ng-model="developerGame.placeholderThemeCustomizationJson">
+    </textarea>
+  </div>
+  
+  <div class="form-group">
+    It's also possible to modify the HTML and CSS of the gaming platform by
     forking
       <a href="https://github.com/yoav-zibin/default-theme" target="_blank">
         the default theme
@@ -383,7 +399,7 @@ otherwise({redirectTo: '/main'});
   </textarea><br>
   For example, if your game supports exactly {{developerGame.getLangCodeAndName('en')}} and {{developerGame.getLangCodeAndName('iw')}} then you could paste this:
   <br>
-  <textarea readonly rows="3" cols="100" ng-model="developerGame.pushNotificationsL10nsSampleJson">
+  <textarea readonly rows="2" cols="100" ng-model="developerGame.pushNotificationsL10nsSampleJson">
   </textarea>
   <br>
 

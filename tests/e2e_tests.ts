@@ -595,7 +595,7 @@ module tictactoe {
 // This way I don't need to update the tests if I make small changes in the text.
 module l10n {
   export function expectTranslate(actual: webdriver.promise.Promise<string>, translationId: string, interpolationParams?: any, languageCode?: string) {
-    let script = 'return gamingPlatform.$rootScope.main.l10n().translate(' + JSON.stringify(translationId) +
+    let script = 'return (gamingPlatform.main ? gamingPlatform.main : gamingPlatform.gameinvite.main).l10n().translate(' + JSON.stringify(translationId) +
       (interpolationParams ? "," + JSON.stringify(interpolationParams) : "") +
       (languageCode ? "," + JSON.stringify(languageCode) : "") + ")";
     log("Executing script in " + getBrowserName(currBrowser) + ":\n" + script);

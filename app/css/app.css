@@ -108,22 +108,39 @@ textarea, input {
   user-select: text !important;
 }
 
+.flip_rtl {
+  transform: rotate(180deg);
+}
+
 .menu-divider {
   margin: 10px 0 10px 0;
 }
 
 .notifications-container {
   position: fixed;
-  top: 100px;
+  top: 140px;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 50; /* md-sidenav has z-index: 60;,  (bottom sheet at z-index: 70; and .md-dialog-container at 80) 
-  and I want the notifications to be seen beneath the left-nav
+  z-index: 90; /* 
+  md-sidenav has z-index: 60;,  (bottom sheet at z-index: 70; and .md-dialog-container at 80) 
+  and I want the notifications to be seen above all else.
+  It has to be above the left-nav, because in wide screens (>600px) the left-nav is always opened,
+  so the notification can't be half below it and half visible.
+  The top is set to 140px so it's exactly below FB login and language selection,
   because of the gameinvite flow for new users:
   new users see the left-nav opened on first load because I want them to login to FB,
   then after they logged in, they will click on the gameinvite to start the game.
+  
+  In addition to z-index, we use whiteframe to create a box-shadow: 
+  sidenav are 16dp elevation in the spec, and z3 is only 7dp, but 16dp looks too much...
+  See spec: https://www.google.com/design/spec/what-is-material/elevation-shadows.html#elevation-shadows-elevation-android-
+  What I currently use:
+  md-menu (z2 = default):     box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+  LeftNav (z3):               box-shadow: 0px 4px 5px -2px rgba(0, 0, 0, 0.2), 0px 7px 10px 1px rgba(0, 0, 0, 0.14), 0px 2px 16px 1px rgba(0, 0, 0, 0.12); 
+  Notification (z4):          box-shadow: 0px 6px 6px -3px rgba(0, 0, 0, 0.2), 0px 10px 14px 1px rgba(0, 0, 0, 0.14), 0px 4px 18px 3px rgba(0, 0, 0, 0.12); 
+  FAB (default):              box-shadow: 0 2px 5px 0
   */
   flex-direction: column;
   max-width: 500px;
@@ -198,6 +215,8 @@ textarea, input {
 
 /* playPage toolbar has height:56px (portrait), 48px (landscape), or 64px (wide screens: width > 959px) 
 I copied the css media queries from: http://yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular-material.css
+I would have loved to use on the game_container: flex height:100% (https://material.angularjs.org/latest/layout/tips),
+but the game header in the play page is inside an ng-view, which has to be height:100% due to a md-list height issue.
 */
 .game_iframe_with_opened_game_header {
   top: 64px;
