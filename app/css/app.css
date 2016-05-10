@@ -88,6 +88,9 @@ html, body {
   -webkit-overflow-scrolling: touch;
   overflow-y: scroll;
 }
+.not-scrollable {
+  overflow-y: hidden;
+}
 
 /* To prevent long-press that will bring up copy-paste dialog. */
 * {

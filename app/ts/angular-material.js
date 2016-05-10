@@ -98,13 +98,17 @@
                 $rootScope['swipedMatch'] = swipedMatch;
                 $rootScope['openFeedbackDialog'] = openFeedbackDialog;
                 $rootScope.$watch("main.isModalShowing('gameOverModal')", gameOverModalShowingChanged);
-                if (main.isFirstTimeUser()) {
-                    $mdComponentRegistry.when('left').then(function () {
+                $rootScope.sideNavIsOpen = function () { return false; }; // overridden later.
+                $mdComponentRegistry.when('left').then(function (sideNav) {
+                    $rootScope.sideNavIsOpen = function () { return sideNav.isOpen() &&
+                        // When gt-xs, then the sideNav is always open (and sideNav.isOpen may return true/false regardless).
+                        !$mdMedia('gt-xs'); };
+                    if (main.isFirstTimeUser()) {
                         $timeout(function () {
                             $mdSidenav('left').toggle();
                         }, 500); // I wait half a second just for the user to see the game title for a bit.
-                    });
-                }
+                    }
+                });
             }
         ]);
         angular.bootstrap(document, ["whateverNameApp"]);
