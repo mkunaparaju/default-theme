@@ -464,10 +464,11 @@ module leftNav {
     click(element(by.cssContainingText('option', languageName)));
   }*/
   export function changeLanguage(languageCode: string) {
-    getOpenFeedbackBtnName().then((feedbackBtnName: string) => {
-      currBrowser.executeScript('gamingPlatform.main.l10n().changeLanguage("' + languageCode + '")');
-      waitUntil(()=>getOpenFeedbackBtnName().then((newFeedbackBtnName: string) => newFeedbackBtnName !== feedbackBtnName));
-    });
+    currBrowser.executeScript('gamingPlatform.main.l10n().changeLanguage("' + languageCode + '")');
+    willDoLog("After changing the languages, we wait until feedbackBtnName changes to the correct value.");
+    waitUntil(()=>getOpenFeedbackBtnName().then((feedbackBtnName: string) => 
+        l10n.getTranslate("MAIN_FEEDBACK_AND_BUGS_TITLE", {}, languageCode).then(
+          (expectedText)=>feedbackBtnName == expectedText)));
   }
   
   /* make FB work...
@@ -623,14 +624,17 @@ module tictactoe {
 // This way I don't need to update the tests if I make small changes in the text.
 module l10n {
   export function expectTranslate(actual: webdriver.promise.Promise<string>, translationId: string, interpolationParams?: any, languageCode?: string) {
+    getTranslate(translationId, interpolationParams, languageCode).then((text)=>{
+      log("L10n of " + translationId + " is " + text);
+      expectToBe(actual, text);
+    });
+  }
+  export function getTranslate(translationId: string, interpolationParams?: any, languageCode?: string) {
     let script = 'return (gamingPlatform.main ? gamingPlatform.main : gamingPlatform.gameinvite.main).l10n().translate(' + JSON.stringify(translationId) +
       (interpolationParams ? "," + JSON.stringify(interpolationParams) : "") +
       (languageCode ? "," + JSON.stringify(languageCode) : "") + ")";
     log("Executing script in " + getBrowserName(currBrowser) + ":\n" + script);
-    currBrowser.executeScript(script).then((text)=>{
-      log("L10n of " + translationId + " is " + text);
-      expectToBe(actual, text);
-    });
+    return currBrowser.executeScript(script);
   }
 }
 
@@ -1241,9 +1245,7 @@ describe('App ', function() {
     // Testing changing a langague (English->Hebrew->English), and making sure l10n worked.
     l10n.expectTranslate(leftNav.getOpenFeedbackBtnName(), "MAIN_FEEDBACK_AND_BUGS_TITLE", {}, "en");
     leftNav.changeLanguage('iw'); // Selecting language Hebrew
-    l10n.expectTranslate(leftNav.getOpenFeedbackBtnName(), "MAIN_FEEDBACK_AND_BUGS_TITLE", {}, "iw");
-    leftNav.changeLanguage('en'); // Selecting language English 
-    l10n.expectTranslate(leftNav.getOpenFeedbackBtnName(), "MAIN_FEEDBACK_AND_BUGS_TITLE", {}, "en");
+    leftNav.changeLanguage('en'); // Selecting language English
     leftNav.close();
     // to-do: add a test that language was switch in TicTacToe game (i.e., that the rules' language was changed)
   });

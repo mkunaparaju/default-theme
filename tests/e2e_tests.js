@@ -520,10 +520,11 @@ var e2eTests;
           click(element(by.cssContainingText('option', languageName)));
         }*/
         function changeLanguage(languageCode) {
-            getOpenFeedbackBtnName().then(function (feedbackBtnName) {
-                currBrowser.executeScript('gamingPlatform.main.l10n().changeLanguage("' + languageCode + '")');
-                waitUntil(function () { return getOpenFeedbackBtnName().then(function (newFeedbackBtnName) { return newFeedbackBtnName !== feedbackBtnName; }); });
-            });
+            currBrowser.executeScript('gamingPlatform.main.l10n().changeLanguage("' + languageCode + '")');
+            willDoLog("After changing the languages, we wait until feedbackBtnName changes to the correct value.");
+            waitUntil(function () { return getOpenFeedbackBtnName().then(function (feedbackBtnName) {
+                return l10n.getTranslate("MAIN_FEEDBACK_AND_BUGS_TITLE", {}, languageCode).then(function (expectedText) { return feedbackBtnName == expectedText; });
+            }); });
         }
         leftNav.changeLanguage = changeLanguage;
         /* make FB work...
@@ -694,16 +695,20 @@ var e2eTests;
     var l10n;
     (function (l10n) {
         function expectTranslate(actual, translationId, interpolationParams, languageCode) {
-            var script = 'return (gamingPlatform.main ? gamingPlatform.main : gamingPlatform.gameinvite.main).l10n().translate(' + JSON.stringify(translationId) +
-                (interpolationParams ? "," + JSON.stringify(interpolationParams) : "") +
-                (languageCode ? "," + JSON.stringify(languageCode) : "") + ")";
-            log("Executing script in " + getBrowserName(currBrowser) + ":\n" + script);
-            currBrowser.executeScript(script).then(function (text) {
+            getTranslate(translationId, interpolationParams, languageCode).then(function (text) {
                 log("L10n of " + translationId + " is " + text);
                 expectToBe(actual, text);
             });
         }
         l10n.expectTranslate = expectTranslate;
+        function getTranslate(translationId, interpolationParams, languageCode) {
+            var script = 'return (gamingPlatform.main ? gamingPlatform.main : gamingPlatform.gameinvite.main).l10n().translate(' + JSON.stringify(translationId) +
+                (interpolationParams ? "," + JSON.stringify(interpolationParams) : "") +
+                (languageCode ? "," + JSON.stringify(languageCode) : "") + ")";
+            log("Executing script in " + getBrowserName(currBrowser) + ":\n" + script);
+            return currBrowser.executeScript(script);
+        }
+        l10n.getTranslate = getTranslate;
     })(l10n || (l10n = {}));
     var lastTest;
     var JasmineOverrides;
@@ -1257,9 +1262,7 @@ var e2eTests;
             // Testing changing a langague (English->Hebrew->English), and making sure l10n worked.
             l10n.expectTranslate(leftNav.getOpenFeedbackBtnName(), "MAIN_FEEDBACK_AND_BUGS_TITLE", {}, "en");
             leftNav.changeLanguage('iw'); // Selecting language Hebrew
-            l10n.expectTranslate(leftNav.getOpenFeedbackBtnName(), "MAIN_FEEDBACK_AND_BUGS_TITLE", {}, "iw");
-            leftNav.changeLanguage('en'); // Selecting language English 
-            l10n.expectTranslate(leftNav.getOpenFeedbackBtnName(), "MAIN_FEEDBACK_AND_BUGS_TITLE", {}, "en");
+            leftNav.changeLanguage('en'); // Selecting language English
             leftNav.close();
             // to-do: add a test that language was switch in TicTacToe game (i.e., that the rules' language was changed)
         });
