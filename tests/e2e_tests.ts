@@ -190,7 +190,8 @@ module gameOverModal {
   export function getRematch() {
     return id('game_over_rematch');
   }
-  export function rematch() {
+  // Starts a rematch (multi-player) or a new match (single-player).
+  export function newMatch() {
     clickAndWaitToDisappear(getRematch());
   }
   
@@ -1258,7 +1259,7 @@ describe('App ', function() {
            ['O', 'O', '']]);
     });
     expectDisplayed(id('game_over_match_status'));
-    gameOverModal.close(); // Will restart a new passAndPlay
+    gameOverModal.newMatch(); // Will restart a new single-player game
     tictactoe.run(()=>{
       tictactoe.expectEmptyBoard();
       tictactoe.clickDivAndExpectPiece(0, 0, "X");
@@ -1376,7 +1377,7 @@ describe('App ', function() {
     expectDisplayed(id('game_over_match_status'));
     l10n.expectTranslate(gameOverModal.getMatchOverStatus(), 'MATCH_STATUS_OPPONENT_WON_WITH_NAME', {OPPONENT_NAME: 'PLAYER_X'});
     
-    gameOverModal.close();
+    gameOverModal.newMatch(); // Will restart a new single-player game
     tictactoe.run(()=>{
       /**
        * Second test case: O won
