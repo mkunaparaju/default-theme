@@ -11,6 +11,9 @@ interface App {
   fb(): FB;
   model(): Model; // All fields used in ng-model
   
+  // Passing a message to the game, e.g., to show help screen (or in the future to turn sounds on/off).
+  passMessageToGame(message: any): void;
+  
   // Used for preventing clicks on the game iframe when clicking on platform UI (menus, etc).
   // Every void-returning api method (except log) is automatically flashing the 
   // GameIframeProtector, so call this method only for special cases

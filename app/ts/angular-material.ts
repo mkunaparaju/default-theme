@@ -120,6 +120,7 @@ w.gamingPlatformInitFinished = function () {
             // When gt-xs, then the sideNav is always open (and sideNav.isOpen may return true/false regardless).
             !$mdMedia('gt-xs');
         if (main.isFirstTimeUser()) {
+          main.passMessageToGame({SHOW_GAME_INSTRUCTIONS: true}); // Open the instructions (when you'll navigate to the playPage) on first use.
           $timeout(function () {
             $mdSidenav('left').toggle();
           }, 500); // I wait half a second just for the user to see the game title for a bit.

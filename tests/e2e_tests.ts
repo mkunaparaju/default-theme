@@ -720,8 +720,6 @@ function waitUntil(fn: ()=>any) {
 function waitForElement(elem: protractor.ElementFinder) {
   let elemName = getElementName(elem);
   willDoLog("waitForElement " + elemName);
-  // Wait until it becomes displayed. It might not be displayed right now
-  // because it takes some time to pass messages via postMessage between game and platform.
   waitUntil(
     ()=>safePromise(elem.isPresent()).then(
       (isPresent)=>isPresent &&
@@ -733,8 +731,6 @@ function waitForElement(elem: protractor.ElementFinder) {
 function waitForElementToDisappear(elem: protractor.ElementFinder) {
   let elemName = getElementName(elem);
   willDoLog("waitForElementToDisappear " + elemName);
-  // Wait until it becomes displayed. It might not be displayed right now
-  // because it takes some time to pass messages via postMessage between game and platform.
   waitUntil(()=>safePromise(elem.isPresent()).then(
       (isPresent)=>isPresent ? 
         safePromise(elem.isDisplayed()).then((isDisplayed)=>!isDisplayed) : !isPresent));

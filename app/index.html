@@ -304,6 +304,13 @@
               {{ main.shouldShowTopBar() ? 'MAXIMIZE_GAME' : 'SHOW_PLAYERS' | translate }}
             </md-button>
           </md-menu-item>
+          <md-menu-item>
+            <md-button id="test_show_game_instructions"
+                ng-click="main.passMessageToGame({SHOW_GAME_INSTRUCTIONS: true})">
+              <md-icon class="material-icons">help</md-icon>
+              {{ 'GAME_INSTRUCTIONS' | translate }}
+            </md-button>
+          </md-menu-item>
           
           <md-divider ng-if="!main.currentMatch().isSinglePlayer()" class="menu-divider"></md-divider>
           <md-menu-item ng-if="!main.currentMatch().isSinglePlayer()">

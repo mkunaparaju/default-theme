@@ -1,6 +1,16 @@
 (function () {
     ;
     var platformTranslations = {
+        "GAME_INSTRUCTIONS": {
+            "en": "Game instructions",
+            "iw": "הוראות משחק",
+            "pt": "instruções do jogo",
+            "zh": "游戏说明",
+            "el": "οδηγίες παιχνιδιού",
+            "fr": "Instructions du jeu",
+            "hi": "खेल निर्देश",
+            "es": "Las instrucciones del juego"
+        },
         "MAXIMIZE_GAME": {
             "en": "Maximize game",
             "iw": "הגדל משחק",
@@ -151,16 +161,6 @@
             "hi": "भाषा",
             "es": "Idioma"
         },
-        "CHAT_MESSAGE_LABEL": {
-            "en": "Type in a chat message",
-            "iw": "הקלד הודעת צט",
-            "pt": "Digite uma mensagem de chat",
-            "zh": "输入一个聊天信息",
-            "el": "Πληκτρολογήσετε ένα μήνυμα συνομιλίας",
-            "fr": "Tapez un message de chat dans",
-            "hi": "में टाइप एक चैट संदेश",
-            "es": "Escribir en un mensaje de chat"
-        },
         "FB_FRIENDS_DID_NOT_INSTALL_APP": {
             "en": "We're sorry, but it looks like none of your friends has this app installed.",
             "iw": "החברים שלך לא התקינו את האפליקציה",
@@ -253,8 +253,8 @@
         },
         "MAIN_INVITE_FRIENDS_TITLE": {
             "en": "Facebook friends",
-            "iw": "הזמן חבר למשחק",
-            "pt": "Convide os seus amigos para jogar",
+            "iw": "חברים מפייסבוק",
+            "pt": "Facebook amigos",
             "zh": "邀请朋友来玩",
             "el": "Καλέστε τους φίλους σας για ένα παιχνίδι.",
             "fr": "Amis Facebook",
@@ -334,12 +334,12 @@
         "MAIN_SHARE_INVITE_LINK_TITLE": {
             "en": "Share an invite link",
             "iw": "שתף הזמנה למשחק",
-            "pt": "Compartilhar um link de convite com os seus amigos",
+            "pt": "Compartilhar um link",
             "zh": "分享链接给你的好友",
             "el": "Μοιραστείτε ένα σύνδεσμο πρόσκλησης με τους φίλους σας",
-            "fr": "partager une invitation avec vos amis",
+            "fr": "partager une invitation",
             "hi": "खेल आमंत्रण का लिंक अपने दोस्तों को भेजें ",
-            "es": "Compartir un link de invitacion con tus amigos."
+            "es": "Compartir un link"
         },
         "MATCH_DELETE": {
             "en": "Delete game",
@@ -580,6 +580,16 @@
             "fr": "nouvelle partie",
             "hi": "नया खेल",
             "es": "Juego nuevo"
+        },
+        "CHAT_MESSAGE_LABEL": {
+            "en": "Type in a chat message",
+            "iw": "הקלד הודעת צט",
+            "pt": "Digite uma mensagem de chat",
+            "zh": "输入一个聊天信息",
+            "el": "Πληκτρολογήσετε ένα μήνυμα συνομιλίας",
+            "fr": "Tapez un message de chat dans",
+            "hi": "में टाइप एक चैट संदेश",
+            "es": "Escribir en un mensaje de chat"
         },
         "MODAL_BUTTON_SEND_CHAT": {
             "en": "Send",
@@ -823,7 +833,7 @@
         },
         "UNKNOWN_PLAYER_NAME": {
             "en": "Unknown",
-            "iw": "מישהו",
+            "iw": "לא ידוע",
             "pt": "Desconhecido",
             "zh": "未知",
             "el": "Άγνωστο",

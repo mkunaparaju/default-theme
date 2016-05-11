@@ -785,8 +785,6 @@ var e2eTests;
     function waitForElement(elem) {
         var elemName = getElementName(elem);
         willDoLog("waitForElement " + elemName);
-        // Wait until it becomes displayed. It might not be displayed right now
-        // because it takes some time to pass messages via postMessage between game and platform.
         waitUntil(function () { return safePromise(elem.isPresent()).then(function (isPresent) { return isPresent &&
             safePromise(elem.isDisplayed()).then(function (isDisplayed) {
                 return isDisplayed && safePromise(elem.isEnabled());
@@ -796,8 +794,6 @@ var e2eTests;
     function waitForElementToDisappear(elem) {
         var elemName = getElementName(elem);
         willDoLog("waitForElementToDisappear " + elemName);
-        // Wait until it becomes displayed. It might not be displayed right now
-        // because it takes some time to pass messages via postMessage between game and platform.
         waitUntil(function () { return safePromise(elem.isPresent()).then(function (isPresent) { return isPresent ?
             safePromise(elem.isDisplayed()).then(function (isDisplayed) { return !isDisplayed; }) : !isPresent; }); });
         // Element is either not present or not displayed.
