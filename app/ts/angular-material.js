@@ -27,19 +27,6 @@
             '$mdSidenav', '$mdMedia', '$mdComponentRegistry',
             '$mdBottomSheet', '$mdDialog', '$mdMenu',
             function ($rootScope, $timeout, $mdSidenav, $mdMedia, $mdComponentRegistry, $mdBottomSheet, $mdDialog, $mdMenu) {
-                function showPlayerBottomSheet(player, match) {
-                    if (player.isMe() || player.isUnknown())
-                        return false;
-                    $mdBottomSheet.show({
-                        templateUrl: 'html-templates/playerInfoBottomSheet.html',
-                        controller: ''
-                    });
-                    $rootScope.playerInBottomSheet = function () { return player; };
-                    $rootScope.matchInBottomSheet = function () { return match; };
-                    var model = main.model();
-                    $rootScope.sendChatAndCloseBottomSheet = function () { $mdBottomSheet.hide(); main.sendChat(model.chatMessage, player, match); };
-                    model.chatMessage = "";
-                }
                 function swipedMatch(match) {
                     if (match.isOver()) {
                         match.dismiss();
@@ -70,6 +57,36 @@
                         .openFrom('#test_open_feedback_modal')
                         .closeTo('#test_open_feedback_modal')).then(function (feedback) { return main.sendFeedback(feedback); });
                 }
+                var playerInfoBottomSheetShowing = false;
+                function showPlayerBottomSheet(player, match) {
+                    if (player.isMe() || player.isUnknown())
+                        return false;
+                    playerInfoBottomSheetShowing = true;
+                    $mdBottomSheet.show({
+                        templateUrl: 'html-templates/playerInfoBottomSheet.html',
+                        controller: ''
+                    }).finally(function () {
+                        main.hideModal('playerInfoModal');
+                        playerInfoBottomSheetShowing = false;
+                    });
+                    $rootScope.playerInBottomSheet = function () { return player; };
+                    var model = main.model();
+                    $rootScope.sendChatAndCloseBottomSheet = function () { $mdBottomSheet.hide(); main.sendChat(model.chatMessage, player, match); };
+                    model.chatMessage = "";
+                }
+                function playerInfoModalShowingChanged(newValue, oldValue) {
+                    main.log("playerInfoModalShowingChanged: newValue=", newValue, "playerInfoBottomSheetShowing=", playerInfoBottomSheetShowing, " oldValue=", oldValue);
+                    if (!newValue && playerInfoBottomSheetShowing) {
+                        $mdBottomSheet.hide();
+                        return;
+                    }
+                    if (newValue && !playerInfoBottomSheetShowing) {
+                        var player = main.playerInPlayerInfoModal();
+                        var match = main.matchInPlayerInfoModal();
+                        if (player)
+                            showPlayerBottomSheet(player, match);
+                    }
+                }
                 var gameOverDialogShowing = false;
                 function gameOverModalShowingChanged(newValue, oldValue) {
                     main.log("gameOverModalShowingChanged: newValue=", newValue, "gameOverDialogShowing=", gameOverDialogShowing, " oldValue=", oldValue);
@@ -99,6 +116,7 @@
                 $rootScope['swipedMatch'] = swipedMatch;
                 $rootScope['openFeedbackDialog'] = openFeedbackDialog;
                 $rootScope.$watch("main.isModalShowing('gameOverModal')", gameOverModalShowingChanged);
+                $rootScope.$watch("main.isModalShowing('playerInfoModal')", playerInfoModalShowingChanged);
                 $rootScope.sideNavIsOpen = function () { return false; }; // overridden later.
                 $mdComponentRegistry.when('left').then(function (sideNav) {
                     $rootScope.sideNavIsOpen = function () { return $mdSidenav('left').isOpen() &&

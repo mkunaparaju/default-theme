@@ -30,20 +30,6 @@ w.gamingPlatformInitFinished = function () {
         $mdSidenav: any, $mdMedia: any, $mdComponentRegistry: any, 
         $mdBottomSheet: any, $mdDialog: any, $mdMenu: any) {
           
-      function showPlayerBottomSheet(
-          player: gamingPlatform.api.Player, match: gamingPlatform.api.Match) {
-        if (player.isMe() || player.isUnknown()) return false;
-        $mdBottomSheet.show({
-          templateUrl: 'html-templates/playerInfoBottomSheet.html',
-          controller: ''
-        });
-        $rootScope.playerInBottomSheet = ()=>player;
-        $rootScope.matchInBottomSheet = ()=>match;
-        let model = main.model();
-        $rootScope.sendChatAndCloseBottomSheet = ()=>{$mdBottomSheet.hide(); main.sendChat(model.chatMessage, player, match);};
-        model.chatMessage = "";
-      }
-      
       function swipedMatch(match: gamingPlatform.api.Match) {
         if (match.isOver()) {
           match.dismiss();
@@ -82,6 +68,37 @@ w.gamingPlatformInitFinished = function () {
         ).then((feedback: string)=>main.sendFeedback(feedback));
       }
       
+      let playerInfoBottomSheetShowing = false;
+      function showPlayerBottomSheet(
+          player: gamingPlatform.api.Player, match: gamingPlatform.api.Match) {
+        if (player.isMe() || player.isUnknown()) return false;
+        
+        playerInfoBottomSheetShowing = true;
+        $mdBottomSheet.show({
+          templateUrl: 'html-templates/playerInfoBottomSheet.html',
+          controller: ''
+        }).finally(function() {
+          main.hideModal('playerInfoModal');
+          playerInfoBottomSheetShowing = false;
+        });
+        $rootScope.playerInBottomSheet = ()=>player;
+        let model = main.model();
+        $rootScope.sendChatAndCloseBottomSheet = ()=>{$mdBottomSheet.hide(); main.sendChat(model.chatMessage, player, match);};
+        model.chatMessage = "";
+      }
+      function playerInfoModalShowingChanged(newValue: boolean, oldValue: boolean) {
+        main.log("playerInfoModalShowingChanged: newValue=", newValue, "playerInfoBottomSheetShowing=", playerInfoBottomSheetShowing, " oldValue=", oldValue)
+        if (!newValue && playerInfoBottomSheetShowing) {
+          $mdBottomSheet.hide();
+          return;
+        }
+        if (newValue && !playerInfoBottomSheetShowing) {
+          let player = main.playerInPlayerInfoModal();
+          let match = main.matchInPlayerInfoModal();
+          if (player) showPlayerBottomSheet(player, match);
+        }
+      }
+      
       let gameOverDialogShowing = false;
       function gameOverModalShowingChanged(newValue: boolean, oldValue: boolean) {
         main.log("gameOverModalShowingChanged: newValue=", newValue, "gameOverDialogShowing=", gameOverDialogShowing, " oldValue=", oldValue)
@@ -113,6 +130,7 @@ w.gamingPlatformInitFinished = function () {
       $rootScope['swipedMatch'] = swipedMatch;
       $rootScope['openFeedbackDialog'] = openFeedbackDialog;
       $rootScope.$watch("main.isModalShowing('gameOverModal')", gameOverModalShowingChanged);
+      $rootScope.$watch("main.isModalShowing('playerInfoModal')", playerInfoModalShowingChanged);
       
       $rootScope.sideNavIsOpen = () => false; // overridden later.
       $mdComponentRegistry.when('left').then(function(sideNav: any) {
