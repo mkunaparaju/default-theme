@@ -151,12 +151,20 @@ var e2eTests;
         playPage.gotoMain = gotoMain;
     })(playPage || (playPage = {}));
     Logging.addLogging("playPage", playPage);
+    function waitForBackdropToDisappear() {
+        waitForElementToDisappear(element(by.css("md-backdrop")));
+    }
     var extraMatchOptionsModal;
     (function (extraMatchOptionsModal) {
         function expectVisible() {
             expectDisplayed(getSharePrintscreen());
         }
         extraMatchOptionsModal.expectVisible = expectVisible;
+        function waitTillClosed() {
+            waitForElementToDisappear(getSharePrintscreen());
+            waitForBackdropToDisappear();
+        }
+        extraMatchOptionsModal.waitTillClosed = waitTillClosed;
         function getSharePrintscreen() {
             return id('share_invite_link_with_printscreen');
         }
@@ -171,6 +179,7 @@ var e2eTests;
         extraMatchOptionsModal.getDismissMatch = getDismissMatch;
         function dismissMatch() {
             clickAndWaitToDisappear(getDismissMatch());
+            waitTillClosed();
         }
         extraMatchOptionsModal.dismissMatch = dismissMatch;
         function getLoadNext() {
@@ -179,6 +188,7 @@ var e2eTests;
         extraMatchOptionsModal.getLoadNext = getLoadNext;
         function loadNext() {
             clickAndWaitToDisappear(getLoadNext());
+            waitTillClosed();
         }
         extraMatchOptionsModal.loadNext = loadNext;
     })(extraMatchOptionsModal || (extraMatchOptionsModal = {}));
@@ -189,6 +199,11 @@ var e2eTests;
             expectDisplayed(getMatchOverTitleElem());
         }
         gameOverModal.expectVisible = expectVisible;
+        function waitTillClosed() {
+            waitForElementToDisappear(getMatchOverTitleElem());
+            waitForBackdropToDisappear();
+        }
+        gameOverModal.waitTillClosed = waitTillClosed;
         function getMatchOverTitleElem() {
             return id('game_over_match_title');
         }
@@ -216,11 +231,12 @@ var e2eTests;
         // Starts a rematch (multi-player) or a new match (single-player).
         function newMatch() {
             clickAndWaitToDisappear(getRematch());
+            waitTillClosed();
         }
         gameOverModal.newMatch = newMatch;
         function close() {
             currBrowser.executeScript("gamingPlatform.main.closeGameOverModal()");
-            waitForElementToDisappear(getMatchOverTitleElem());
+            waitTillClosed();
         }
         gameOverModal.close = close;
     })(gameOverModal || (gameOverModal = {}));
@@ -387,6 +403,7 @@ var e2eTests;
         newMatchModal.expectVisible = expectVisible;
         function waitTillClosed() {
             waitForElementToDisappear(getStartAutoMatch());
+            waitForBackdropToDisappear();
         }
         newMatchModal.waitTillClosed = waitTillClosed;
         function getStartAutoMatch() {
@@ -418,6 +435,7 @@ var e2eTests;
         newMatchModal.startPassAndPlay = startPassAndPlay;
     })(newMatchModal || (newMatchModal = {}));
     Logging.addLogging("newMatchModal", newMatchModal);
+    // Bottom sheet.
     var playerInfoModal;
     (function (playerInfoModal) {
         function isPresent() {
@@ -428,6 +446,11 @@ var e2eTests;
             expectDisplayed(getPlayerInfoAvatar());
         }
         playerInfoModal.expectVisible = expectVisible;
+        function waitTillClosed() {
+            waitForElementToDisappear(getPlayerInfoAvatar());
+            waitForBackdropToDisappear();
+        }
+        playerInfoModal.waitTillClosed = waitTillClosed;
         function getDisplayName() {
             return id('player_info_name').getText();
         }
@@ -439,6 +462,7 @@ var e2eTests;
         playerInfoModal.getNewGame = getNewGame;
         function inviteToNewGame() {
             clickAndWaitToDisappear(getNewGame());
+            waitTillClosed();
         }
         playerInfoModal.inviteToNewGame = inviteToNewGame;
         function getPlayerBlocked() {
@@ -455,6 +479,7 @@ var e2eTests;
         playerInfoModal.getPlayerInfoAvatar = getPlayerInfoAvatar;
         function close() {
             clickAndWaitToDisappear(getPlayerInfoAvatar());
+            waitTillClosed();
         }
         playerInfoModal.close = close;
     })(playerInfoModal || (playerInfoModal = {}));
@@ -468,6 +493,7 @@ var e2eTests;
         function waitTillClosed() {
             // The avatar disappears pretty quickly, and then the newDisplayName input disappears last.
             waitForElementToDisappear(getNewDisplayNameModel());
+            waitForBackdropToDisappear();
         }
         leftNav.waitTillClosed = waitTillClosed;
         function getMyAvatarImg() {
@@ -494,7 +520,10 @@ var e2eTests;
           click(element(by.cssContainingText('option', languageName)));
         }*/
         function changeLanguage(languageCode) {
-            currBrowser.executeScript('gamingPlatform.main.l10n().changeLanguage("' + languageCode + '")');
+            getOpenFeedbackBtnName().then(function (feedbackBtnName) {
+                currBrowser.executeScript('gamingPlatform.main.l10n().changeLanguage("' + languageCode + '")');
+                waitUntil(function () { return getOpenFeedbackBtnName().then(function (newFeedbackBtnName) { return newFeedbackBtnName !== feedbackBtnName; }); });
+            });
         }
         leftNav.changeLanguage = changeLanguage;
         /* make FB work...
@@ -1172,6 +1201,14 @@ var e2eTests;
             // but to save on resources I should avoid loading the app in beforeEach.
             getPage('/app/index.html?onlyGameId=' + GAME_ID + '&isProtractor=true&testBrowserName=' + getBrowserName(currBrowser));
         }
+        function loadGameinvite(userName) {
+            getPage('/gameinvite/?' + userName + '=testtictactoe');
+            var interpolationParams = { GAME_NAME: "test-tictactoe", PLAYER_NAME: userName };
+            var translationId = "GAME_INVITE_PLAYER_NAME_WANTS_TO_PLAY_GAME_NAME_WITH_YOU";
+            l10n.expectTranslate(gameinvitePage.getInviteText(), translationId, interpolationParams);
+            expectDisplayed(id('gameHeader320x50Url'));
+            return interpolationParams;
+        }
         function oneTimeInitInBothBrowsers() {
             // The first time the app loads, we show leftNav.
             closeLeftNavAndMaybeGameinviteNotification();
@@ -1195,12 +1232,18 @@ var e2eTests;
         }
         // This test must be first because it requires an empty local-storage,
         // and following tests assume the displayName were changed.
-        it('one-time initialization: shows leftNav when loading an app for the first time, and changes displayName in the first browser', function () {
+        it('one-time initialization: shows leftNav when loading an app for the first time, changes displayName in the first browser, and verifies game helpscreen is shown', function () {
             oneTimeInitInBothBrowsers();
             // Verify displayName changed.
             mainPage.openLeftNav();
             expectToBe(leftNav.getNewDisplayName(), browser1NameStr);
             leftNav.close();
+            // The game helpscreen is open on the first time.
+            mainPage.openNewMatchModal().startPractice();
+            tictactoe.run(function () {
+                clickAndWaitToDisappear(element(by.id('e2e_test_close_help_screen')));
+            });
+            playPage.gotoMain();
         });
         it('can open feedback modal', function () {
             // Testing opening feedback (but not sending it, to avoid getting a feedback email)
@@ -1281,10 +1324,7 @@ var e2eTests;
         it('from Prasoon Goyal & Rachita Hajela: can go to practice, open game invite in 2nd browser, back to main menu', function () {
             mainPage.openNewMatchModal().startPractice();
             runInSecondBrowser(function () {
-                getPage('/gameinvite/?' + browser1NameStr + '=testtictactoe');
-                var interpolationParams = { GAME_NAME: "test-tictactoe", PLAYER_NAME: browser1NameStr };
-                var translationId = "GAME_INVITE_PLAYER_NAME_WANTS_TO_PLAY_GAME_NAME_WITH_YOU";
-                l10n.expectTranslate(gameinvitePage.getInviteText(), translationId, interpolationParams);
+                var interpolationParams = loadGameinvite(browser1NameStr);
                 loadApp();
                 notifications.expectOneNotification('IN_APP_NOTIFICATION_GAME_INVITE_TITLE', 'IN_APP_NOTIFICATION_GAME_INVITE_BODY', interpolationParams);
                 notifications.closeNotificationWithIndex(0);
@@ -1420,7 +1460,7 @@ var e2eTests;
             playPage.gotoMain();
         });
         it('from Shuang Wang (Enclosed Combat team): can start a match from gameinvite, player1 blocks player2, and player2 receives block message when invite player1 to a new game', function () {
-            getPage('/gameinvite/?' + browser2NameStr + '=testtictactoe');
+            loadGameinvite(browser2NameStr);
             loadApp();
             notifications.clickNotificationWithIndex(0);
             playPage.openInfoModalForPlayerIndex(1);
@@ -1428,7 +1468,7 @@ var e2eTests;
             playerInfoModal.close();
             playPage.openExtraMatchOptions().dismissMatch();
             runInSecondBrowser(function () {
-                getPage('/gameinvite/?' + browser1NameStr + '=testtictactoe');
+                loadGameinvite(browser1NameStr);
                 loadApp();
                 notifications.clickNotificationWithIndex(0);
                 playPage.openInfoModalForPlayerIndex(1);
@@ -1449,10 +1489,7 @@ var e2eTests;
         });
         it('can invite using userName', function () {
             runInSecondBrowser(function () {
-                getPage('/gameinvite/?' + browser1NameStr + '=testtictactoe');
-                var interpolationParams = { GAME_NAME: "test-tictactoe", PLAYER_NAME: browser1NameStr };
-                var translationId = "GAME_INVITE_PLAYER_NAME_WANTS_TO_PLAY_GAME_NAME_WITH_YOU";
-                l10n.expectTranslate(gameinvitePage.getInviteText(), translationId, interpolationParams);
+                var interpolationParams = loadGameinvite(browser1NameStr);
                 loadApp();
                 notifications.expectOneNotification('IN_APP_NOTIFICATION_GAME_INVITE_TITLE', 'IN_APP_NOTIFICATION_GAME_INVITE_BODY', interpolationParams);
                 notifications.closeNotificationWithIndex(0);
@@ -1460,8 +1497,7 @@ var e2eTests;
         });
         it('can switch languages in gameinvite and it localize correctly', function () {
             runInSecondBrowser(function () {
-                getPage('/gameinvite/?' + browser1NameStr + '=testtictactoe');
-                expectDisplayed(id('gameHeader320x50Url'));
+                loadGameinvite(browser1NameStr);
                 // Testing changing a langague (English->Hebrew->English), and making sure l10n worked.
                 var englishInterpolationParams = { GAME_NAME: "test-tictactoe", PLAYER_NAME: browser1NameStr };
                 var translationId = "GAME_INVITE_PLAYER_NAME_WANTS_TO_PLAY_GAME_NAME_WITH_YOU";
