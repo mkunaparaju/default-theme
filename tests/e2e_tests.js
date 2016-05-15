@@ -191,6 +191,15 @@ var e2eTests;
             waitTillClosed();
         }
         extraMatchOptionsModal.loadNext = loadNext;
+        function getStartRematch() {
+            return id('start_rematch');
+        }
+        extraMatchOptionsModal.getStartRematch = getStartRematch;
+        function startRematch() {
+            clickAndWaitToDisappear(getStartRematch());
+            waitTillClosed();
+        }
+        extraMatchOptionsModal.startRematch = startRematch;
     })(extraMatchOptionsModal || (extraMatchOptionsModal = {}));
     Logging.addLogging("extraMatchOptionsModal", extraMatchOptionsModal);
     var gameOverModal;
@@ -456,6 +465,7 @@ var e2eTests;
         }
         playerInfoModal.getDisplayName = getDisplayName;
         // to-do: add chat, invite to new match
+        // Note that inviteToNewGame only appears when bottom sheet is on mainPage (not playPage).
         function getNewGame() {
             return id('player_info_invite_to_match');
         }
@@ -1474,8 +1484,7 @@ var e2eTests;
                 loadGameinvite(browser1NameStr);
                 loadApp();
                 notifications.clickNotificationWithIndex(0);
-                playPage.openInfoModalForPlayerIndex(1);
-                playerInfoModal.inviteToNewGame();
+                playPage.openExtraMatchOptions().startRematch();
                 notifications.expectNoNotifications();
                 tictactoe.run(function () {
                     tictactoe.expectEmptyBoard();

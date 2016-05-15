@@ -52,6 +52,8 @@ interface App {
   // page always start with '/', e.g., '/main', '/inviteFriends', '/playGame/<matchId>'
   // Changes the page and also closes all modal dialogs.
   changePage(page: string): void;
+  // Whether the currentPage has page as a prefix, e.g., 
+  // if the currentPage is '/playGame/practice', then isInPage('/playGame/') returns true.
   isInPage(page: string): boolean;
   // The game iframe is shown if we're in /playGame/* page and the game sent gameReady message.
   showGameIframe(): boolean;

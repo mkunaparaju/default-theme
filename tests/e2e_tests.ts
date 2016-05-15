@@ -171,6 +171,14 @@ module extraMatchOptionsModal {
     clickAndWaitToDisappear(getLoadNext());
     waitTillClosed();
   }
+  
+  export function getStartRematch() {
+    return id('start_rematch');
+  }
+  export function startRematch() {
+    clickAndWaitToDisappear(getStartRematch());
+    waitTillClosed();
+  }
 }
 Logging.addLogging("extraMatchOptionsModal", extraMatchOptionsModal);
 
@@ -407,6 +415,7 @@ module playerInfoModal {
   }
   
   // to-do: add chat, invite to new match
+  // Note that inviteToNewGame only appears when bottom sheet is on mainPage (not playPage).
   export function getNewGame() {
     return id('player_info_invite_to_match');
   }
@@ -1480,8 +1489,7 @@ describe('App ', function() {
       loadGameinvite(browser1NameStr);
       loadApp();
       notifications.clickNotificationWithIndex(0);
-      playPage.openInfoModalForPlayerIndex(1);
-      playerInfoModal.inviteToNewGame();
+      playPage.openExtraMatchOptions().startRematch();
       notifications.expectNoNotifications();
       tictactoe.run(()=>{
         tictactoe.expectEmptyBoard();

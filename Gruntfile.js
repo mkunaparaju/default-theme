@@ -33,6 +33,7 @@ module.exports = function(grunt) {
             'ts/app-l10n.js',
             'css/app.min.css',
             'imgs/animatedEllipse.gif',
+            'imgs/autoMatchAvatar.png',
           ],
           network: !isForTesting ? ['*'] : 
             ['http://www.multiplayer-gaming.com/api/app.' + apiVersion + '.min.js',

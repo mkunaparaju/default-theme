@@ -420,7 +420,9 @@
       <span id="test_player_info_name">{{playerInBottomSheet().getDisplayName()}}</span>
     </div>
   </md-subheader>
-  <md-menu-item>
+  <!-- in playPage there is already rematch in the playPage menu, so it's only confusing here,
+    especially when this opens after clicking on chat message notification. -->
+  <md-menu-item ng-if="!main.isInPage('/playGame/')">
     <md-button class="md-list-item-content"
         id="test_player_info_invite_to_match" 
         ng-click="$mdBottomSheet.hide(); main.startMatchWith([playerInBottomSheet()])">
@@ -432,6 +434,7 @@
     <md-input-container>
       <label>{{'CHAT_MESSAGE_LABEL' | translate }}</label>
       <input 
+          md-autofocus
           ng-model="main.model().chatMessage"
           ng-keyup="$event.keyCode == 13 && sendChatAndCloseBottomSheet()"
           maxlength="140">
