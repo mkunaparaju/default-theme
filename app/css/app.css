@@ -1,7 +1,7 @@
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
 }
-/* see http://google.github.io/material-design-icons/
+/* see https://google.github.io/material-design-icons/
   I'm not using woff/woff2 because it's not supported before Android 4.3, which is still ~30% of android adoption.
   I'm not using several options (woff or ttf) becuase I want these files to be in the appcache.
   I checked and if the ttf is returned gzipped then it's the same size (60KB) as the woff, so not much harm in using ttf which is supported everywhere.
@@ -12,8 +12,8 @@
   font-weight: 400;
   src: local('Material Icons'), local('MaterialIcons-Regular'),
     /* Originally from:
-     http://fonts.gstatic.com/s/materialicons/v15/2fcrYFNaTjcS6g4U3t-Y5StnKWgpfO2iSkLzTz-AABg.ttf */
-    url(http://yoav-zibin.github.io/angular-material-with-sourceMappingURL/fonts/material-icons/2fcrYFNaTjcS6g4U3t-Y5StnKWgpfO2iSkLzTz-AABg.ttf) format('truetype');
+     https://fonts.gstatic.com/s/materialicons/v15/2fcrYFNaTjcS6g4U3t-Y5StnKWgpfO2iSkLzTz-AABg.ttf */
+    url(//yoav-zibin.github.io/angular-material-with-sourceMappingURL/fonts/material-icons/2fcrYFNaTjcS6g4U3t-Y5StnKWgpfO2iSkLzTz-AABg.ttf) format('truetype');
 }
 .material-icons {
   font-family: 'Material Icons';
@@ -40,7 +40,7 @@
   font-feature-settings: 'liga';
 }
 /* Similar thing for material font:
-   http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic
+   https://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic
    I just want the ttf (see what's returned with BlackBerry user agent..
    If these TTFs are not in appcache, then on iOS it makes the text be in bold if you load the app from airplane mode.
    Each one of these TTF is 33KB, so 4*33 = 132KB, which is fine (even if the phone already have these fonts installed).
@@ -49,25 +49,25 @@
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 400;
-  src: local('Roboto'), local('Roboto-Regular'), url(http://yoav-zibin.github.io/angular-material-with-sourceMappingURL/fonts/roboto/zN7GBFwfMP4uA6AR0HCoLQ.ttf) format('truetype');
+  src: local('Roboto'), local('Roboto-Regular'), url(//yoav-zibin.github.io/angular-material-with-sourceMappingURL/fonts/roboto/zN7GBFwfMP4uA6AR0HCoLQ.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 500;
-  src: local('Roboto Medium'), local('Roboto-Medium'), url(http://yoav-zibin.github.io/angular-material-with-sourceMappingURL/fonts/roboto/RxZJdnzeo3R5zSexge8UUaCWcynf_cDxXwCLxiixG1c.ttf) format('truetype');
+  src: local('Roboto Medium'), local('Roboto-Medium'), url(//yoav-zibin.github.io/angular-material-with-sourceMappingURL/fonts/roboto/RxZJdnzeo3R5zSexge8UUaCWcynf_cDxXwCLxiixG1c.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 700;
-  src: local('Roboto Bold'), local('Roboto-Bold'), url(http://yoav-zibin.github.io/angular-material-with-sourceMappingURL/fonts/roboto/d-6IYplOFocCacKzxwXSOKCWcynf_cDxXwCLxiixG1c.ttf) format('truetype');
+  src: local('Roboto Bold'), local('Roboto-Bold'), url(//yoav-zibin.github.io/angular-material-with-sourceMappingURL/fonts/roboto/d-6IYplOFocCacKzxwXSOKCWcynf_cDxXwCLxiixG1c.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Roboto';
   font-style: italic;
   font-weight: 400;
-  src: local('Roboto Italic'), local('Roboto-Italic'), url(http://yoav-zibin.github.io/angular-material-with-sourceMappingURL/fonts/roboto/W4wDsBUluyw0tK3tykhXEfesZW2xOQ-xsNqO47m55DA.ttf) format('truetype');
+  src: local('Roboto Italic'), local('Roboto-Italic'), url(//yoav-zibin.github.io/angular-material-with-sourceMappingURL/fonts/roboto/W4wDsBUluyw0tK3tykhXEfesZW2xOQ-xsNqO47m55DA.ttf) format('truetype');
 }
 
 html, body {
@@ -102,7 +102,7 @@ html, body {
   -moz-touch-callout: none;
   -ms-touch-callout: none;
   touch-callout: none;
-  outline: 0; /* To prevent blue-box outline after click: http://stackoverflow.com/questions/21719306/getting-rid-of-a-blue-box-around-button-when-pressed */
+  outline: 0; /* To prevent blue-box outline after click: https://stackoverflow.com/questions/21719306/getting-rid-of-a-blue-box-around-button-when-pressed */
 }
 textarea, input {
   -webkit-user-select: text !important;
@@ -217,7 +217,7 @@ textarea, input {
 }
 
 /* playPage toolbar has height:56px (portrait), 48px (landscape), or 64px (wide screens: width > 959px) 
-I copied the css media queries from: http://yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular-material.css
+I copied the css media queries from: https://yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular-material.css
 I would have loved to use on the game_container: flex height:100% (https://material.angularjs.org/latest/layout/tips),
 but the game header in the play page is inside an ng-view, which has to be height:100% due to a md-list height issue.
 */
