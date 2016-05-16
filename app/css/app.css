@@ -246,7 +246,7 @@ md-toolbar.closed_game_header {
     top: 48px; } }
 
 
-.game_container {
+#game_container {
   width: 100%;
   height: auto;
   position: absolute;

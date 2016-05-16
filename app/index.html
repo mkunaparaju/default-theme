@@ -469,7 +469,7 @@
 
   <div ng-show="main.showGameIframe()"
     ng-class="main.shouldShowTopBar() ? 'game_iframe_with_opened_game_header' : 'game_iframe_with_closed_game_header'"
-    class="game_container"
+    id="game_container"
     ng-bind-html="main.game().getIframeHtml()"></div>
 
   <div class="notifications-container">
