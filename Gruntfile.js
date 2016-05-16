@@ -10,25 +10,25 @@ module.exports = function(grunt) {
         options: {
           basePath: '.',
           cache: [
-            'http://yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular.min.js',
-            'http://yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular-route.min.js',
-            'http://yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular-animate.min.js',
-            'http://yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular-aria.min.js',
+            '//yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular.min.js',
+            '//yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular-route.min.js',
+            '//yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular-animate.min.js',
+            '//yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular-aria.min.js',
             // For material design
-            'http://yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular-material.min.js',
-            'http://yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular-material.min.css',
+            '//yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular-material.min.js',
+            '//yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular-material.min.css',
             // Material design icon font
             //'http://fonts.gstatic.com/s/materialicons/v15/2fcrYFNaTjcS6g4U3t-Y5StnKWgpfO2iSkLzTz-AABg.ttf',
-            'http://yoav-zibin.github.io/angular-material-with-sourceMappingURL/fonts/material-icons/2fcrYFNaTjcS6g4U3t-Y5StnKWgpfO2iSkLzTz-AABg.ttf',
+            '//yoav-zibin.github.io/angular-material-with-sourceMappingURL/fonts/material-icons/2fcrYFNaTjcS6g4U3t-Y5StnKWgpfO2iSkLzTz-AABg.ttf',
             // Material design Roboto fonts
             //'http://yoav-zibin.github.io/angular-material-with-sourceMappingURL/fonts/roboto/...',
-            'http://yoav-zibin.github.io/angular-material-with-sourceMappingURL/fonts/roboto/zN7GBFwfMP4uA6AR0HCoLQ.ttf',
-            'http://yoav-zibin.github.io/angular-material-with-sourceMappingURL/fonts/roboto/RxZJdnzeo3R5zSexge8UUaCWcynf_cDxXwCLxiixG1c.ttf',
-            'http://yoav-zibin.github.io/angular-material-with-sourceMappingURL/fonts/roboto/d-6IYplOFocCacKzxwXSOKCWcynf_cDxXwCLxiixG1c.ttf',
-            'http://yoav-zibin.github.io/angular-material-with-sourceMappingURL/fonts/roboto/W4wDsBUluyw0tK3tykhXEfesZW2xOQ-xsNqO47m55DA.ttf',
+            '//yoav-zibin.github.io/angular-material-with-sourceMappingURL/fonts/roboto/zN7GBFwfMP4uA6AR0HCoLQ.ttf',
+            '//yoav-zibin.github.io/angular-material-with-sourceMappingURL/fonts/roboto/RxZJdnzeo3R5zSexge8UUaCWcynf_cDxXwCLxiixG1c.ttf',
+            '//yoav-zibin.github.io/angular-material-with-sourceMappingURL/fonts/roboto/d-6IYplOFocCacKzxwXSOKCWcynf_cDxXwCLxiixG1c.ttf',
+            '//yoav-zibin.github.io/angular-material-with-sourceMappingURL/fonts/roboto/W4wDsBUluyw0tK3tykhXEfesZW2xOQ-xsNqO47m55DA.ttf',
             
             // For GamingPlatform
-            'http://www.multiplayer-gaming.com/api/loader.min.js?app=v201',
+            '//www.multiplayer-gaming.com/api/loader.min.js?app=v201',
             'ts/angular-material.js',
             'ts/app-l10n.js',
             'css/app.min.css',
@@ -36,7 +36,7 @@ module.exports = function(grunt) {
             'imgs/autoMatchAvatar.png',
           ],
           network: !isForTesting ? ['*'] : 
-            ['http://www.multiplayer-gaming.com/api/app.' + apiVersion + '.min.js',
+            ['//www.multiplayer-gaming.com/api/app.' + apiVersion + '.min.js',
              'js/everything.min.js'],
           timestamp: true,
           process: !isForTesting ? null : function(path) {
