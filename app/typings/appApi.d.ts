@@ -9,6 +9,7 @@ interface App {
   game(): Game;
   l10n(): L10n;
   fb(): FB;
+  fullscreen(): Fullscreen;
   model(): Model; // All fields used in ng-model
   
   // Passing a message to the game, e.g., to show help screen (or in the future to turn sounds on/off).
@@ -127,6 +128,12 @@ interface App {
   timeAgo(time: number): string;
   toggleBlocking(player: Player): void;
   isBlocking(player: Player): boolean;
+}
+
+interface Fullscreen {
+  isSupported(): boolean;
+  isInFullScreen(): boolean;
+  toggle(): void;
 }
 
 interface Model {

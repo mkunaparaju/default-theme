@@ -18,6 +18,26 @@
     "hi": "खेल निर्देश",
     "es": "Las instrucciones del juego"
   },
+  "ENTER_FULLSCREEN": {
+    "en": "Enter fullscreen",
+    "iw": "היכנס למסך מלא",
+    "pt": "Entrar em tela cheia",
+    "zh": "进入全屏模式",
+    "el": "Enter fullscreen",
+    "fr": "Passer en mode plein écran",
+    "hi": "पूर्ण स्क्रीन दर्ज करें",
+    "es": "Ingrese a pantalla completa"
+  },
+  "EXIT_FULLSCREEN": {
+    "en": "Exit fullscreen",
+    "iw": "צא ממסך מלא",
+    "pt": "fullscreen Exit",
+    "zh": "退出全屏",
+    "el": "έξοδος από πλήρη οθόνη",
+    "fr": "Quitter le mode plein écran",
+    "hi": "पूर्ण स्क्रीन से बाहर निकलें",
+    "es": "Salir de pantalla completa"
+  },
   "MAXIMIZE_GAME": {
     "en": "Maximize game",
     "iw": "הגדל משחק",

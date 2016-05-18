@@ -283,7 +283,7 @@
             <md-button id="test_share_invite_link_with_printscreen" 
                 ng-click="main.shareInviteLink({takePrintscreen: true})">
               <md-icon class="material-icons">share</md-icon>
-              {{ 'MATCH_SHARE_PRINTSCREEN' | translate }}
+              {{ main.isInApp() ? 'MATCH_SHARE_PRINTSCREEN' : 'SHARE' | translate }}
             </md-button>
           </md-menu-item>
           <md-menu-item ng-if="main.currentMatch().canStartNewMatch()">
@@ -304,6 +304,13 @@
                 ng-click="main.toggleTopBar()">
               <md-icon class="material-icons">{{ main.shouldShowTopBar() ? 'zoom_in' : 'zoom_out' }}</md-icon>
               {{ main.shouldShowTopBar() ? 'MAXIMIZE_GAME' : 'SHOW_PLAYERS' | translate }}
+            </md-button>
+          </md-menu-item>
+          <md-menu-item ng-if="main.fullscreen().isSupported()">
+            <md-button id="test_toggle_fullscreen"
+                ng-click="main.fullscreen().toggle()">
+              <md-icon class="material-icons">{{ main.fullscreen().isInFullScreen() ? 'fullscreen_exit' : 'fullscreen' }}</md-icon>
+              {{ main.fullscreen().isInFullScreen() ? 'EXIT_FULLSCREEN' : 'ENTER_FULLSCREEN' | translate }}
             </md-button>
           </md-menu-item>
           <md-menu-item>
