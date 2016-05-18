@@ -14,6 +14,15 @@ interface App {
   // Passing a message to the game, e.g., to show help screen (or in the future to turn sounds on/off).
   passMessageToGame(message: any): void;
   
+  // Whether the user is inside an app or in a web browser.
+  // (When the user is in an app, there is a URL parameter called phonegapPlugins.) 
+  isInApp(): boolean; 
+  
+  // Whether the user uses an iOS device (iphone/ipad/ipod). Based on the navigator.userAgent.
+  isIOS(): boolean;
+  // Whether the user uses an android device. Based on the navigator.userAgent.
+  isAndroid(): boolean;
+  
   // Used for preventing clicks on the game iframe when clicking on platform UI (menus, etc).
   // Every void-returning api method (except log) is automatically flashing the 
   // GameIframeProtector, so call this method only for special cases
