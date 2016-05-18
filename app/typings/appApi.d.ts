@@ -24,6 +24,13 @@ interface App {
   // Whether the user uses an android device. Based on the navigator.userAgent.
   isAndroid(): boolean;
   
+  // Replaces either https with http (or vice versa) depending on whether you use http/https.
+  // E.g., if you surf to:
+  // https://ycheckers.com/
+  // then replaceProtocol('http://blabla.com/') will return 'https://blabla.com/' 
+  // Example use: making sure the shortcut icon (if you customize it) will use https/http correctly. 
+  replaceProtocol(url: string): string;
+  
   // Used for preventing clicks on the game iframe when clicking on platform UI (menus, etc).
   // Every void-returning api method (except log) is automatically flashing the 
   // GameIframeProtector, so call this method only for special cases
