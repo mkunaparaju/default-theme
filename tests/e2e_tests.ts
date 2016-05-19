@@ -1400,6 +1400,33 @@ describe('App ', function() {
     playPage.gotoMain();
   });
   
+  it('from mk5376 & sss665: can go to practice, make move, check for winning condition, and go back to main menu', ()=>{
+    mainPage.openNewMatchModal().startPractice();
+    tictactoe.run(()=>{
+         tictactoe.expectEmptyBoard();
+         for (let row = 0; row < 2; row++) {
+             // player's turn to move
+                tictactoe.clickDivAndExpectPiece(row, 0, "X");
+                //currBrowser.driver.wait(protractor.until.elementsLocated(by.id('e2e_test_pieceO_0x0')), 10000);
+                //AI's turn to move
+                tictactoe.clickDivAndExpectPiece(row, 2, "O"); 
+         }  
+       tictactoe.clickDivAndExpectPiece(2, 0, "X");
+       tictactoe.expectBoard(
+          [['X', '', '0'],
+           ['X', '', '0'],
+           ['X', '', '']]);
+    });
+      expectDisplayed(id('game_over_match_status'));           
+      gameOverModal.close(); // Will restart a new Practice game
+      tictactoe.run(()=>{
+      tictactoe.expectEmptyBoard();
+    });
+    //goes back to main page
+       currBrowser.navigate().back();
+    mainPage.expectVisible();
+  });
+  
   it('from pioneers team (Hung-Ting Wen): single-player game ends in win/lose', ()=> {
     mainPage.openNewMatchModal().startPassAndPlay();
     tictactoe.run(()=>{
