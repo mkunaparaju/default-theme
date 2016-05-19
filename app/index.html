@@ -1,522 +1,579 @@
 <!DOCTYPE html>
-<html ng-strict-di dir='{{main.l10n().isRtl() ? "rtl" : "ltr"}}' manifest="index.appcache">
+<html ng-strict-di manifest="index.appcache">
+
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="mobile-web-app-capable" content="yes">
-  <title>{{main.game().name()}}</title>
-  <meta name="description" ng-attr-content="{{main.game().name()}}">
-  <link rel="shortcut icon" type="image/x-icon" 
-      ng-attr-href="{{main.replaceProtocol(main.game().customize('shortcutIcon', 'data:image/x-icon;,'))}}"
-      href='data:image/x-icon;,'>
-      <!-- Suppress browser request for favicon.ico if you don't customize it -->
-  <meta http-equiv="Content-Security-Policy" content="default-src * data:; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
-  <meta name="format-detection" content="telephone=no" />
-  
-  <!-- To ensure CSS files are downloaded in parallel, always include external CSS before external JavaScript. -->
-  <link rel="stylesheet" href="css/app.min.css"/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Social games</title>
+    <meta name="description" content="Social games">
+    <link rel="shortcut icon" type="image/x-icon" href="data:image/x-icon;,">
+    <!-- Suppress browser request for favicon.ico -->
+    <meta http-equiv="Content-Security-Policy" content="default-src * data:; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+    <meta name="format-detection" content="telephone=no" />
 
-  <!-- CSS for material design -->
-  <link rel="stylesheet" href="//yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular-material.min.css">
+    <!-- To ensure CSS files are downloaded in parallel, always include external CSS before external JavaScript. -->
+    <link rel="stylesheet" href="css/app.min.css" />
 
-<script type="text/ng-template" id="html-templates/mainPage.html">
-<div layout="row" class="full_screen">
-  <md-sidenav class="md-whiteframe-z3"
-      ng-class="main.l10n().isRtl() ? 'md-sidenav-right' : 'md-sidenav-left'"
-      md-component-id="left" md-is-locked-open="$mdMedia('gt-xs')">
-    <md-toolbar>
-      <div class="md-toolbar-tools">
-        <img id="test_my_avatar_img" alt="Your avatar"
-          ng-src="{{main.me().getAvatarImage()}}" 
-          class="avatar" style="margin-right: 14px;">
-        <h3 ng-if="main.fb().isLoggedIn()">{{main.me().getDisplayName()}}</h3>
-        <md-input-container ng-if="!main.fb().isLoggedIn()">
-          <input style="margin-top: 20px;"
-              md-select-on-focus
-              aria-label="{{'MODAL_USER_INFO_NAME' | translate }}" 
-              ng-model="main.model().newDisplayName"
-              ng-model-options="{updateOn: 'default blur', debounce: { 'default': 10000, 'blur': 0 } }"
-              ng-change="main.saveMyInfo()" maxlength="30" required>
-        </md-input-container>
-      </div>
-    </md-toolbar>
-    <md-content>
-      
-      <div id="test_my_info_fb_login"
-          ng-if="main.fb().showLoginButton()"
-          ng-click="main.fb().login()" class="facebook-login">
-        {{ 'MAIN_LOG_IN_WITH_FACEBOOK' | translate }}
-      </div>
-          
-      <md-menu-item>
-        <div layout="row">
-          <md-icon class="material-icons" style="margin: 5px 16px auto 0;">language</md-icon>
-          <md-select
-              style="margin: 0"
-              aria-label="{{'LANGUAGE' | translate }}" 
-              ng-if="main.l10n().getSupportedLanguages().length > 1"
-              ng-model="main.model().currentLanguage" 
-              ng-change="main.l10n().changeLanguage(main.model().currentLanguage)">
-            <md-option ng-repeat="language in main.l10n().getSupportedLanguages()" value="{{language.code}}">{{language.name}}</md-option>
-          </md-select>
+    <!-- CSS for material design -->
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc4/angular-material.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <script type="text/ng-template" id="html-templates/mainPage.html">
+        <div class="box max_height md-primary">
+            <div class="box_header md-primary">
+                <div class="header md-primary">
+                    <div id="test_game_name" class="game-name md-primary">{{main.game().name()}}</div>
+                    <div class="main-avatar-container">
+                        <img id="test_my_avatar_img" alt="Your avatar" ng-click="main.showMyInfoModal()" ng-src="{{main.me().getAvatarImage()}}"
+                        class="avatar">
+                    </div>
+                </div>
+            </div>
+
+            <div ng-cloak class="max_height">
+                <md-content class="max_height">
+                    <md-tabs class="max_height" md-border-bottom md-swipe-content md-stretch-tabs="always">
+                        <md-tab>
+                            <md-tab-label>
+                                <md-icon class="material-icons md-accent">person</md-icon>
+                            </md-tab-label>
+                            <md-tab-body>
+                                <div class="card-group-title">{{ 'MAIN_MATCH_GROUP_YOUR_TURN_MATCHES' | translate }}</div>
+                                <div class="card-group">
+                                    <div class="match" ng-repeat="match in main.yourTurnMatches() track by match.getMatchId()">
+                                        <div class="top" ng-click="match.load()">
+                                            <div class="subtitle">{{ 'MAIN_MATCH_LAST_MOVE_ON' | translate }} <span class="short-date-fixed-width">{{match.updatedTime() | date:'short'}}</span></div>
+                                            <div class="subtitle">{{ 'MAIN_MATCH_STARTED_ON' | translate }} <span class="short-date-fixed-width">{{match.createdTime() | date:'short'}}</span></div>
+                                        </div>
+                                        <div class="img-container">
+                                            <img alt="Player avatar" ng-class="{img: true}" ng-repeat="player in match.getPlayers({limit:1, excludeMe: true})" ng-src="{{player.getAvatarImage()}}"
+                                            ng-click="main.showPlayerInfoModal(player, match)">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- </div> -->
+                            </md-tab-body>
+                        </md-tab>
+                        <md-tab>
+                            <md-tab-label>
+                                <md-icon class="material-icons md-accent">people</md-icon>
+                            </md-tab-label>
+                            <md-tab-body>
+                                <div class="card-group-title">{{ 'MAIN_MATCH_GROUP_OPPONENT_TURN_MATCHES' | translate }}</div>
+                                <div class="card-group">
+                                    <div class="match" ng-repeat="match in main.opponentTurnMatches() track by match.getMatchId()">
+                                        <div class="top" ng-click="match.load()">
+                                            <div class="subtitle">{{ 'MAIN_MATCH_LAST_MOVE_ON' | translate }} <span class="short-date-fixed-width">{{match.updatedTime() | date:'short'}}</span></div>
+                                            <div class="subtitle">{{ 'MAIN_MATCH_STARTED_ON' | translate }} <span class="short-date-fixed-width">{{match.createdTime() | date:'short'}}</span></div>
+                                        </div>
+                                        <div class="img-container">
+                                            <img alt="Player avatar" ng-class="{img: true}" ng-repeat="player in match.getPlayers({limit:1, excludeMe: true})" ng-src="{{player.getAvatarImage()}}"
+                                            ng-click="main.showPlayerInfoModal(player, match)">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- </div> -->
+                            </md-tab-body>
+                        </md-tab>
+                        <md-tab>
+                            <md-tab-label>
+                                <md-icon class="material-icons md-accent">check_box</md-icon>
+                            </md-tab-label>
+                            <md-tab-body>
+                                <div class="card-group-title">{{ 'MAIN_MATCH_GROUP_ENDED_MATCHES' | translate }}</div>
+                                <div class="card-group">
+                                    <div class="match" ng-repeat="match in main.endedMatches() track by match.getMatchId()">
+                                        <div class="top" ng-click="match.load()">
+                                            <div class="title">{{match.getMatchStatusText({showDisplayName:false})}}</div>
+                                            <div class="subtitle">{{ 'MAIN_MATCH_LAST_MOVE_ON' | translate }}
+                                                <span class="short-date-fixed-width">{{match.updatedTime() | date:'short'}}</span></div>
+                                        </div>
+                                        <div class="img-container">
+                                            <img alt="Player avatar" ng-class="{img: true}" ng-repeat="player in match.getPlayers({limit:1, excludeMe: true})" ng-src="{{player.getAvatarImage()}}"
+                                            ng-click="main.showPlayerInfoModal(player, match)">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- </div> -->
+                            </md-tab-body>
+                        </md-tab>
+                    </md-tabs>
+                </md-content>
+            </div>
         </div>
-      </md-menu-item>
-      
-      <md-divider class="menu-divider"></md-divider>
-      <!-- Same 3 elements in the FAB -->
-      <md-menu-item>
-        <md-button id="test_start_multiplayer_auto_match" ng-click="main.newMultiplayerAutoMatch()">
-          <md-icon class="material-icons">shuffle</md-icon>
-          {{ 'MAIN_NEW_AUTO_MATCH_TITLE' | translate }}
-        </md-button>
-      </md-menu-item>
-      
-      <md-menu-item ng-if="!main.game().isHidePracticeOption()">
-        <md-button id="test_start_practice" ng-click="main.newSinglePlayer('practice')">
-          <md-icon class="material-icons">person</md-icon>
-          {{ 'MAIN_PRACTICE_TITLE' | translate }}
-        </md-button>
-      </md-menu-item>
-      
-      <md-menu-item ng-if="!main.game().isHidePassAndPlayOption()">
-        <md-button id="test_start_pass_and_play" ng-click="main.newSinglePlayer('passAndPlay')">
-          <md-icon class="material-icons">smartphone</md-icon>
-          {{ 'MAIN_PASS_AND_PLAY_TITLE' | translate }}
-        </md-button>
-      </md-menu-item>
-      <md-divider class="menu-divider"></md-divider>
-      
-      <md-menu-item ng-if="main.fb().isLoggedIn()">
-        <md-button id="test_goto_invite_friends" ng-click="main.changePage('/inviteFriends')">
-          <md-icon class="material-icons">people</md-icon>
-          {{ 'MAIN_INVITE_FRIENDS_TITLE' | translate }}
-        </md-button>
-      </md-menu-item>
-      
-      <md-menu-item>
-        <!-- I set image&message&subject to false because otherwise sharing via FB fails on Android. -->
-        <md-button id="test_share_invite_link_no_printscreen" ng-click="main.shareInviteLink({takePrintscreen: false, link: true, image: false, message: false, subject: false})">
-          <md-icon class="material-icons">share</md-icon>
-          {{ 'MAIN_SHARE_INVITE_LINK_TITLE' | translate }}
-        </md-button>
-      </md-menu-item>
-          
-      <md-menu-item>
-        <md-button id="test_open_feedback_modal" ng-click="openFeedbackDialog()">
-          <md-icon class="material-icons">feedback</md-icon>
-          <span id="test_open_feedback_btn_name">{{ 'MAIN_FEEDBACK_AND_BUGS_TITLE' | translate }}</span>
-        </md-button>
-      </md-menu-item>
-      
-      <md-menu-item hide-gt-xs>
-        <md-button id="test_close_left_nav" ng-click="$mdSidenav('left').close()">
-          <md-icon class="material-icons">close</md-icon>
-          {{ 'MODAL_BUTTON_CLOSE' | translate }}
-        </md-button>
-      </md-menu-item>
-    </md-content>
-  </md-sidenav>
-  <div flex layout="column" tabIndex="-1" role="main">
-    <!-- md-scroll-shrink is sometimes broken: https://github.com/angular/material/issues/8258 
-      From material docs:
-      * _**Note (1):** for scrollShrink to work, the toolbar must be a sibling of a
-      * `md-content` element, placed before it. See the scroll shrink demo._
-    -->
-    <md-toolbar md-scroll-shrink>
-      <div class="md-toolbar-tools">
-        <md-button
-            id="test_menu_button"
-            hide-gt-xs 
-            ng-click="$mdSidenav('left').toggle()" class="md-icon-button" aria-label="Menu">
-          <md-icon class="material-icons">menu</md-icon>
-        </md-button>
-        <h2 id="test_game_name">{{main.game().name()}}</h2>
-      </div>
-    </md-toolbar>
-    <md-content flex ng-class="sideNavIsOpen() ? 'not-scrollable' : 'overflow-y-scroll'">
-      <section ng-if="main.yourTurnMatches().length">
-        <md-subheader class="md-primary">{{ 'MAIN_MATCH_GROUP_YOUR_TURN_MATCHES' | translate }}</md-subheader>
-        <md-list>
-          <md-list-item class="md-2-line" 
-              ng-repeat="match in main.yourTurnMatches() track by match.getMatchId()">
-            <img 
-                  ng-repeat="player in match.getPlayers({limit:1, excludeMe: true})"
-                  ng-src="{{player.getAvatarImage()}}"
-                  ng-click="showPlayerBottomSheet(player, match)"
-                  alt="{{player.getDisplayName()}}" 
-                  class="md-avatar">
-            <div class="md-list-item-text" ng-click="match.load()">
-              <h3 ng-repeat="player in match.getPlayers({limit:1, excludeMe: true})">
-                {{player.getDisplayName()}}</h3>
-              <p>
-                {{main.timeAgo(match.updatedTime())}}
-              </p>
+        <div class="new-match-fab">
+            <md-menu>
+                <md-button id="test_open_new_match_modal" class="md-fab new-match-fab md-primary" aria-label="FAB" ng-click="$mdOpenMenu($event)">
+                    <md-tooltip md-direction="left">
+                        {{ 'MAIN_NEW_MATCH_GROUP_TITLE' | translate }}
+                    </md-tooltip>
+                    <md-icon class="material-icons md-accent">add</md-icon>
+                </md-button>
+
+                <md-menu-content>
+                    <md-menu-item>
+                        <md-button ng-click="main.newMultiplayerAutoMatch()">
+                            <md-icon class="material-icons md-accent">shuffle</md-icon>
+                            {{ 'MAIN_NEW_AUTO_MATCH_TITLE' | translate }}
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="main.changePage('/inviteFriends')">
+                            <md-icon class="material-icons md-accent">face</md-icon>
+                            {{ 'MAIN_INVITE_FRIENDS_TITLE' | translate }}
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item ng-if="!main.game().isHidePracticeOption()">
+                        <md-button ng-click="main.newSinglePlayer('practice')">
+                            <md-icon class="material-icons md-accent">person</md-icon>
+                            {{ 'MAIN_PRACTICE_TITLE' | translate }}
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item ng-if="!main.game().isHidePassAndPlayOption()">
+                        <md-button ng-click="main.newSinglePlayer('passAndPlay')">
+                            <md-icon class="material-icons md-accent">smartphone</md-icon>
+                            {{ 'MAIN_PASS_AND_PLAY_TITLE' | translate }}
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="main.shareInviteLink({takePrintscreen: false, link: true, image: false, message: false, subject: false})">
+                            <md-icon class="material-icons md-accent">share</md-icon>
+                            {{ 'MAIN_SHARE_INVITE_LINK_TITLE' | translate }}
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+        </div>
+    </script>
+
+
+    <script type="text/ng-template" id="html-templates/playPage.html">
+        <div ng-if="main.currentMatch()">
+            <div class="container-fluid nonexpanding nomargins">
+                <div ng-if="main.shouldShowTopBar()" class="game_header">
+                    <div class="game_header_inner">
+                        <md-menu>
+                            <md-button id="test_open_extra_match_options_modal" class="md-icon-button md-accent" aria-label="More" ng-click="$mdOpenMenu($event)">
+                                <md-icon class="material-icons">more_vert</md-icon>
+                            </md-button>
+
+                            <md-menu-content>
+                                <md-menu-item ng-if="main.currentMatch() && main.currentMatch().canRematch() && main.isInPage('/playGame/')">
+                                    <md-button id="test_start_rematch" ng-click="main.currentMatch().startNewMatch()">
+                                        <md-icon class="material-icons md-accent">repeat</md-icon>
+                                        {{ main.translateRematch() }}
+                                    </md-button>
+                                </md-menu-item>
+                                <md-menu-item>
+                                    <md-button id="test_extra_match_options_goto_main" ng-click="main.changePage('/main')">
+                                        <md-icon class="material-icons md-accent">home</md-icon>
+                                        {{ 'TO_MAIN_MENU' | translate }}
+                                    </md-button>
+                                </md-menu-item>
+                                <md-menu-item>
+                                    <md-button id="test_share_invite_link_with_printscreen" ng-click="modal.hide(); main.shareInviteLink({takePrintscreen: true})">
+                                        <md-icon class="material-icons md-accent">screen_share</md-icon>
+                                        {{ 'MATCH_SHARE_PRINTSCREEN' | translate }}
+                                    </md-button>
+                                </md-menu-item>
+                                <md-menu-item ng-if="!main.currentMatch().isSinglePlayer()">
+                                    <md-button id="test_dismiss_match" ng-click="main.currentMatch().dismissAndLoadNextMatchOrMainPage();">
+                                        <md-icon class="material-icons md-accent">delete</md-icon>
+                                        {{ main.currentMatch().isOver() ? 'MATCH_DELETE' : 'MATCH_RESIGN_AND_DELETE' | translate }}
+                                    </md-button>
+                                </md-menu-item>
+                                <md-menu-item ng-if="main.currentMatch().getNextMatch()">
+                                    <md-button id="test_load_next" ng-click="main.currentMatch().getNextMatch().load()">
+                                        <md-icon class="material-icons md-accent">queue_play_next</md-icon>
+                                        {{ 'MATCH_LOAD_NEXT' | translate }}
+                                    </md-button>
+                                </md-menu-item>
+                            </md-menu-content>
+
+                        </md-menu>
+                        <div style="padding: 5px">
+                            <div class="next-player">
+                                <img alt="Player avatar" ng-class="{avatar: true, 'avatar-has-turn': main.currentMatch().isTurnOf(player)}" ng-repeat="player in main.currentMatch().getPlayers({limit:3, excludeSinglePlayer: true})"
+                                ng-src="{{player.getAvatarImage()}}" ng-click="main.showPlayerInfoModal(player, main.currentMatch())">
+                                <span id="test_match_status_text">
+              {{main.currentMatch().getMatchStatusText({showDisplayName:true})}}
+            </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="test_toggle_top_bar" class="topbar_toggler" ng-click="main.toggleTopBar()">
+                    <span class="topbar_toggler_span">&#10092;</span>
+                </div>
             </div>
-            <md-icon class="material-icons md-secondary md-hue-3" 
-                aria-label="{{'MATCH_RESIGN_AND_DELETE' | translate }}"
-                ng-click="swipedMatch(match)">delete</md-icon>
-          </md-list-item>
-        </md-list>
-        <md-divider inset></md-divider>
-      </section>
-      <section ng-if="main.opponentTurnMatches().length">
-        <md-subheader class="md-primary">{{ 'MAIN_MATCH_GROUP_OPPONENT_TURN_MATCHES' | translate }}</md-subheader>
-        <md-list>
-          <md-list-item class="md-2-line" 
-                ng-repeat="match in main.opponentTurnMatches() track by match.getMatchId()">
-              <img 
-                  ng-repeat="player in match.getPlayers({limit:1, excludeMe: true})"
-                  ng-src="{{player.getAvatarImage()}}"
-                  ng-click="showPlayerBottomSheet(player, match)"
-                  alt="{{player.getDisplayName()}}" 
-                  class="md-avatar">
-            <div class="md-list-item-text" ng-click="match.load()">
-              <h3 ng-repeat="player in match.getPlayers({limit:1, excludeMe: true})">
-                {{player.getDisplayName()}}</h3>
-              <p>
-                {{main.timeAgo(match.updatedTime())}}
-              </p>
+
+        </div>
+    </script>
+
+
+    <script type="text/ng-template" id="html-templates/inviteFriendsPage.html">
+        <div class="friends-invite">
+            <!-- Header with optional search. -->
+            <div class="header">
+                <div class="header-inner" ng-if="!main.fb().showNameFilter()">
+                    <md-button id="test_invite_friends_goto_main" ng-click="main.changePage('/main')">
+                        <md-icon class="material-icons md-accent">home</md-icon>
+                    </md-button>
+                    <div class="title">{{ 'FB_FRIENDS_TITLE' | translate }}</div>
+                    <md-button id="test_invite_friends_goto_main" ng-click="main.fb().toggleNameFilter()">
+                        <md-icon class="material-icons md-accent">search</md-icon>
+                    </md-button>
+                    <!-- <a id="test_start_name_filter" class="search-button" href="javascript:void(0)" ng-click="main.fb().toggleNameFilter()"></a> -->
+                </div>
+                <div class="header-inner" ng-if="main.fb().showNameFilter()">
+                    <input class="filter-input" ng-model="main.model().facebookFriendsFilter">
+                    <a id="test_cancel_name_filter" class="cancel-button" ng-click="main.fb().toggleNameFilter()" title="Cancel">{{ 'FB_FRIENDS_FILTER_CANCEL' | translate }}</a>
+                </div>
             </div>
-            <md-icon class="material-icons md-secondary md-hue-3" 
-                aria-label="{{'MATCH_RESIGN_AND_DELETE' | translate }}"
-                ng-click="swipedMatch(match)">delete</md-icon>
-          </md-list-item>
-        </md-list>
-        <md-divider inset></md-divider>
-      </section>
-      <section ng-if="main.endedMatches().length">
-        <md-subheader class="md-primary">{{ 'MAIN_MATCH_GROUP_ENDED_MATCHES' | translate }}</md-subheader>
-        <md-list>
-          <md-list-item class="secondary-button-padding md-3-line" 
-              ng-repeat="match in main.endedMatches() track by match.getMatchId()">
-              
-            <img 
-                  ng-repeat="player in match.getPlayers({limit:1, excludeMe: true})"
-                  ng-src="{{player.getAvatarImage()}}"
-                  ng-click="showPlayerBottomSheet(player, match)"
-                  alt="{{player.getDisplayName()}}" 
-                  class="md-avatar">
-            <div class="md-list-item-text" ng-click="match.load()">
-              <h3 ng-repeat="player in match.getPlayers({limit:1, excludeMe: true})">
-                {{player.getDisplayName()}}</h3>
-              <h4>{{match.getMatchStatusText({showDisplayName:false})}}</h4>
-              <p>
-                {{main.timeAgo(match.updatedTime())}}
-              </p>
+            <!-- Friends list. can be filtered by using the search in the header. 
+            <ul class="friends-list overflow-y-scroll" ng-if="main.fb().friends().length > 0">
+                <li class="friend" ng-repeat="friend in main.fb().friends() | filter:main.model().facebookFriendsFilter">
+                    <img alt="Friend avatar" ng-src="{{friend.getAvatarImage()}}">
+                    <div class="name">{{friend.getDisplayName()}}</div>
+                    <span class="invite-button" ng-click="main.fb().startMatchWith([friend])">{{ 'FB_FRIENDS_ACTION_INVITE' | translate }}</span>
+                </li>
+            </ul> -->
+            <md-list class="overflow-y-scroll" ng-if="main.fb().friends().length > 0">
+                <md-list-item ng-repeat="friend in main.fb().friends() | filter:main.model().facebookFriendsFilter">
+                    <img alt="Friend avatar" ng-src="{{friend.getAvatarImage()}}" class="md-avatar" />
+                    <p>{{friend.getDisplayName()}}</p>
+                    <md-button class="md-secondary" ng-click="main.fb().startMatchWith([friend])">
+                        {{ 'FB_FRIENDS_ACTION_INVITE' | translate }}
+                    </md-button>
+                    <md-divider ng-if="!$last"></md-divider>
+                </md-list-item>
+            </md-list>
+            <div id="test_invite_friends_fb_login" ng-if="main.fb().showLoginButton()" ng-click="main.fb().login()" class="facebook-login">
+                {{ 'MAIN_LOG_IN_WITH_FACEBOOK' | translate }}
             </div>
-            <md-icon class="material-icons md-secondary md-hue-3"
-                aria-label="{{'MATCH_DELETE' | translate }}"
-                ng-click="match.dismiss()">delete</md-icon>
-          </md-list-item>
-        </md-list>
-        <md-divider inset></md-divider>
-      </section>
-      <!-- The delete icon of the last match may be hidden behind the FAB, so I'm adding some empty space. 
-          There is also a scrolling bug if the list is slightly larger than screen height, which hides the last element. -->
-      <div style="height: 75px; min-height: 75px;"></div>
-    </md-content>
-    <div class="new-match-fab">
-      <md-menu>
-        <md-button ng-click="$mdOpenMenu($event)" id="test_open_new_match_modal" class="md-fab" aria-label="FAB">
-          <md-icon class="material-icons">add</md-icon>
-        </md-button>
+            <div id="test_no_friends_msg" class="no-friends-msg" ng-if="main.fb().friends().length == 0 && main.fb().isLoggedIn()">
+                {{ 'FB_FRIENDS_DID_NOT_INSTALL_APP' | translate }}
+            </div>
+        </div>
+    </script>
 
-        <md-menu-content>
-          <md-menu-item>
-            <md-button id="test_fab_start_multiplayer_auto_match" ng-click="main.newMultiplayerAutoMatch()">
-              <md-icon class="material-icons">shuffle</md-icon>
-              {{ 'MAIN_NEW_AUTO_MATCH_TITLE' | translate }}
-            </md-button>
-          </md-menu-item>
-          
-          <md-menu-item ng-if="!main.game().isHidePracticeOption()">
-            <md-button id="test_fab_start_practice" ng-click="main.newSinglePlayer('practice')">
-              <md-icon class="material-icons">person</md-icon>
-              {{ 'MAIN_PRACTICE_TITLE' | translate }}
-            </md-button>
-          </md-menu-item>
-          
-          <md-menu-item ng-if="!main.game().isHidePassAndPlayOption()">
-            <md-button id="test_fab_start_pass_and_play" ng-click="main.newSinglePlayer('passAndPlay')">
-              <md-icon class="material-icons">smartphone</md-icon>
-              {{ 'MAIN_PASS_AND_PLAY_TITLE' | translate }}
-            </md-button>
-          </md-menu-item>
-        </md-menu-content>
-      </md-menu>
-    </div>
-  </div>
-</div>
-</section>
-</script>
-
-
-<script type="text/ng-template" id="html-templates/playPage.html">
-<div ng-if="main.currentMatch()">
-  <md-toolbar ng-class="main.shouldShowTopBar() ? '' : 'closed_game_header'">
-    <div class="md-toolbar-tools">
-      <md-button
-          id="test_play_page_goto_main"
-          ng-click="main.changePage('/main')" 
-          class="md-icon-button"
-          aria-label="{{ 'TO_MAIN_MENU' | translate }}">
-        <md-icon 
-            class="material-icons">{{main.l10n().isRtl() ? 'arrow_forward' : 'arrow_back'}}</md-icon>
-      </md-button>
-      <h2 ng-if="main.shouldShowTopBar()" id="test_match_status_text" style="margin: 0 10px 0 0;">
-        {{main.currentMatch().getMatchStatusText({showDisplayName:false})}}
-      </h2>
-      <span flex></span>
-      <img ng-if="main.shouldShowTopBar()" 
-          alt="Player avatar"
-          style="margin: 0 5px 0 0;" 
-          ng-class="{avatar: true, 'avatar-has-turn': main.currentMatch().isTurnOf(player)}"
-          ng-repeat="player in main.currentMatch().getPlayers({limit:3, excludeSinglePlayer: true})"
-          ng-src="{{player.getAvatarImage()}}"
-          ng-click="showPlayerBottomSheet(player, main.currentMatch())">
-          
-      <md-menu>
-        <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)" id="test_open_play_page_menu" aria-label="Play menu">
-          <md-icon
-              class="material-icons">more_vert</md-icon>
-        </md-button>
-        <md-menu-content>
-          <md-menu-item>
-            <md-button id="test_share_invite_link_with_printscreen" 
-                ng-click="main.shareInviteLink({takePrintscreen: true})">
-              <md-icon class="material-icons">share</md-icon>
-              {{ main.isInApp() ? 'MATCH_SHARE_PRINTSCREEN' : 'SHARE' | translate }}
-            </md-button>
-          </md-menu-item>
-          <md-menu-item ng-if="main.currentMatch().canStartNewMatch()">
-            <md-button id="test_start_rematch" ng-click="main.currentMatch().startNewMatch()">
-              <md-icon class="material-icons">replay</md-icon>
-              {{ main.currentMatch().isSinglePlayer() ? 'MATCH_NEW_GAME' : 'REMATCH' | translate }}
-            </md-button>
-          </md-menu-item>
-          <md-menu-item ng-if="main.currentMatch().getNextMatch()">
-            <md-button id="test_load_next"
-                ng-click="main.currentMatch().getNextMatch().load()">
-              <md-icon class="material-icons">{{ main.l10n().isRtl() ? 'navigate_before' : 'navigate_next' }}</md-icon>
-              {{ 'MATCH_LOAD_NEXT' | translate }}
-            </md-button>
-          </md-menu-item>
-          <md-menu-item>
-            <md-button id="test_toggle_top_bar"
-                ng-click="main.toggleTopBar()">
-              <md-icon class="material-icons">{{ main.shouldShowTopBar() ? 'zoom_in' : 'zoom_out' }}</md-icon>
-              {{ main.shouldShowTopBar() ? 'MAXIMIZE_GAME' : 'SHOW_PLAYERS' | translate }}
-            </md-button>
-          </md-menu-item>
-          <md-menu-item ng-if="main.fullscreen().isSupported()">
-            <md-button id="test_toggle_fullscreen"
-                ng-click="main.fullscreen().toggle()">
-              <md-icon class="material-icons">{{ main.fullscreen().isInFullScreen() ? 'fullscreen_exit' : 'fullscreen' }}</md-icon>
-              {{ main.fullscreen().isInFullScreen() ? 'EXIT_FULLSCREEN' : 'ENTER_FULLSCREEN' | translate }}
-            </md-button>
-          </md-menu-item>
-          <md-menu-item>
-            <md-button id="test_show_game_instructions"
-                ng-click="main.passMessageToGame({SHOW_GAME_INSTRUCTIONS: true})">
-              <md-icon class="material-icons">help</md-icon>
-              {{ 'GAME_INSTRUCTIONS' | translate }}
-            </md-button>
-          </md-menu-item>
-          
-          <md-divider ng-if="!main.currentMatch().isSinglePlayer()" class="menu-divider"></md-divider>
-          <md-menu-item ng-if="!main.currentMatch().isSinglePlayer()">
-            <md-button class="md-warn" id="test_dismiss_match"
-                ng-click="main.currentMatch().dismissAndLoadNextMatchOrMainPage();">
-              <md-icon class="material-icons">delete</md-icon>
-              {{ main.currentMatch().isOver() ? 'MATCH_DELETE' : 'MATCH_RESIGN_AND_DELETE' | translate }}
-            </md-button>
-          </md-menu-item>
-        </md-menu-content>
-      </md-menu>
-    </div>
-  </md-toolbar>
-</div>
-</script>
-
-
-<script type="text/ng-template" id="html-templates/inviteFriendsPage.html">
-<div flex layout="column" tabIndex="-1" class="full_screen">
-  <md-toolbar md-scroll-shrink>
-    <div class="md-toolbar-tools">
-      <md-button
-          id="test_invite_friends_goto_main"
-          ng-click="main.changePage('/main')" class="md-icon-button"
-          aria-label="{{ 'TO_MAIN_MENU' | translate }}">
-        <md-icon class="material-icons">{{main.l10n().isRtl() ? 'arrow_forward' : 'arrow_back'}}</md-icon>
-      </md-button>
-      <h2>{{ 'FB_FRIENDS_TITLE' | translate }}</h2>
-    </div>
-  </md-toolbar>
-  <md-content flex class="overflow-y-scroll">
-    <md-list ng-if="main.fb().friends().length > 0">
-      <md-list-item 
-          ng-click="main.fb().startMatchWith([friend])" 
-          ng-repeat="friend in main.fb().friends() | filter:main.model().facebookFriendsFilter">
-        <img ng-src="{{friend.getAvatarImage()}}"
-             alt="Friend avatar" 
-             class="md-avatar">
-        <p>{{friend.getDisplayName()}}</p>
-        <span flex></span>
-        <md-icon class="material-icons">person_add</md-icon>
-      </md-list-item>
-    </md-list>
-    <div id="test_no_friends_msg" class="no-friends-msg" ng-if="main.fb().friends().length == 0 && main.fb().isLoggedIn()">
-      {{ 'FB_FRIENDS_DID_NOT_INSTALL_APP' | translate }}
-    </div>
-  </md-content>
-</div>
-</script>
-
-<script type="text/ng-template" id="html-templates/dismissSwipedMatchDialog.html">
-<md-dialog aria-label="Are you sure you want to resign?">
-  <md-dialog-content>
-    <div layout="row" layout-align="left center" layout-margin style="margin:20px">
-      {{swipedMatchDialogTitle()}}
-      <img 
-          ng-repeat="player in getSwipedMatch().getPlayers({limit:1, excludeMe: true})"
-          ng-src="{{player.getAvatarImage()}}"
-          alt="{{player.getDisplayName()}}" 
-          class="avatar">
-    </div>
-  </md-dialog-content>
-  <md-dialog-actions>
-    <md-button ng-click="closeSwipedMatchDialog()">
-      <md-icon class="material-icons">close</md-icon>
-      {{ 'MODAL_BUTTON_CLOSE' | translate }}
-    </md-button>
-    <md-button class="md-warn" ng-click="dismissSwipedMatch()">
-      <md-icon class="material-icons">delete</md-icon>
-      {{ 'MATCH_RESIGN_AND_DELETE' | translate }}
-    </md-button>
-  </md-dialog-actions>
-</md-dialog>
-</script>
-
-<script type="text/ng-template" id="html-templates/gameOverDialog.html">
-<md-dialog aria-label="Game over dialog">
-  <md-dialog-content style="margin:20px;">
-    <h3 id="test_game_over_match_title">{{ 'MODAL_TITLE_MATCH_OVER' | translate }}</h3>
-    <div id="test_game_over_match_status">
-      {{main.currentMatch().getMatchStatusText({showDisplayName:true})}}
-    </div>
-  </md-dialog-content>
-  <md-dialog-actions>
-    <md-button id="test_game_over_rematch" ng-click="main.closeGameOverModal(); main.currentMatch().startNewMatch()"
-        ng-if="main.currentMatch().canStartNewMatch()">
-      <md-icon class="material-icons">replay</md-icon>
-      {{ main.currentMatch().isSinglePlayer() ? 'MATCH_NEW_GAME' : 'REMATCH' | translate }}
-    </md-button>
-    <md-button id="test_share_invite_link" class="md-primary"
-        ng-click="main.closeGameOverModal(); main.shareInviteLink({takePrintscreen: true, translationIdPrefix: main.didWinMultiplayerMatch() ? 'SHARE_INTENT_WON_GAME' : 'SHARE_INTENT_GAME_INVITE'})">
-      <md-icon class="material-icons">share</md-icon>
-      {{ 'SHARE' | translate }}
-    </md-button>
-  </md-dialog-actions>
-</md-dialog>
-</script>
-
-<script type="text/ng-template" id="html-templates/playerInfoBottomSheet.html">
-<md-bottom-sheet class="md-list md-has-header">
-  <md-subheader>
-    <div layout="row" layout-align="left center">
-      <img id="test_player_info_img" alt="Player avatar" class="avatar notification-avatar"
-                    width="40" height="40"
-                    ng-src="{{playerInBottomSheet().getAvatarImage()}}"
-                    ng-click="$mdBottomSheet.hide()">
-      <span id="test_player_info_name">{{playerInBottomSheet().getDisplayName()}}</span>
-    </div>
-  </md-subheader>
-  <!-- in playPage there is already rematch in the playPage menu, so it's only confusing here,
-    especially when this opens after clicking on chat message notification. -->
-  <md-menu-item ng-if="!main.isInPage('/playGame/')">
-    <md-button class="md-list-item-content"
-        id="test_player_info_invite_to_match" 
-        ng-click="$mdBottomSheet.hide(); main.startMatchWith([playerInBottomSheet()])">
-      <md-icon class="material-icons">replay</md-icon>
-      <span class="md-inline-list-icon-label">{{ 'MODAL_BUTTON_INVITE_TO_NEW_MATCH' | translate }}</span>
-    </md-button>
-  </md-menu-item>
-  <md-menu-item style="padding-left: 16px;padding-right: 16px; padding-top: 20px;">
-    <md-input-container>
-      <label>{{'CHAT_MESSAGE_LABEL' | translate }}</label>
-      <input 
-          md-autofocus
-          ng-model="main.model().chatMessage"
-          ng-keyup="$event.keyCode == 13 && sendChatAndCloseBottomSheet()"
-          maxlength="140">
-      <md-icon class="material-icons"
-          ng-class="main.l10n().isRtl() ? 'flip_rtl' : ''"
-          aria-label="{{ 'MODAL_BUTTON_SEND_CHAT' | translate }}"
-          id="test_player_info_send_chat"
-          ng-click="sendChatAndCloseBottomSheet()">
-        send</md-icon>
-    </md-input-container>
-  </md-menu-item>
-  <md-menu-item>
-    <md-button class="md-list-item-content"
-        id="test_player_info_toggle_blocking"
-        ng-click="main.toggleBlocking(playerInBottomSheet())">
-      <md-icon class="material-icons">{{ main.isBlocking(playerInBottomSheet()) ? 'undo' : 'block' }}</md-icon>
-      <span class="md-inline-list-icon-label">{{ main.isBlocking(playerInBottomSheet()) ? 'MODAL_BUTTON_UNBLOCK' : 'MODAL_BUTTON_BLOCK' | translate }}</span>
-    </md-button>
-  </md-menu-item>
-</md-bottom-sheet>
-</script>
 
 </head>
-<body>
 
-<img ng-if="!main.isFinishedLoading()"
-  style="position: absolute; display:block; left: 0; top: 0; right: 0; bottom: 0; margin: auto;"
-  src="imgs/animatedEllipse.gif">
+<body ng-class="{'backgroundColor': main.isFinishedLoading()}">
 
-<div ng-if="main.isFinishedLoading()" class="full_screen" ng-cloak>
-  <div ng-view class="full_screen"></div>
+    <img ng-if="!main.isFinishedLoading()" style="position: absolute; display:block; left: 0; top: 0; right: 0; bottom: 0; margin: auto;"
+    src="imgs/animatedEllipse.gif">
 
-  <div ng-show="main.showGameIframe()"
-    ng-class="main.shouldShowTopBar() ? 'game_iframe_with_opened_game_header' : 'game_iframe_with_closed_game_header'"
-    id="game_container"
-    ng-bind-html="main.game().getIframeHtml()"></div>
+    <div ng-if="main.isFinishedLoading()" class="max_height" ng-cloak>
+        <div ng-view class="max_height"></div>
 
-  <div class="notifications-container">
-    <div class="notification md-whiteframe-z4" ng-repeat="notification in main.notifications()">
-      <div class="notification-content">
-        <img alt="Player avatar" class="avatar notification-avatar"
-            ng-if="notification.player()" width="40" height="40"
-            ng-click="showPlayerBottomSheet(notification.player(), notification.match())"
-            ng-src="{{notification.player().getAvatarImage()}}">
-        <div ng-click="notification.onClick()">
-          <div class="notification-title" ng-if="notification.title()">{{notification.title()}}</div>
-          <div class="notification-body" ng-if="notification.message()">{{notification.message()}}</div>
+        <div class="notifications-container">
+            <div class="notification" ng-repeat="notification in main.notifications()">
+                <div class="notification-content">
+                    <img alt="Player avatar" class="avatar notification-avatar" ng-if="notification.player()" width="50" height="50" ng-click="main.showPlayerInfoModal(notification.player(), notification.match())"
+                    ng-src="{{notification.player().getAvatarImage()}}">
+                    <div ng-click="notification.onClick()">
+                        <div class="notification-title" ng-if="notification.title()">{{notification.title()}}</div>
+                        <div class="notification-body" ng-if="notification.message()">{{notification.message()}}</div>
+                    </div>
+                </div>
+                <div class="notification-dismiss" ng-click="notification.onClose()">X</div>
+            </div>
         </div>
-      </div>
-      <md-icon
-          class="material-icons big-material-icon"
-          ng-click="notification.onClose()">close</md-icon>
+
+        <div ng-show="main.showGameIframe()" ng-class="main.shouldShowTopBar() ? 'opened_game_header' : 'closed_game_header'" class="game_container"
+        ng-bind-html="main.game().getIframeHtml()"></div>
+
+        <!-- Extra match options Modal -->
+        <!-- It can't be inside a template, because then hiding the modal won't be animated, leading to a bug in ngMaterial, see https://github.com/angular/material/issues/7978 -->
+        <div ng-controller="ModalCtrl as modal" ng-init="modal.init('extraMatchOptionsModal')">
+            <div class="overlayModal" ng-click="modal.backdrop($event)" ng-if="modal.isShowing()" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div id="test_extra_match_options_goto_main" class="menu-item" ng-click="main.changePage('/main')">
+                        <div class="text">{{ 'TO_MAIN_MENU' | translate }}</div>
+                    </div>
+                    <div id="test_share_invite_link_with_printscreen" class="menu-item" ng-click="modal.hide(); main.shareInviteLink({takePrintscreen: true})">
+                        <div class="text">{{ 'MATCH_SHARE_PRINTSCREEN' | translate }}</div>
+                    </div>
+                    <div id="test_dismiss_match" class="menu-item" ng-click="main.currentMatch().dismissAndLoadNextMatchOrMainPage();" ng-if="!main.currentMatch().isSinglePlayer()">
+                        <div class="text">{{ main.currentMatch().isOver() ? 'MATCH_DELETE' : 'MATCH_RESIGN_AND_DELETE' | translate }}</div>
+                    </div>
+                    <div id="test_load_next" class="menu-item" ng-click="main.currentMatch().getNextMatch().load()" ng-if="main.currentMatch().getNextMatch()">
+                        <div class="text">{{ 'MATCH_LOAD_NEXT' | translate }}</div>
+                    </div>
+                    <button id="test_close_extra_match_options_modal" type="button" class="btn btn-default" ng-click="modal.hide()">
+                        {{ 'MODAL_BUTTON_CLOSE' | translate }}
+                    </button>
+                </div>
+                <div class="new-match-fab">
+                    <md-button id="test_extra_match_options_open_new_match_modal" class="md-fab new-match-fab" aria-label="FAB" ng-click="main.showModal('newMatchModal')">
+                        <md-tooltip md-direction="left">
+                            {{ 'MAIN_NEW_MATCH_GROUP_TITLE' | translate }}
+                        </md-tooltip>
+                        <span style="font-size: 28px;">+</span>
+                    </md-button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Starting a new match Modal ; must be after extra match options modal since it can be opened from it. -->
+        <div ng-controller="ModalCtrl as modal" ng-init="modal.init('newMatchModal')">
+            <div class="overlayModal" ng-click="modal.backdrop($event)" ng-if="modal.isShowing()" aria-hidden="true">
+                <div class="modal-dialog">
+                    <md-button id="test_start_rematch" ng-click="main.currentMatch().startNewMatch()" ng-if="main.currentMatch() && main.currentMatch().canRematch() && main.isInPage('/playGame/')">
+                        <md-icon class="material-icons md-accent">repeat</md-icon>
+                        {{ main.translateRematch() }}
+                    </md-button>
+                    <md-button id="test_start_multiplayer_auto_match" ng-click="main.newMultiplayerAutoMatch()">
+                        <md-icon class="material-icons md-accent">shuffle</md-icon>
+                        {{ 'MAIN_NEW_AUTO_MATCH_TITLE' | translate }}
+                    </md-button>
+                    <md-button id="test_goto_invite_friends" ng-click="main.changePage('/inviteFriends')">
+                        <md-icon class="material-icons md-accent">face</md-icon>
+                        {{ 'MAIN_INVITE_FRIENDS_TITLE' | translate }}
+                    </md-button>
+                    <md-button ng-click="main.newSinglePlayer('practice')" ng-if="!main.game().isHidePracticeOption()">
+                        <md-icon class="material-icons md-accent">person</md-icon>
+                        {{ 'MAIN_PRACTICE_TITLE' | translate }}
+                    </md-button>
+                    <md-button ng-click="main.newSinglePlayer('passAndPlay')" ng-if="!main.game().isHidePassAndPlayOption()">
+                        <md-icon class="material-icons md-accent">smartphone</md-icon>
+                        {{ 'MAIN_PASS_AND_PLAY_TITLE' | translate }}
+                    </md-button>
+                    <!-- I set image&message&subject to false because otherwise sharing via FB fails on Android. -->
+                    <md-button ng-click="main.shareInviteLink({takePrintscreen: false, link: true, image: false, message: false, subject: false})">
+                        <md-icon class="material-icons md-accent">share</md-icon>
+                        {{ 'MAIN_SHARE_INVITE_LINK_TITLE' | translate }}
+                    </md-button>
+                    <!--   <div id="test_start_rematch" class="menu-item" ng-click="main.currentMatch().startNewMatch()" ng-if="main.currentMatch() && main.currentMatch().canRematch() && main.isInPage('/playGame/')">
+                        <div class="text">{{ main.translateRematch() }}</div>
+                    </div> 
+                    <div id="test_start_multiplayer_auto_match" class="menu-item" ng-click="main.newMultiplayerAutoMatch()">
+                        <div class="text">{{ 'MAIN_NEW_AUTO_MATCH_TITLE' | translate }}</div>
+                    </div>
+                    <div id="test_goto_invite_friends" class="menu-item" ng-click="main.changePage('/inviteFriends')">
+                        <div class="text">{{ 'MAIN_INVITE_FRIENDS_TITLE' | translate }}</div>
+                    </div> 
+                    <!-- I set image&message&subject to false because otherwise sharing via FB fails on Android. 
+                    <div id="test_share_invite_link_no_printscreen" class="menu-item" ng-click="main.shareInviteLink({takePrintscreen: false, link: true, image: false, message: false, subject: false})">
+                        <div class="text">{{ 'MAIN_SHARE_INVITE_LINK_TITLE' | translate }}</div>
+                    </div> 
+                    <div id="test_start_practice" class="menu-item" ng-click="main.newSinglePlayer('practice')" ng-if="!main.game().isHidePracticeOption()">
+                        <div class="text">{{ 'MAIN_PRACTICE_TITLE' | translate }}</div>
+                    </div>
+                    <div id="test_start_pass_and_play" class="menu-item" ng-click="main.newSinglePlayer('passAndPlay')" ng-if="!main.game().isHidePassAndPlayOption()">
+                        <div class="text">{{ 'MAIN_PASS_AND_PLAY_TITLE' | translate }}</div>
+                    </div> -->
+                    <md-button id="test_close_new_match_modal" class="md-primary md-raised" ng-click="modal.hide()">
+                        {{ 'MODAL_BUTTON_CLOSE' | translate }}
+                    </md-button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Other player (not me) info Modal -->
+        <div ng-controller="ModalCtrl as modal" ng-init="modal.init('playerInfoModal')">
+            <div class="overlayModal" ng-click="modal.backdrop($event)" ng-if="modal.isShowing()" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="notification-content">
+                        <table>
+                            <td>
+                                <img id="test_player_info_img" alt="Player avatar" class="avatar notification-avatar" width="50" height="50" ng-src="{{main.playerInPlayerInfoModal().getAvatarImage()}}">
+                            </td>
+                            <td>
+                                <div id="test_player_info_name">{{main.playerInPlayerInfoModal().getDisplayName()}}</div>
+                            </td>
+                        </table>
+                    </div>
+
+                    <div id="test_player_info_chat_sent" class="form-group" ng-if="main.didSendChat() && !main.playerInPlayerInfoModal().isUnknown()">
+                        {{ 'CHAT_SENT' | translate }}
+                    </div>
+                    <div class="form-group" ng-if="!main.didSendChat() && !main.playerInPlayerInfoModal().isUnknown()">
+                        <label>
+                            <input type="text" class="form-control auto_width" ng-model="main.model().chatMessage">
+                        </label>
+                        <md-button id="test_player_info_send_chat" class="md-raised md-primary" ng-click="main.sendChat(main.model().chatMessage, main.playerInPlayerInfoModal(), main.matchInPlayerInfoModal())">
+                            {{ 'MODAL_BUTTON_SEND_CHAT' | translate }}
+                        </md-button>
+                    </div>
+                    <div class="form-group" ng-if="!main.playerInPlayerInfoModal().isUnknown()">
+                        <md-button id="test_player_info_toggle_blocking" class="md-raised md-primary md-hue-1 smallertext" ng-click="main.toggleBlocking(main.playerInPlayerInfoModal())">
+                            {{ main.isBlocking(main.playerInPlayerInfoModal()) ? 'MODAL_BUTTON_UNBLOCK' : 'MODAL_BUTTON_BLOCK' | translate }}
+                        </md-button>
+                        <!--  <button id="test_player_info_toggle_blocking" class="btn smallertext" ng-click="main.toggleBlocking(main.playerInPlayerInfoModal())">
+                            {{ main.isBlocking(main.playerInPlayerInfoModal()) ? 'MODAL_BUTTON_UNBLOCK' : 'MODAL_BUTTON_BLOCK' | translate }}
+                        </button> -->
+                    </div>
+
+                    <md-button id="test_close_player_info" class="md-raised md-primary" ng-click="modal.hide()">
+                        {{ 'MODAL_BUTTON_CLOSE' | translate }}
+                    </md-button>
+                    <md-button id="test_player_info_invite_to_match" " class="md-raised md-primary " ng-if="!main.playerInPlayerInfoModal().isUnknown() " 
+                    ng-click="main.startMatchWith([main.playerInPlayerInfoModal()]) ">
+                        {{ 'MODAL_BUTTON_INVITE_TO_NEW_MATCH' | translate }}
+                    </md-button>
+                    <!--
+                    <button id="test_close_player_info " type="button " class="btn " ng-click="modal.hide() ">
+                        {{ 'MODAL_BUTTON_CLOSE' | translate }}
+                    </button>
+                    <button id="test_player_info_invite_to_match " class="btn " ng-if="!main.playerInPlayerInfoModal().isUnknown()
+                    " ng-click="main.startMatchWith([main.playerInPlayerInfoModal()]) ">
+                        {{ 'MODAL_BUTTON_INVITE_TO_NEW_MATCH' | translate }}
+                    </button> -->
+                </div>
+            </div>
+        </div>
+
+        <!-- My info Modal -->
+        <div ng-controller="ModalCtrl as modal " ng-init="modal.init( 'myInfoModal') ">
+            <div class="overlayModal " ng-click="modal.backdrop($event) " ng-if="modal.isShowing() " aria-hidden="true ">
+                <div class="modal-dialog ">
+                    <form role="form " ng-submit="main.saveMyInfo() ">
+                        <h4 id="test_my_info_title ">{{ 'MODAL_TITLE_USER_INFO' | translate }}</h4>
+                        <!-- First choose language! Then FB login. Also, after logging in to FB, we close myInfoModal. -->
+                        <div class="bottom-bar ">
+                            <!--
+                            <md-input-container ng-if="main.l10n().getSupportedLanguages().length> 1">
+                        <label>Language</label>
+                        <md-select ng-model="main.model().currentLanguage" ng-change="main.l10n().changeLanguage(main.model().currentLanguage)">
+                            <md-option ng-repeat="language in main.l10n().getSupportedLanguages()">
+                                {{language.name}}
+                            </md-option>
+                        </md-select>
+                        </md-input-container>
+                        -->
+                        <select class="button" ng-if="main.l10n().getSupportedLanguages().length > 1" ng-model="main.model().currentLanguage" ng-change="main.l10n().changeLanguage(main.model().currentLanguage)"
+                        ng-options="language.code as language.name for language in main.l10n().getSupportedLanguages()"></select>
+                        <div id="test_open_feedback_modal">
+                            <md-button class="md-raised md-primary" ng-click="main.showModal('feedbackModal')">
+                                {{ 'MAIN_FEEDBACK_AND_BUGS_TITLE' | translate }}</md-button>
+                        </div>
+                </div>
+                <div class="form-group">
+                    <div id="test_my_info_fb_login" ng-if="main.fb().showLoginButton()">
+                        <md-button class="md-raised md-primary" ng-click="main.fb().login()">
+                            <md-icon class="material-icons md-accent">group</md-icon>
+                            {{ 'MAIN_LOG_IN_WITH_FACEBOOK' | translate }}
+                        </md-button>
+                    </div>
+                </div>
+                <!-- newDisplayName and newUserName will only be persisted after clicking save. -->
+                <div class="form-group" ng-if="!main.fb().isLoggedIn()">
+                    <md-input-container class="md-block">
+                        <label> {{ 'MODAL_USER_INFO_NAME' | translate }}:</label>
+                        <input ng-model="main.model().newDisplayName" maxlength="30" required>
+                    </md-input-container>
+                    <!--     <label>
+                                {{ 'MODAL_USER_INFO_NAME' | translate }}:
+                                <input type="text" class="form-control" ng-model="main.model().newDisplayName" maxlength="30" required> 
+                            </label> -->
+                </div>
+                <div class="form-group">
+                    <md-input-container class="md-block">
+                        <label>{{ 'MODAL_USER_INFO_USERNAME' | translate }}: </label>
+                        <input ng-model="main.model().newUserName" maxlength="30" required>
+                    </md-input-container>
+                    <div id="test_my_info_username_was_taken" ng-if="main.newUserNameWasTaken()">{{ 'MODAL_USER_INFO_USERNAME_WAS_TAKEN' | translate }}</div>
+                </div>
+                <md-button id="test_my_info_submit" class="md-raised md-primary" type="submit">
+                    {{ 'MODAL_BUTTON_SAVE' | translate }}
+                </md-button>
+                <md-button id="test_my_info_cancel" class="md-raised md-primary" ng-click="modal.hide()">
+                    {{ 'MODAL_BUTTON_CLOSE' | translate }}
+                </md-button>
+                <!--
+                        <button id="test_my_info_submit" type="submit" class="btn btn-primary">
+                            {{ 'MODAL_BUTTON_SAVE' | translate }}
+                        </button>
+                        <button id="test_my_info_cancel" type="button" class="btn" ng-click="modal.hide()">
+                            {{ 'MODAL_BUTTON_CLOSE' | translate }}
+                        </button> -->
+                </form>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
-<script crossorigin="anonymous" src="//yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular.min.js"></script>
+    <!-- Feedback Modal -->
+    <div ng-controller="ModalCtrl as modal" ng-init="modal.init('feedbackModal')">
+        <div class="overlayModal" ng-click="modal.backdrop($event)" ng-if="modal.isShowing()" aria-hidden="true">
+            <div class="modal-dialog">
+                <h4>{{ 'MODAL_TITLE_FEEDBACK_AND_BUGS' | translate }}</h4>
+                <textarea ng-model="main.model().feedbackText" rows="5" placeholder="{{ 'MODAL_FEEDBACK_AND_BUGS_PLACEHOLDER_TEXT' | translate }}"
+                required></textarea>
+                <md-button class="md-raised md-primary" ng-click="main.sendFeedback(main.model().feedbackText)">
+                    {{ 'MODAL_BUTTON_SEND_FEEDBACK_AND_BUGS' | translate }}</md-button>
+                <md-button class="md-raised md-primary" ng-click="modal.hide()">{{ 'MODAL_BUTTON_CLOSE' | translate }}</md-button>
+                <!-- <button type="button" class="btn btn-primary" ng-click="main.sendFeedback(main.model().feedbackText)">{{ 'MODAL_BUTTON_SEND_FEEDBACK_AND_BUGS' | translate }}</button>
+                    <button id="test_close_feedback_modal" type="button" class="btn btn-default" ng-click="modal.hide()">
+                        {{ 'MODAL_BUTTON_CLOSE' | translate }}
+                    </button> -->
+            </div>
+        </div>
+    </div>
 
-<script crossorigin="anonymous" src="//yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular-route.min.js"></script>
+    <!-- Game over Modal (prettier than notification) -->
+    <!-- It can't be inside a template, because then hiding the modal won't be animated, leading to a bug in ngMaterial, see https://github.com/angular/material/issues/7978 -->
+    <div ng-controller="ModalCtrl as modal" ng-init="modal.init('gameOverModal')">
+        <div class="overlayModal" ng-click="modal.backdrop($event)" ng-if="modal.isShowing()" aria-hidden="true">
+            <div class="modal-dialog">
+                <h4 id="test_game_over_match_title">{{ 'MODAL_TITLE_MATCH_OVER' | translate }}</h4>
+                <div class="text" id="test_game_over_match_status">
+                    {{main.currentMatch().getMatchStatusText({showDisplayName:true})}}
+                </div>
+                <md-button ng-if="main.didWinMultiplayerMatch()" class="md-raised md-primary" ng-click="main.closeGameOverModal(); main.shareInviteLink({takePrintscreen: true, translationIdPrefix: 'SHARE_INTENT_WON_GAME'})">
+                    {{ 'SHARE_INTENT_WON_GAME_TAKE_SCREENSHOT' | translate }}</md-button>
 
-<!-- Angular Material dependencies & libraries -->
-<script crossorigin="anonymous" src="//yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular-animate.min.js"></script>
-<script crossorigin="anonymous" src="//yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular-aria.min.js"></script>
-<!-- see what's the latest version here: https://cdnjs.com/libraries/angular-material/ --> 
-<script crossorigin="anonymous" src="//yoav-zibin.github.io/angular-material-with-sourceMappingURL/angular-material.min.js"></script>
-  
+                <!--    <button id="test_share_invite_link_after_victory" type="button" class="btn btn-primary" ng-if="main.didWinMultiplayerMatch()"
+                    ng-click="main.closeGameOverModal(); main.shareInviteLink({takePrintscreen: true, translationIdPrefix: 'SHARE_INTENT_WON_GAME'})">
+                        {{ 'SHARE_INTENT_WON_GAME_TAKE_SCREENSHOT' | translate }}
+                    </button> -->
+                <div id="test_game_over_rematch" class="menu-item" ng-click="main.currentMatch().startNewMatch()" ng-if="main.currentMatch().canRematch()">
+                    <div class="text">
+                        {{ main.translateRematch() }}
+                    </div>
+                </div>
+                <md-button class="md-raised md-primary" ng-click="main.closeGameOverModal()">{{ 'MODAL_BUTTON_CLOSE' | translate }}</md-button>
+            </div>
+        </div>
+    </div>
 
-<script src="ts/angular-material.js"></script>
-<script src="ts/app-l10n.js"></script>
-<script crossorigin="anonymous" src="//www.multiplayer-gaming.com/api/loader.min.js?app=v201"></script>
+    </div>
+
+    <script crossorigin="anonymous" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+
+    <script crossorigin="anonymous" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-route.min.js"></script>
+
+    <!-- Angular Material dependencies & libraries -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js"></script>
+    <!-- see what's the latest version here: https://cdnjs.com/libraries/angular-material/ -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc4/angular-material.min.js"></script>
+
+    <script src="ts/app-l10n.js"></script>
+    <script crossorigin="anonymous" src="http://www.multiplayer-gaming.com/api/loader.min.js?app=v201"></script>
+
+    <script>
+        function gamingPlatformInitFinished() {
+        gamingPlatform.main.l10n().setTranslations(window.platformTranslations);
+  angular.module('whateverNameApp', ["gamingPlatformModule", 'ngMaterial'])
+      .config(['$mdThemingProvider', '$mdIconProvider', 
+        function ($mdThemingProvider, $mdIconProvider) {
+          $mdThemingProvider
+              .theme('default')
+              .primaryPalette('teal', {
+                  'hue-1' : '300'
+              })
+              .accentPalette('deep-orange', {
+                  'default' : '500'
+              })
+        }]);
+  angular.bootstrap(document, ["whateverNameApp"]);
+}
+    </script>
 
 </body>
+
 </html>
